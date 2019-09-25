@@ -47,14 +47,24 @@
 
 ## 用法
 
-### 示例
+
+### 命令行参数说明
+
+待详。
+
+
+### Example
 
 -   ```bash
     wlc-md-to-html
     ```
 
 -   ```bash
-    wlc-md-to-html   -i md/*.md  -o "*/html/"
+    wlc-md-to-html   -i markdowns/*.md  -o "*/html/"
+    ```
+
+-   ```bash
+    wlc-md-to-html   -i ./**/*.md  -o ~/articles/html/
     ```
 
 -   ```bat

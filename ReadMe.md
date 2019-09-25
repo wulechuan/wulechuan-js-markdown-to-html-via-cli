@@ -48,6 +48,11 @@ The CSS file for the built-in theming is from another NPM package of mine, named
 
 ## Usage
 
+### CLI Arguments
+
+Coming soon.
+
+
 ### Example
 
 -   ```bash
@@ -55,7 +60,11 @@ The CSS file for the built-in theming is from another NPM package of mine, named
     ```
 
 -   ```bash
-    wlc-md-to-html   -i md/*.md  -o "*/html/"
+    wlc-md-to-html   -i markdowns/*.md  -o "*/html/"
+    ```
+
+-   ```bash
+    wlc-md-to-html   -i ./**/*.md  -o ~/articles/html/
     ```
 
 -   ```bat

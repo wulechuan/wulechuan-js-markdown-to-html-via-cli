@@ -2,16 +2,31 @@
   "name": "@wulechuan/markdown-to-html-via-cli",
   "author": "wulechuan <wulechuan@live.com>",
   "license": "WTFPL",
-  "version": "0.1.0",
+  "version": "1.0.0-beta1",
   "description": "Convert markdown files in HTML files in your CLI environments.",
   "main": "index.js",
+  "bin": {
+    "wlc-md-to-html": "./index.js"
+  },
   "keywords": [
     "markdown",
     "html",
-    "cli"
+    "cli",
+    "markdown",
+    "convert",
+    "conversion",
+    "html",
+    "article",
+    "typography",
+    "pretty",
+    "beautify",
+    "responsive",
+    "responsive layout",
+    "gorgeous"
   ],
   "scripts": {
-    "test": "node    ./index"
+    "prepublishOnly": "npm test",
+    "test": "node    ./index   -D   -i ./*.md -o ./tests/out/html/"
   },
   "repository": {
     "type": "git",
