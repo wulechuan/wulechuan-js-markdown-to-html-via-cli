@@ -1,7 +1,4 @@
 .vscode
-docs
-gulpfile.js
-gulpfile.esm.js
 test
 tests
 .eslintignore

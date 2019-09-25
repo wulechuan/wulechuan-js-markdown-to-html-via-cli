@@ -1,4 +1,3 @@
 node_modules
-tests/output/**/*.md
-tests/output/**/*.png
-tests/output/**/*.jpg
+tests/out
+tests/output

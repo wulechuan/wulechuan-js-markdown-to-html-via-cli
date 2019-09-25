@@ -1,4 +1,6 @@
-# Wulechuan's CLI Tool for Converting Markdown Files into HTML Files
+# [NOT READY FOR USAGES] Wulechuan's CLI Tool for Converting Markdown Files into HTML Files
+
+THIS PACKAGE IS NOT READY FOR USAGES YET
 
 ## Multilingual Editions of this Article
 
@@ -48,9 +50,17 @@ The CSS file for the built-in theming is from another NPM package of mine, named
 
 ### Example
 
-```bash
-wlc-md-to-html
-```
+-   ```bash
+    wlc-md-to-html
+    ```
+
+-   ```bash
+    wlc-md-to-html   -i md/*.md  -o "*/html/"
+    ```
+
+-   ```bat
+    wlc-md-to-html   -o   C:\articles\
+    ```
 
 
 ## TODOS

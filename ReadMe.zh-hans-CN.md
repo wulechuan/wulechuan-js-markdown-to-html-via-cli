@@ -1,5 +1,6 @@
-# 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
+# [未完工] 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
 
+本工具尚未完工。
 
 ## Multilingual Editions of this Article
 
@@ -48,9 +49,18 @@
 
 ### 示例
 
-```bash
-wlc-md-to-html
-```
+-   ```bash
+    wlc-md-to-html
+    ```
+
+-   ```bash
+    wlc-md-to-html   -i md/*.md  -o "*/html/"
+    ```
+
+-   ```bat
+    wlc-md-to-html   -o   C:\articles\
+    ```
+
 
 
 ## 未来计划
