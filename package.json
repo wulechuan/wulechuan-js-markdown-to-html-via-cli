@@ -11,6 +11,7 @@
     "cli"
   ],
   "scripts": {
+    "start": "node    ./index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli/issues"
   },
-  "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme"
+  "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme",
+  "dependencies": {
+    "@wulechuan/css-stylus-markdown-themes": "^5.9.15",
+    "@wulechuan/generate-html-via-markdown": "^1.10.2",
+    "commander": "^3.0.1"
+  }
 }
