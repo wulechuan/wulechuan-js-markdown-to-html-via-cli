@@ -26,7 +26,8 @@
   ],
   "scripts": {
     "prepublishOnly": "npm test",
-    "test": "node    ./index   -D   -i ./*.md -o ./tests/out/html/"
+    "eslint": "eslint    ./.eslintrc.js    ./index.js",
+    "test": "npm  run  eslint    &&    rm  -rf  ./tests/out/html     &&     node  ./index  -i ./*.md  -o ./tests/out/html/"
   },
   "repository": {
     "type": "git",

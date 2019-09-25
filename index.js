@@ -46,7 +46,6 @@ const syncResolveGlobs = globby.sync
 const joinPathPOSIX    = path.posix.join
 const parsePath        = path.parse
 const getDirNameOf     = path.dirname
-const formatPath       = path.format
 
 
 const program = new commander.Command()
@@ -171,6 +170,18 @@ function main(programArguments) {
                         sourceFilePaths.length
                     )
                 })
+
+                console.log(chalk.green(
+                    [
+                        '',
+                        '',
+                        '* * * * * * * * *',
+                        '*   ALL DONE!   *',
+                        '* * * * * * * * *',
+                    ].join('\n')
+                ))
+
+                process.exit(0)
             }
         })
 }

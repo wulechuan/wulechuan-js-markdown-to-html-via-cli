@@ -1,6 +1,5 @@
-# [NOT READY FOR USAGES] Wulechuan's CLI Tool for Converting Markdown Files into HTML Files
+# Wulechuan's CLI Tool for Converting Markdown Files into HTML Files
 
-THIS PACKAGE IS NOT READY FOR USAGES YET
 
 ## Multilingual Editions of this Article
 
