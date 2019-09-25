@@ -52,7 +52,7 @@ The CSS file for the built-in theming is from another NPM package of mine, named
 Coming soon.
 
 
-### Example
+### Examples
 
 -   ```bash
     wlc-md-to-html
