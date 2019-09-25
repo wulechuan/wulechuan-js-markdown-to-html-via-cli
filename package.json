@@ -1,0 +1,24 @@
+{
+  "name": "@wulechuan/markdown-to-html-via-cli",
+  "author": "wulechuan <wulechuan@live.com>",
+  "license": "WTFPL",
+  "version": "0.1.0",
+  "description": "Convert markdown files in HTML files in your CLI environments.",
+  "main": "index.js",
+  "keywords": [
+    "markdown",
+    "html",
+    "cli"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli/issues"
+  },
+  "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme"
+}
