@@ -2,7 +2,7 @@
   "name": "@wulechuan/markdown-to-html-via-cli",
   "author": "wulechuan <wulechuan@live.com>",
   "license": "WTFPL",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0-beta2",
   "description": "Convert markdown files in HTML files in your CLI environments.",
   "main": "index.js",
   "bin": {
