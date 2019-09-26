@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 
+const thisPackageJSON = require('./package.json')
+const version = `v${thisPackageJSON.version.replace(/^v/, '')}`
+
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log('.                                                 .')
 console.log('.    Welcome to wulechuan\'s CLI tool for          .')
 console.log('.    converting markdown files into HTML ones.    .')
 console.log('.                                                 .')
+console.log(`.    ${version}${' '.repeat(45 - version.length)}.`)
+console.log('.                                                 .')
 console.log('.                           wulechuan@live.com    .')
-console.log('.                                   2019-09-26    .')
+console.log('.                                   2019-09-27    .')
 console.log('.                                                 .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
@@ -39,7 +44,6 @@ const {
 
 const commander = require('commander')
 const markdownToHTMLConverter = require('@wulechuan/generate-html-via-markdown')
-const thisPackageJSON = require('./package.json')
 
 
 const syncResolveGlobs = globby.sync
@@ -52,7 +56,7 @@ const program = new commander.Command()
 
 
 program
-    .version(thisPackageJSON.version, '-v, --version', 'print the version of this program')
+    .version(version, '-v, --version', 'print the version of this program')
 
 program
     .option(

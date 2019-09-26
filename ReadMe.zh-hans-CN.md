@@ -44,6 +44,14 @@
 
 
 
+
+## 安装方法
+
+```bash
+npm    i    -g    @wulechuan/markdown-to-html-via-cli
+```
+
+
 ## 用法
 
 
@@ -52,22 +60,26 @@
 待详。
 
 
-### Example
+### 示例集
+
+-   ```bash
+    wlc-md-to-html    --help
+    ```
 
 -   ```bash
     wlc-md-to-html
     ```
 
 -   ```bash
-    wlc-md-to-html   -i markdowns/*.md  -o "*/html/"
+    wlc-md-to-html    -i markdowns/*.md    -o "*/html/"
     ```
 
 -   ```bash
-    wlc-md-to-html   -i ./**/*.md  -o ~/articles/html/
+    wlc-md-to-html    -i ./**/*.md    -o ~/articles/html/
     ```
 
 -   ```bat
-    wlc-md-to-html   -o   C:\articles\
+    wlc-md-to-html    -o C:\articles\
     ```
 
 
