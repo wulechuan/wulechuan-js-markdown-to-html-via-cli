@@ -62,23 +62,33 @@ npm    i    -g    @wulechuan/markdown-to-html-via-cli
 
 ### 示例集
 
--   ```bash
+-   在命令行环境中打印一些简略的帮助信息：
+
+    ```bash
     wlc-md-to-html    --help
     ```
 
--   ```bash
+-   默认情况下，本工具会扫描当前文件夹内的所有 `.md` 文件，但不会递归扫描子文件夹中的内容（想想看，`node_modules` 文件夹中可能存在非常多的 `.md` 文件）。同时，输出的 HTML 文件也会位于同一文件夹中。
+
+    ```bash
     wlc-md-to-html
     ```
 
--   ```bash
+-   要在每个源 markdown 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 markdown 文件对应的 HTML 文件生成在该子文件夹中，可以这样做：
+
+    ```bash
     wlc-md-to-html    -i markdowns/*.md    -o "*/html/"
     ```
 
--   ```bash
+-   将所有 HTML 文件统统输出至同一个文件夹中：
+
+    ```bash
     wlc-md-to-html    -i ./**/*.md    -o ~/articles/html/
     ```
 
--   ```bat
+-   默认情况下，本工具会扫描当前文件夹内的所有 `.md` 文件，但不会递归扫描子文件夹中的内容。
+
+    ```bat
     wlc-md-to-html    -o C:\articles\
     ```
 

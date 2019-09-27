@@ -60,23 +60,33 @@ Coming soon.
 
 ### Examples
 
--   ```bash
+-   To print some basic help info.
+
+    ```bash
     wlc-md-to-html    --help
     ```
 
--   ```bash
+-   By default, this tool scans for all `.md` files under current folder, but **NOT** recursively searching sub-folders. And it outputs HTML files at the same folder.
+
+    ```bash
     wlc-md-to-html
     ```
 
--   ```bash
+-   To build HTML files, each in the same sub-folder named "html" under the folder of its corresponding source markdown file.
+
+    ```bash
     wlc-md-to-html    -i markdowns/*.md    -o "*/html/"
     ```
 
--   ```bash
+-   To build all HTML files into exactly the same output folder.
+
+    ```bash
     wlc-md-to-html    -i ./**/*.md    -o ~/articles/html/
     ```
 
--   ```bat
+-   By default, this tool scans for all `.md` files under current folder, but **NOT** recursively searching sub-folders.
+
+    ```bat
     wlc-md-to-html    -o C:\articles\
     ```
 
