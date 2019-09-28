@@ -32,7 +32,7 @@ const CLI_ARGUMENTS_DEFAULT_VALUE = {
     from: [ './*.md', './*.MD' ],
     to: './',
     inputFileCountToWarn: 51,
-    configFile: './wlc-mk-to-html.config.js',
+    configFile: './wlc-md-to-html.config.js',
     tocUl: false,
     conciseToc: false,
     expandToc: false,

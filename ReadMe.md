@@ -85,7 +85,7 @@ Options:
   -C, --config-file  [path]
         Specify a `.js` file for fully controlling the converter
         utilized by this program internally.
-        (default: './wlc-mk-to-html.config.js')
+        (default: './wlc-md-to-html.config.js')
 
   -n, --input-file-count-to-warn  [path]
         Specify a number as a so-called "safe" limitation of the
