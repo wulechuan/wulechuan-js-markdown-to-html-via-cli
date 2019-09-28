@@ -25,6 +25,7 @@ const PROCESS_EXIT_CODE = {
     specifiedConfigFileNotFound: 6,
     configFileReadError: 7,
     invalidValueOfInputFileCountToWarn: 8,
+    unkownArgumentsPresent: 9,
     userCancelledBecauseOfTooManySourceFiles: 19,
 }
 const CLI_ARGUMENTS_DEFAULT_VALUE = {
@@ -373,7 +374,35 @@ try {
 
 function main(programArguments) {
     const filledArguments = fillDefaultValuesForAbsentArguments(programArguments)
+
     printCLIArguments(programArguments, filledArguments)
+    if (filledArguments.unknownArguments.length > 0) {
+        console.log(chalk.red('Unknown arguments are NOT allowed.'))
+
+        console.log(chalk.yellow('You might:'))
+
+        console.log(`  - ${
+            chalk.yellow(`forgot to use "${
+                chalk.green('-i')
+            }", "${
+                chalk.green('--from')
+            }", "${
+                chalk.green('-o')
+            }" or "${
+                chalk.green('--to')
+            }" arguments\n    to lead a value.`)
+        }`)
+
+        console.log(`  - ${
+            chalk.yellow(`forgot to quote the value of "${
+                chalk.green('-o')
+            }" or "${
+                chalk.green('--to')
+            }" argument.`)
+        }`)
+
+        process.exit(PROCESS_EXIT_CODE.unkownArgumentsPresent)
+    }
 
     const options = combinArgumentsWithConfigFile(filledArguments)
 
@@ -528,7 +557,7 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
     }
 
 
-    filledArguments.ignoredArguments = programRawArguments.args
+    filledArguments.unknownArguments = programRawArguments.args
 
     return filledArguments
 }
@@ -555,16 +584,16 @@ function printCLIArguments(rawArguments, filledArguments) {
         }
     })
 
-    const ignoredArgumentsCount = rawArguments.args.length
+    const unknownArgumentsCount = rawArguments.args.length
 
-    if (ignoredArgumentsCount > 0) {
-        const ignoredArgumentsPrintingName = `args (${ignoredArgumentsCount})`
+    if (unknownArgumentsCount > 0) {
+        const unknownArgumentsPrintingName = `args (${unknownArgumentsCount})`
 
-        if (ignoredArgumentsCount <= 100) {
-            rawArgumentsToPrint[ignoredArgumentsPrintingName] = rawArguments.args
+        if (unknownArgumentsCount <= 100) {
+            rawArgumentsToPrint[unknownArgumentsPrintingName] = rawArguments.args
         } else {
-            rawArgumentsToPrint[ignoredArgumentsPrintingName] = rawArguments.args.slice(0, 99)
-            rawArgumentsToPrint[ignoredArgumentsPrintingName].push[`< and ${ignoredArgumentsCount - 99} more >`]
+            rawArgumentsToPrint[unknownArgumentsPrintingName] = rawArguments.args.slice(0, 99)
+            rawArgumentsToPrint[unknownArgumentsPrintingName].push[`< and ${unknownArgumentsCount - 99} more >`]
         }
     }
 
@@ -575,12 +604,12 @@ function printCLIArguments(rawArguments, filledArguments) {
         filledArgumentsToPrint[key] = filledArguments[key]
     })
 
-    const ignoredArgumentsPrintingName = `ignoredArguments (${ignoredArgumentsCount})`
-    if (ignoredArgumentsCount <= 100) {
-        filledArgumentsToPrint[ignoredArgumentsPrintingName] = filledArguments.ignoredArguments
+    const unknownArgumentsPrintingName = `unknownArguments (${unknownArgumentsCount})`
+    if (unknownArgumentsCount <= 100) {
+        filledArgumentsToPrint[unknownArgumentsPrintingName] = filledArguments.unknownArguments
     } else {
-        filledArgumentsToPrint[ignoredArgumentsPrintingName] = filledArguments.ignoredArguments.slice(0, 99)
-        filledArgumentsToPrint[ignoredArgumentsPrintingName].push[`< and ${ignoredArgumentsCount - 99} more >`]
+        filledArgumentsToPrint[unknownArgumentsPrintingName] = filledArguments.unknownArguments.slice(0, 99)
+        filledArgumentsToPrint[unknownArgumentsPrintingName].push[`< and ${unknownArgumentsCount - 99} more >`]
     }
 
     console.log()
