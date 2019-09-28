@@ -33,6 +33,7 @@ const CLI_ARGUMENTS_DEFAULT_VALUE = {
     to: './',
     inputFileCountToWarn: 51,
     configFile: './wlc-mk-to-html.config.js',
+    tocUl: false,
     conciseToc: false,
     expandToc: false,
     tocItemExpandedLevel: 1,
@@ -92,7 +93,7 @@ program
 
         `${
             descriptionPrefixString
-        }Print the version of this program, that is "${version}"\n`
+        }Print the version of this program, that is "${version}".\n`
     )
 
 program
@@ -199,6 +200,14 @@ program
         }\n`,
 
         processArgumentOfConfigFilePath
+    )
+
+    .option(
+        '-U, --toc-ul',
+
+        `${
+            descriptionPrefixString
+        }When presents, the lists in TOC are <ul>s instead of <ol>s.\n`,
     )
 
     .option(
@@ -532,14 +541,20 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.configFile = CLI_ARGUMENTS_DEFAULT_VALUE.configFile
     }
 
+    if ('tocUl' in programRawArguments) {
+        filledArguments.tocUl = !!programRawArguments.tocUl
+    } else {
+        filledArguments.tocUl = CLI_ARGUMENTS_DEFAULT_VALUE.tocUl
+    }
+
     if ('conciseToc' in programRawArguments) {
-        filledArguments.conciseToc = programRawArguments.conciseToc
+        filledArguments.conciseToc = !!programRawArguments.conciseToc
     } else {
         filledArguments.conciseToc = CLI_ARGUMENTS_DEFAULT_VALUE.conciseToc
     }
 
     if ('expandToc' in programRawArguments) {
-        filledArguments.expandToc = programRawArguments.expandToc
+        filledArguments.expandToc = !!programRawArguments.expandToc
     } else {
         filledArguments.expandToc = CLI_ARGUMENTS_DEFAULT_VALUE.expandToc
     }
@@ -572,6 +587,7 @@ function printCLIArguments(rawArguments, filledArguments) {
         'inputFileCountToWarn',
         'configFile',
         'configFileIsSpecifiedInCLI',
+        'tocUl',
         'conciseToc',
         'expandToc',
         'tocItemExpandedLevel',
@@ -622,6 +638,10 @@ function printCLIArguments(rawArguments, filledArguments) {
 }
 
 function combinArgumentsWithConfigFile(filledArguments) {
+    const conversionOptions = {
+        articleTOCListTagNameIsUL: filledArguments.tocUl,
+    }
+
     const manipulationsOverHTML = {
         htmlTagLanguage: filledArguments.htmlLanguage,
     }
@@ -637,10 +657,6 @@ function combinArgumentsWithConfigFile(filledArguments) {
         sourceGlobs: filledArguments.from,
         outputPath:  filledArguments.to,
         promptUserIfSourceFileCountExceedsThisNumber: filledArguments.inputFileCountToWarn,
-        'options for @wulechuan/generate-html-via-markdown': {
-            manipulationsOverHTML,
-            behaviousOfBuiltInTOC,
-        },
     }
 
 
@@ -675,12 +691,21 @@ function combinArgumentsWithConfigFile(filledArguments) {
         ...configurationsFromFile,
     }
 
+    if (!optionsForConverter.conversionOptions) {
+        optionsForConverter.conversionOptions = {}
+    }
+
     if (!optionsForConverter.manipulationsOverHTML) {
         optionsForConverter.manipulationsOverHTML = {}
     }
 
     if (!optionsForConverter.behaviousOfBuiltInTOC) {
         optionsForConverter.behaviousOfBuiltInTOC = {}
+    }
+
+    optionsForConverter.conversionOptions = {
+        ...optionsForConverter.conversionOptions,
+        ...conversionOptions,
     }
 
     optionsForConverter.manipulationsOverHTML = {

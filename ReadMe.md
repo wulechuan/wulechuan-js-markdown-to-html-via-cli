@@ -60,7 +60,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.0.0"
+        Print the version of this program, that is "v2.0.1".
 
   -i, --from  [globs]
         Any glob that:
@@ -95,6 +95,9 @@ Options:
         zero means never prompt user and always process all discovered
         source files, no matter how many there are.
         (default: 51)
+
+  -U, --toc-ul
+        When presents, the lists in TOC are <ul>s instead of <ol>s.
 
   -2, --concise-toc
         When presents, the max level of the TOC items in an HTML is
