@@ -70,7 +70,7 @@ program
 const newLineIndentationOfDescriptionsInCLIHelp = `\n${' '.repeat(31)}`
 program
     .option(
-        '-i, --from <globs>',
+        '-i, --from  <globs>',
         `Globs of any of:${
             newLineIndentationOfDescriptionsInCLIHelp
         }  - one that matches \`.md\` files;${
@@ -89,8 +89,18 @@ program
     )
 
     .option(
-        '-o, --to   <path>',
-        `Path of folder for output .html files.${
+        '-o, --to  <path>',
+        `Path of folder for output .html files. A single asterisk(*)${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }is allowed at the beginning of the path, meaning the rest${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }part of this path string will treat as a sub path to each${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }and very source path. This is the ONLY special sign allowed${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }in this path string. No question marks("?") are allowed.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }No asterisks are allowed in any other places of this string.${
             newLineIndentationOfDescriptionsInCLIHelp
         }${
             getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.to)
@@ -99,7 +109,7 @@ program
     )
 
     .option(
-        '-C, --config-json   <path>',
+        '-C, --config-json  <path>',
         `Specify a JSON file to configure the conversions.${
             newLineIndentationOfDescriptionsInCLIHelp
         }${
