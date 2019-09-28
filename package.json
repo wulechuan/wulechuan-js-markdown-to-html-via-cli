@@ -29,7 +29,7 @@
     "postinstall": "npm  run  _buildReadMeHTMLs",
     "eslint": "eslint    ./.eslintrc.js    ./index.js",
     "_buildReadMeHTMLs": "rm  -rf  ./ReadMe*.html    &&    node ./index.js",
-    "_testTheCLIHelp": "node  ./index.js  -h    &&    echo. && echo ===================== && echo.",
+    "_testTheCLIHelp": "node  ./index.js  -h    &&    echo; && echo ===================== && echo;",
     "_testTheFakeProject": "rm  -rf  ./tests/fake-project/*.html   ./tests/fake-project/docs/*.html    &&    node ./index.js   -i ./tests/fake-project/**/*.md,./tests/fake-project/**/*.MD    -o *  -2 -E3 -e -D -C ./tests/converter-options.js",
     "buildReadMeHTMLs": "npm  run  eslint    &&    npm  run  _buildReadMeHTMLs",
     "test": "npm              run  eslint    &&    npm  run  _testTheCLIHelp    &&    npm  run  _buildReadMeHTMLs     &&     npm  run  _testTheFakeProject"
