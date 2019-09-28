@@ -95,18 +95,23 @@ program
     )
 
 program
+    .helpOption('-h, --help', `${
+        descriptionPrefixString
+    }Display this help.`)
+
+program
     .option(
         '-i, --from  [globs]',
 
         `${
             descriptionPrefixString
-        }Globs of any of:${
+        }Any glob that:${
             placeHolderForALineBreakFollwedByAnIndentation
-        }  - one that matches \`.md\` or \`.MD\` files;${
+        }  - matches \`.md\` or \`.MD\` files;${
             placeHolderForALineBreakFollwedByAnIndentation
-        }  - one that matches folders containing \`.md\` or \`.MD\` files;${
+        }  - matches folders containing \`.md\` or \`.MD\` files;${
             placeHolderForALineBreakFollwedByAnIndentation
-        }  - a comma-separated values of above.${
+        }  - is a comma-separated values of above.${
             placeHolderForALineBreakFollwedByAnIndentation
         }Note that multiple presents of this argument is also allowed.${
             placeHolderForALineBreakFollwedByAnIndentation

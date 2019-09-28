@@ -59,19 +59,17 @@ npm    i    -g    @wulechuan/markdown-to-html-via-cli
 
 
 ```bash
-Usage: wlc-md-to-html [options]
-
 Options:
   -v, --version
         Print the version of this program.
 
   -i, --from  [globs]
-        Globs of any of:
-          - one that matches `.md` or `.MD` files;
-          - one that matches folders containing `.md` or `.MD` files;
-          - a comma-separated values of above.
+        Any glob that:
+          - matches `.md` or `.MD` files;
+          - matches folders containing `.md` or `.MD` files;
+          - is a comma-separated values of above.
         Note that multiple presents of this argument is also allowed.
-        (default: "./*.md,./*.MD")
+        (default: "[ './*.md', './*.MD' ]")
 
   -o, --to  [path]
         Path of folder for output .html files. A single asterisk(*)
@@ -125,7 +123,8 @@ Options:
   -D, --debug
         To enable debugging mode.
 
-  -h, --help                              output usage information
+  -h, --help
+        Display this help.
 
 ```
 
