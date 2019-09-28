@@ -23,6 +23,8 @@ const PROCESS_EXIT_CODE = {
     multipleOutputPaths: 3,
     multipleSourceFilesButSingleOutputFile: 4,
     multipleConfigJSONPaths: 5,
+    specifiedConfigJSONFileNotFound: 6,
+    configJSONFileReadError: 7,
     userCancelledBecauseOfTooManySourceFiles: 19,
 }
 const CLI_ARGUMENTS_DEFAULT_VALUE = {
@@ -49,6 +51,7 @@ const {
     readFileSync,
     writeFileSync,
     statSync: getFileStatSync,
+    readJsonSync,
     mkdirpSync,
     existsSync,
 } = require('fs-extra')
@@ -226,16 +229,13 @@ try {
 
 function main(programArguments) {
     const filledArguments = fillDefaultValuesForAbsentArguments(programArguments)
-
-    const shouldDebug = filledArguments.debug
-
-
     printCLIArguments(programArguments, filledArguments)
 
+    const options = combinArgumentsWithConfigJSON(filledArguments)
 
-    // const options = {
 
-    // }
+    const { shouldDebug } = options
+
 
 
     if (shouldDebug) {
@@ -243,7 +243,7 @@ function main(programArguments) {
         console.log('-------------------- debugging --------------------')
     }
 
-    const outputPathRawValue = filledArguments['to']
+    const outputPathRawValue = options['to']
 
     let outputPathShouldBeRelativeToInputFileLocations = false
     let outputPathRawValue2 = outputPathRawValue
@@ -259,7 +259,7 @@ function main(programArguments) {
 
 
 
-    prepareSourceFiles(filledArguments, shouldDebug)
+    prepareSourceFiles(options)
         .catch(reason => {
             console.log()
             console.log(chalk.red(reason))
@@ -338,7 +338,8 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
     }
 
-    if (programRawArguments.configJson) {
+    if ('configJson' in programRawArguments) {
+        filledArguments.configJsonIsSpecifiedInCLI = true
         filledArguments.configJson = programArguments.configJson
     } else {
         filledArguments.configJson = CLI_ARGUMENTS_DEFAULT_VALUE.configJson
@@ -423,15 +424,48 @@ function printCLIArguments(rawArguments, filledArguments) {
     console.log()
 }
 
+function combinArgumentsWithConfigJSON(filledArguments) {
+    const options = {
+        shouldDebug: filledArguments.debug,
+        sourceGlobs: filledArguments.from,
+        outputPath:  filledArguments.to,
+    }
 
-function prepareSourceFiles(filledArguments, shouldDebug) {
+    const configJSONFilePath = filledArguments.configJson
+    let configurationsFromJSON
+
+    if (!existsSync(configJSONFilePath)) {
+        if (filledArguments.configJsonIsSpecifiedInCLI) {
+            process.exit(PROCESS_EXIT_CODE.specifiedConfigJSONFileNotFound)
+        }
+    } else {
+        try {
+            configurationsFromJSON = readJsonSync(configJSONFilePath)
+        } catch (readFileErro) {
+            console.log(chalk.red(`Error reading configuration JSON file "${
+                chalk.yellow(configJSONFilePath)
+            }"`))
+            process.exit(PROCESS_EXIT_CODE.configJSONFileReadError)
+        }
+    }
+
+    if (options.shouldDebug) {
+        console.log('configurationsFromJSON:', configurationsFromJSON)
+    }
+
+    return options
+}
+
+
+function prepareSourceFiles(options) {
+    const { shouldDebug } = options
+
     return new Promise((resolvePromise, rejectPromise) => {
-        const sourceGlobs = syncResolveGlobs(filledArguments['from'])
+        const { sourceGlobs } = options
 
         if (shouldDebug) {
             console.log('sourceGlobs:', sourceGlobs)
         }
-
 
         const sourceFilePaths = syncResolveGlobs(sourceGlobs)
             .filter(filterOutSomeIllegalSourceFiles)
