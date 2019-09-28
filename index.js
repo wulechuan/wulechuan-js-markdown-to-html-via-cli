@@ -756,22 +756,35 @@ function prepareSourceFiles(options) {
                 chalk.yellow(sourceFilePaths.length)
             } in total) were provided.\n`))
 
-            stdIOReader.question(
-                chalk.red(`Are you sure to process them all? [${chalk.yellow('y')}/${chalk.yellow('n')}]`),
-                answer => {
-                    stdIOReader.close()
-                    if (answer.match(/^y/i)) {
-                        resolvePromise(sourceFilePaths)
-                    } else {
-                        console.log(chalk.red('All right! I WON\'T DO IT!'))
-                        rejectPromise('User cancelled because way too many source files were provided.')
-                    }
+            promptUserWhenThereAreTooManySourceFiles().then(userInput => {
+                stdIOReader.close()
+                if (userInput.match(/^(y|yes)$/i)) {
+                    resolvePromise(sourceFilePaths)
+                } else {
+                    console.log(chalk.yellow('All right! I WON\'T DO IT!'))
+                    rejectPromise('User cancelled because way too many source files were discovered.')
                 }
-            )
+            })
         }
     })
 }
 
+function promptUserWhenThereAreTooManySourceFiles() {
+    return new Promise(promptUserOnce).catch(promptUserWhenThereAreTooManySourceFiles)
+}
+
+function promptUserOnce(resolve, reject) {
+    stdIOReader.question(
+        chalk.red(`Are you sure to process them all? [${chalk.yellow('y')}/${chalk.yellow('n')}] `),
+        userInput => {
+            if (userInput.match(/^(y|n|yes|no)$/i)) {
+                resolve(userInput)
+            } else {
+                reject('User input invalid. Must match /^(y|n|yes|no)$/i')
+            }
+        }
+    )
+}
 
 function filterOutSomeIllegalSourceFiles(sourceFilePath) {
     const sourceFileStat = getFileStatSync(sourceFilePath)
