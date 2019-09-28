@@ -64,11 +64,11 @@ Options:
 
   -i, --from  [globs]
         Globs of any of:
-          - one that matches `.md` files;
-          - one that matches folders containing `.md` files;
+          - one that matches `.md` or `.MD` files;
+          - one that matches folders containing `.md` or `.MD` files;
           - a comma-separated values of above.
         Note that multiple presents of this argument is also allowed.
-        (default: "./*.md")
+        (default: "./*.md,./*.MD")
 
   -o, --to  [path]
         Path of folder for output .html files. A single asterisk(*)
@@ -77,11 +77,23 @@ Options:
         and very source path. This is the ONLY special sign allowed
         in this path string. No question marks("?") are allowed.
         No asterisks are allowed in any other places of this string.
+        Note that you MUST quote the path string if it starts with
+        an asterisk sign. Otherwise the operating system might first
+        expand it as a glob, then pass resolved items to this program.
         (default: "./")
 
-  -C, --config-json  [path]
+  -C, --config-file  [path]
         Specify a `.js` file to configure the conversions.
         (default: "./wlc-mk-to-html.config.js")
+
+  -n, --input-file-count-to-warn  [path]
+        Specify a number as a so-called "safe" limitation of
+        the count of resovled source files. If too many source
+        files are found. The the program pauses and prompt user
+        to decide where it should go on or quit.
+        If set to zero, then it means never prompt no matter
+        how many source files are discovered.
+        (default: "51")
 
   -2, --concise-toc
         When presents, the max level of the TOC items in an HTML is
@@ -115,37 +127,69 @@ Options:
 ```
 
 
+### Converter Configuration File
+
+To use a configuration file to control the converter is optional.
+
+To use, specify the file path via the CLI argument `-C` or `--config-file`. Either relative or absolute will do.
+
+The details of what a configuration file should look like, please refer to [@wulechuan/generate-html-via-markdown#arguments](https://www.npmjs.com/package/@wulechuan/generate-html-via-markdown#arguments).
+
+
 ### Examples
 
--   To print some basic help info.
+-   To print full help in your CLI.
 
     ```bash
     wlc-md-to-html    --help
     ```
 
--   By default, this tool scans for all `.md` files under current folder, but **NOT** recursively searching sub-folders. And it outputs HTML files at the same folder.
+-   By default, this tool scans for all `.md` and `*.MD` files under current folder, but **NOT** recursively searching sub-folders. And it outputs HTML files in the same folder.
 
     ```bash
     wlc-md-to-html
     ```
 
--   To build HTML files, each in the same sub-folder named "html" under the folder of its corresponding source markdown file. Notice the leading asterisk sign(`*`) in the output path.
-
-    ```bash
-    wlc-md-to-html    -i markdowns/*.md    -o "*/html/"
-    ```
-
 -   To build all HTML files into exactly the same output folder.
 
     ```bash
-    wlc-md-to-html    -i ./**/*.md    -o ~/articles/html/
+    wlc-md-to-html    -i "./**/*.md" -i "./**/*.MD" -i README.MD -i README.md   -o "/home/wulechuan/articles/html/"
     ```
 
--   By default, this tool scans for all `.md` files under current folder, but **NOT** recursively searching sub-folders.
+-   This command below converts all `.md` and `*.MD` files in the current folder into an HTML file each, and put all HTML files in the `"C:\articles\"` folder.
 
     ```bat
     wlc-md-to-html    -o C:\articles\
     ```
+
+-   To build HTML files, each in the same sub-folder named "html" under the folder of its corresponding source markdown file.
+
+    Notice the leading asterisk sign(`*`) in the output path. Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
+
+    Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
+
+    ```bash
+    wlc-md-to-html    -i markdowns/*.md   -o "*/html/"
+    ```
+
+-   To build HTML files, each in the same folder of its corresponding source markdown file.
+
+    Notice a asterisk sign(`*`) is used as the output path.
+
+    Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
+
+    ```bash
+    cd    ./tests/fake-project
+    wlc-md-to-html    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
+    ```
+
+-   To build HTML files with language tag set to "en-US".
+
+    ```bash
+    cd    ./tests/fake-project
+    wlc-md-to-html    -l "en-US"
+    ```
+
 
 
 ## TODOS

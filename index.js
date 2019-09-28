@@ -16,7 +16,6 @@ console.log('.                                                 .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
 
-const MAX_ALLOWED_SOURCE_FILES_COUNT_WITHOUT_USER_CONFIRM = 51
 const PROCESS_EXIT_CODE = {
     unkown: 1,
     invalidOutputPath: 2,
@@ -25,11 +24,13 @@ const PROCESS_EXIT_CODE = {
     multipleConfigFilePaths: 5,
     specifiedConfigFileNotFound: 6,
     configFileReadError: 7,
+    invalidValueOfInputFileCountToWarn: 8,
     userCancelledBecauseOfTooManySourceFiles: 19,
 }
 const CLI_ARGUMENTS_DEFAULT_VALUE = {
-    from: './*.md',
+    from: './*.md,./*.MD',
     to: './',
+    inputFileCountToWarn: 51,
     configFile: './wlc-mk-to-html.config.js',
     conciseToc: false,
     expandToc: false,
@@ -55,7 +56,6 @@ const {
     readFileSync,
     writeFileSync,
     statSync: getFileStatSync,
-    readJsonSync,
     mkdirpSync,
     existsSync,
 } = require('fs-extra')
@@ -102,9 +102,9 @@ program
             descriptionPrefixString
         }Globs of any of:${
             placeHolderForALineBreakFollwedByAnIndentation
-        }  - one that matches \`.md\` files;${
+        }  - one that matches \`.md\` or \`.MD\` files;${
             placeHolderForALineBreakFollwedByAnIndentation
-        }  - one that matches folders containing \`.md\` files;${
+        }  - one that matches folders containing \`.md\` or \`.MD\` files;${
             placeHolderForALineBreakFollwedByAnIndentation
         }  - a comma-separated values of above.${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -134,6 +134,12 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }No asterisks are allowed in any other places of this string.${
             placeHolderForALineBreakFollwedByAnIndentation
+        }Note that you MUST quote the path string if it starts with${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }an asterisk sign. Otherwise the operating system might first${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }expand it as a glob, then pass resolved items to this program.${
+            placeHolderForALineBreakFollwedByAnIndentation
         }${
             getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.to)
         }\n`,
@@ -141,7 +147,7 @@ program
     )
 
     .option(
-        '-C, --config-json  [path]',
+        '-C, --config-file  [path]',
 
         `${
             descriptionPrefixString
@@ -149,6 +155,29 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.configFile)
+        }\n`,
+        processArgumentOfConfigFilePath
+    )
+
+    .option(
+        '-n, --input-file-count-to-warn  [path]',
+
+        `${
+            descriptionPrefixString
+        }Specify a number as a so-called "safe" limitation of${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }the count of resovled source files. If too many source${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }files are found. The the program pauses and prompt user${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }to decide where it should go on or quit.${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }If set to zero, then it means never prompt no matter${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }how many source files are discovered.${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }${
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.inputFileCountToWarn)
         }\n`,
         processArgumentOfConfigFilePath
     )
@@ -221,6 +250,7 @@ program
 
 
 formatDescriptionsOfAllArgumentOptions(program)
+
 
 function formatDescriptionsOfAllArgumentOptions(program) {
     let newLineIndentationWidth = CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH
@@ -412,6 +442,19 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
     }
 
+    if ('inputFileCountToWarn' in programRawArguments) {
+        filledArguments.inputFileCountToWarn = parseInt(programRawArguments.inputFileCountToWarn)
+        if (!(filledArguments.inputFileCountToWarn >= 0)) {
+            console.log(
+                chalk.red('Invalid value of "-n, --input-file-count-to-warn"'),
+                chalk.yellow(filledArguments.inputFileCountToWarn)
+            )
+            process.exit(PROCESS_EXIT_CODE.invalidValueOfInputFileCountToWarn)
+        }
+    } else {
+        filledArguments.inputFileCountToWarn = CLI_ARGUMENTS_DEFAULT_VALUE.inputFileCountToWarn
+    }
+
     if ('configFile' in programRawArguments) {
         filledArguments.configFileIsSpecifiedInCLI = true
         filledArguments.configFile = programArguments.configFile
@@ -456,7 +499,9 @@ function printCLIArguments(rawArguments, filledArguments) {
         'debug',
         'from',
         'to',
+        'inputFileCountToWarn',
         'configFile',
+        'configFileIsSpecifiedInCLI',
         'conciseToc',
         'expandToc',
         'tocItemExpandedLevel',
@@ -521,6 +566,7 @@ function combinArgumentsWithConfigFile(filledArguments) {
         shouldDebug: filledArguments.debug,
         sourceGlobs: filledArguments.from,
         outputPath:  filledArguments.to,
+        promptUserIfSourceFileCountExceedsThisNumber: filledArguments.inputFileCountToWarn,
         'options for @wulechuan/generate-html-via-markdown': {
             manipulationsOverHTML,
             behaviousOfBuiltInTOC,
@@ -529,7 +575,7 @@ function combinArgumentsWithConfigFile(filledArguments) {
 
 
     const configFilePath = filledArguments.configFile
-    let configurationsFromJSON
+    let configurationsFromFile
 
     if (!existsSync(configFilePath)) {
         if (filledArguments.configFileIsSpecifiedInCLI) {
@@ -537,7 +583,7 @@ function combinArgumentsWithConfigFile(filledArguments) {
         }
     } else {
         try {
-            configurationsFromJSON = readJsonSync(configFilePath)
+            configurationsFromFile = require(configFilePath)
         } catch (readFileErro) {
             console.log(chalk.red(`Error reading configuration JSON file "${
                 chalk.yellow(configFilePath)
@@ -546,8 +592,41 @@ function combinArgumentsWithConfigFile(filledArguments) {
         }
     }
 
+    // if (options.shouldDebug) {
+    //     console.log('configurationsFromFile:', configurationsFromFile)
+    //     console.log()
+    // }
+
+    if (!configurationsFromFile) {
+        configurationsFromFile = {}
+    }
+
+    const optionsForConverter = {
+        ...configurationsFromFile,
+    }
+
+    if (!optionsForConverter.manipulationsOverHTML) {
+        optionsForConverter.manipulationsOverHTML = {}
+    }
+
+    if (!optionsForConverter.behaviousOfBuiltInTOC) {
+        optionsForConverter.behaviousOfBuiltInTOC = {}
+    }
+
+    optionsForConverter.manipulationsOverHTML = {
+        ...optionsForConverter.manipulationsOverHTML,
+        ...manipulationsOverHTML,
+    }
+
+    optionsForConverter.behaviousOfBuiltInTOC = {
+        ...optionsForConverter.behaviousOfBuiltInTOC,
+        ...behaviousOfBuiltInTOC,
+    }
+
+    options['options for @wulechuan/generate-html-via-markdown'] = optionsForConverter
+
     if (options.shouldDebug) {
-        console.log('configurationsFromJSON:', configurationsFromJSON)
+        console.log('decided options:', options)
     }
 
     return options
@@ -572,7 +651,10 @@ function prepareSourceFiles(options) {
             console.log('sourceFilePaths:', sourceFilePaths)
         }
 
-        if (sourceFilePaths.length <= MAX_ALLOWED_SOURCE_FILES_COUNT_WITHOUT_USER_CONFIRM) {
+        if (
+            options.promptUserIfSourceFileCountExceedsThisNumber === 0 ||
+            options.promptUserIfSourceFileCountExceedsThisNumber >= sourceFilePaths.length
+        ) {
             resolvePromise(sourceFilePaths)
         } else {
             console.log(chalk.red(`Way too many input files (${
@@ -743,9 +825,9 @@ function convertOneFile(sourceFilePath, outputHTMLFilePath, options) {
 
     const optionsForConverter = options['options for @wulechuan/generate-html-via-markdown']
 
-    if (options.shouldDebug) {
-        console.log(optionsForConverter)
-    }
+    // if (options.shouldDebug) {
+    //     console.log(optionsForConverter)
+    // }
 
     const sourceFileContentString = readFileSync(sourceFilePath).toString()
     const htmlContentString = markdownToHTMLConverter(

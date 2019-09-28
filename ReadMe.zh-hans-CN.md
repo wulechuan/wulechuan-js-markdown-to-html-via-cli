@@ -67,11 +67,11 @@ Options:
 
   -i, --from  [globs]
         Globs of any of:
-          - one that matches `.md` files;
-          - one that matches folders containing `.md` files;
+          - one that matches `.md` or `.MD` files;
+          - one that matches folders containing `.md` or `.MD` files;
           - a comma-separated values of above.
         Note that multiple presents of this argument is also allowed.
-        (default: "./*.md")
+        (default: "./*.md,./*.MD")
 
   -o, --to  [path]
         Path of folder for output .html files. A single asterisk(*)
@@ -80,11 +80,23 @@ Options:
         and very source path. This is the ONLY special sign allowed
         in this path string. No question marks("?") are allowed.
         No asterisks are allowed in any other places of this string.
+        Note that you MUST quote the path string if it starts with
+        an asterisk sign. Otherwise the operating system might first
+        expand it as a glob, then pass resolved items to this program.
         (default: "./")
 
-  -C, --config-json  [path]
+  -C, --config-file  [path]
         Specify a `.js` file to configure the conversions.
         (default: "./wlc-mk-to-html.config.js")
+
+  -n, --input-file-count-to-warn  [path]
+        Specify a number as a so-called "safe" limitation of
+        the count of resovled source files. If too many source
+        files are found. The the program pauses and prompt user
+        to decide where it should go on or quit.
+        If set to zero, then it means never prompt no matter
+        how many source files are discovered.
+        (default: "51")
 
   -2, --concise-toc
         When presents, the max level of the TOC items in an HTML is
@@ -118,11 +130,19 @@ Options:
 ```
 
 
+### 用于复杂选项的配置文件
+
+@wulechuan/generate-html-via-markdown （下称“格式转换器”）的配置项很复杂，为其所有选项设计对应的命令行参数项时不切实际的。我们可以使用一个 .js 配置文件来配置格式转换器的复杂行为。
+
+要在命令行中指代欲采用的配置文件，须使用命令行参数项 `-C` 或 `--config-file`。二者互为别名，仅可取其一。
+
+配置文件的内容细则见 [@wulechuan/generate-html-via-markdown#arguments](https://www.npmjs.com/package/@wulechuan/generate-html-via-markdown#arguments)。
+
 
 
 ### 示例集
 
--   在命令行环境中打印一些简略的帮助信息：
+-   在命令行环境中打印完整的帮助信息：
 
     ```bash
     wlc-md-to-html    --help
@@ -134,23 +154,40 @@ Options:
     wlc-md-to-html
     ```
 
--   要在每个源 markdown 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 markdown 文件对应的 HTML 文件生成在该子文件夹中，可以这样做。注意输出路径的起始有一个星号（`*`）。
+-   下面的命令将所有 HTML 文件统统输出至同一个文件夹中。
 
     ```bash
-    wlc-md-to-html    -i markdowns/*.md    -o "*/html/"
+    wlc-md-to-html    -i "./**/*.md" -i "./**/*.MD" -i README.MD -i README.md   -o "/home/wulechuan/articles/html/"
     ```
 
--   将所有 HTML 文件统统输出至同一个文件夹中：
-
-    ```bash
-    wlc-md-to-html    -i ./**/*.md    -o ~/articles/html/
-    ```
-
--   默认情况下，本工具会扫描当前文件夹内的所有 `.md` 文件，但不会递归扫描子文件夹中的内容。
+-   下面的命令会针对当前文件夹内所有的 `.md` 或 `*.MD` 文件生成对应的 HTML 文件，并将所有生成的 HTML 文件至于 `"C:\articles\"` 文件夹内。
 
     ```bat
     wlc-md-to-html    -o C:\articles\
     ```
+
+-   下面的命令将在每个源 `.md` 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 `.md` 文件对应的 HTML 文件生成在该 “html” 子文件夹中。注意输出路径的起始有一个星号（`*`），并且输出路径必须被引号（`"`）括起来。
+
+    ```bash
+    wlc-md-to-html    -i markdowns/*.md   -o "*/html/"
+    ```
+
+-   要在每个 Markdown 源文件的“原处”生成对应的 HTML 文件，可以这样做。注意到输出路径是一个星号（`*`），且它被引号（`"`）括了起来。
+
+    ```bash
+    cd    ./tests/fake-project
+    wlc-md-to-html    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
+    ```
+
+-   下面的命令将所有输出的 HTML 文件的语言标记为 "en-US"。
+
+    ```bash
+    cd    ./tests/fake-project
+    wlc-md-to-html    -l "en-US"
+    ```
+
+
+
 
 
 
