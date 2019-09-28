@@ -15,6 +15,6 @@ So I'd like to order some food.
 Some food is really spicy!
 
 
-## Anothier Level2
+## Another Level2
 
-Now I'm full.
+Now I'm full. Let's go to [example.com](https://example.com/)

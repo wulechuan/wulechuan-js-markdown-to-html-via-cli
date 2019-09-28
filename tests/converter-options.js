@@ -1,10 +1,10 @@
 /** Please refer to:
  * https://www.npmjs.com/package/@wulechuan/generate-html-via-markdown#arguments
- * */
+ */
 
 module.exports = {
     conversionOptions: {
-        headingPermanentLinkSymbolChar: '@',
+        headingPermanentLinkSymbolChar: '#',
         articleTOCBuildingHeadingLevelStartsFrom: 2,
         articleTOCListTagNameIsUL: true,
     },
@@ -16,7 +16,7 @@ module.exports = {
 
         desiredReplacementsInHTML: [
             {
-                from: /\s+href="([!#])/gi,
+                from: /\s+href="([^#])/gi,
                 to: ' target="_blank" href="$1',
             },
         ],
