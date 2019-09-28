@@ -29,6 +29,8 @@ const CLI_ARGUMENTS_DEFAULT_VALUE = {
     from: './*.md',
     to: './',
     configJson: './wlc-mk-to-html.config.json',
+    conciseToc: false,
+    expandToc: false,
     tocItemExapndedLevel: 1,
 }
 
@@ -191,30 +193,6 @@ function processArgumentOfConfigJSONPath(value, previousValue) {
     return value
 }
 
-function fillDefaultValuesForAbsentArguments(programArguments) {
-    /*
-        I purposely avoid to use the d"efault value" option of
-        the `program.option()` method, is because I'd like to
-        control the way the default values are printed in the CLI
-        help. Thats it.
-    */
-    if (!programArguments.from) {
-        programArguments.from = [ CLI_ARGUMENTS_DEFAULT_VALUE.from ]
-    }
-
-    if (!programArguments.to) {
-        programArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
-    }
-
-    // if (!programArguments.configJson) {
-    //     programArguments.configJson = CLI_ARGUMENTS_DEFAULT_VALUE.configJson
-    // }
-
-    if (!programArguments.tocItemExapndedLevel) {
-        programArguments.tocItemExapndedLevel = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevel
-    }
-}
-
 function getStringOfADefaultValueForPrintingInCLIHelp(defaultValue) {
     return chalk.blue(`(default: "${chalk.green(defaultValue)}")`)
 }
@@ -225,9 +203,13 @@ function getStringOfADefaultValueForPrintingInCLIHelp(defaultValue) {
 
 program.parse(process.argv)
 
-// They are the same object, but I prefer different var names of different concepts.
+/*
+    The program and the arguments carrier of the progarm,
+    are the same object. But I prefer different var names
+    for different concepts.
+*/
 const programArguments = program
-fillDefaultValuesForAbsentArguments(programArguments)
+
 
 
 try {
@@ -243,28 +225,17 @@ try {
 
 
 function main(programArguments) {
-    const shouldDebug = programArguments.debug
+    const filledArguments = fillDefaultValuesForAbsentArguments(programArguments)
 
-    if (shouldDebug) {
-        console.log()
-        console.log('-------------------- arguments --------------------')
-    }
+    const shouldDebug = filledArguments.debug
 
-    const objectToPrint = {
-        debug: programArguments.debug,
-        from: programArguments.from,
-        to: programArguments.to,
-    }
 
-    if (programArguments.configJson) {
-        objectToPrint.configJson = programArguments.configJson
-    }
+    printCLIArguments(programArguments, filledArguments)
 
-    objectToPrint.tocItemExapndedLevel = programArguments.tocItemExapndedLevel
 
-    objectToPrint.untitledArguments = programArguments.args
+    // const options = {
 
-    console.log(objectToPrint)
+    // }
 
 
     if (shouldDebug) {
@@ -272,7 +243,7 @@ function main(programArguments) {
         console.log('-------------------- debugging --------------------')
     }
 
-    const outputPathRawValue = programArguments['to']
+    const outputPathRawValue = filledArguments['to']
 
     let outputPathShouldBeRelativeToInputFileLocations = false
     let outputPathRawValue2 = outputPathRawValue
@@ -288,7 +259,7 @@ function main(programArguments) {
 
 
 
-    prepareSourceFiles(programArguments, shouldDebug)
+    prepareSourceFiles(filledArguments, shouldDebug)
         .catch(reason => {
             console.log()
             console.log(chalk.red(reason))
@@ -341,18 +312,122 @@ function main(programArguments) {
 }
 
 
-function prepareSourceFiles(programArguments, shouldDebug) {
-    return new Promise((resolvePromise, rejectPromise) => {
-        let sourceGlobs = syncResolveGlobs(programArguments['from'])
-        if (sourceGlobs.length === 0) {
-            if (programArguments['args'].length > 0) {
-                sourceGlobs = programArguments['args']
-            } else {
-                sourceGlobs = [
-                    './*.md',
-                ]
-            }
+function fillDefaultValuesForAbsentArguments(programRawArguments) {
+    /*
+        I purposely avoid to use the "default value" option of
+        the `program.option()` method, is because I'd like to
+        control:
+          - the way the default values are printed in the CLI
+            help.
+          - printing of the raw arguments
+    */
+
+    const filledArguments = {}
+
+    filledArguments.debug = !!programRawArguments.debug
+
+    if (programRawArguments.from) {
+        filledArguments.from = programArguments.from
+    } else {
+        filledArguments.from = [ CLI_ARGUMENTS_DEFAULT_VALUE.from ]
+    }
+
+    if (programRawArguments.to) {
+        filledArguments.to = programArguments.to
+    } else {
+        filledArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
+    }
+
+    if (programRawArguments.configJson) {
+        filledArguments.configJson = programArguments.configJson
+    } else {
+        filledArguments.configJson = CLI_ARGUMENTS_DEFAULT_VALUE.configJson
+    }
+
+    if ('conciseToc' in programRawArguments) {
+        filledArguments.conciseToc = programRawArguments.conciseToc
+    } else {
+        filledArguments.conciseToc = CLI_ARGUMENTS_DEFAULT_VALUE.conciseToc
+    }
+
+    if ('expandToc' in programRawArguments) {
+        filledArguments.expandToc = programRawArguments.expandToc
+    } else {
+        filledArguments.expandToc = CLI_ARGUMENTS_DEFAULT_VALUE.expandToc
+    }
+
+    if ('tocItemExapndedLevel' in programRawArguments) {
+        filledArguments.tocItemExapndedLevel = programRawArguments.tocItemExapndedLevel
+    } else {
+        filledArguments.tocItemExapndedLevel = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevel
+    }
+
+    filledArguments.ignoredArguments = programRawArguments.args
+
+    return filledArguments
+}
+
+function printCLIArguments(rawArguments, filledArguments) {
+    const rawArgumentsToPrint = {}
+
+    const argumentKeysInPrintingOrder = [
+        'debug',
+        'from',
+        'to',
+        'configJson',
+        'conciseToc',
+        'expandToc',
+        'tocItemExapndedLevel',
+    ]
+
+    argumentKeysInPrintingOrder.forEach(key => {
+        if (key in rawArguments) {
+            rawArgumentsToPrint[key] = rawArguments[key]
         }
+    })
+
+    const ignoredArgumentsCount = rawArguments.args.length
+
+    if (ignoredArgumentsCount > 0) {
+        const ignoredArgumentsPrintingName = `args (${ignoredArgumentsCount})`
+
+        if (ignoredArgumentsCount <= 100) {
+            rawArgumentsToPrint[ignoredArgumentsPrintingName] = rawArguments.args
+        } else {
+            rawArgumentsToPrint[ignoredArgumentsPrintingName] = rawArguments.args.slice(0, 99)
+            rawArgumentsToPrint[ignoredArgumentsPrintingName].push[`< and ${ignoredArgumentsCount - 99} more >`]
+        }
+    }
+
+
+
+    const filledArgumentsToPrint = {}
+    argumentKeysInPrintingOrder.forEach(key => {
+        filledArgumentsToPrint[key] = filledArguments[key]
+    })
+
+    const ignoredArgumentsPrintingName = `ignoredArguments (${ignoredArgumentsCount})`
+    if (ignoredArgumentsCount <= 100) {
+        filledArgumentsToPrint[ignoredArgumentsPrintingName] = filledArguments.ignoredArguments
+    } else {
+        filledArgumentsToPrint[ignoredArgumentsPrintingName] = filledArguments.ignoredArguments.slice(0, 99)
+        filledArgumentsToPrint[ignoredArgumentsPrintingName].push[`< and ${ignoredArgumentsCount - 99} more >`]
+    }
+
+    console.log()
+    console.log('Provided arguments:')
+    console.log(rawArgumentsToPrint)
+    console.log()
+    console.log('Resolved arguments:')
+    console.log(filledArgumentsToPrint)
+    console.log()
+}
+
+
+function prepareSourceFiles(filledArguments, shouldDebug) {
+    return new Promise((resolvePromise, rejectPromise) => {
+        const sourceGlobs = syncResolveGlobs(filledArguments['from'])
+
         if (shouldDebug) {
             console.log('sourceGlobs:', sourceGlobs)
         }
