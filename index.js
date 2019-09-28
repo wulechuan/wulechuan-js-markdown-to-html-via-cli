@@ -37,6 +37,9 @@ const CLI_ARGUMENTS_DEFAULT_VALUE = {
     htmlLanguage: 'zh-hans-CN',
 }
 
+const CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH = 6
+const CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE = false
+
 const readline = require('readline')
 
 const stdIOReader = readline.createInterface({
@@ -75,13 +78,29 @@ program.name('wlc-md-to-html')
 
 const placeHolderForALineBreakFollwedByAnIndentation = '<-line-break-and-indent-here->'
 
+let descriptionPrefixString = `\n${' '.repeat(CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH)}`
+if (CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE) {
+    descriptionPrefixString = ''
+}
+
 program
-    .version(version, '-v, --version', 'Print the version of this program.\n')
+    .version(
+        version,
+
+        '-v, --version',
+
+        `${
+            descriptionPrefixString
+        }Print the version of this program.\n`
+    )
 
 program
     .option(
         '-i, --from  [globs]',
-        `Globs of any of:${
+
+        `${
+            descriptionPrefixString
+        }Globs of any of:${
             placeHolderForALineBreakFollwedByAnIndentation
         }  - one that matches \`.md\` files;${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -100,7 +119,10 @@ program
 
     .option(
         '-o, --to  [path]',
-        `Path of folder for output .html files. A single asterisk(*)${
+
+        `${
+            descriptionPrefixString
+        }Path of folder for output .html files. A single asterisk(*)${
             placeHolderForALineBreakFollwedByAnIndentation
         }is allowed at the beginning of the path, meaning the rest${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -120,7 +142,10 @@ program
 
     .option(
         '-C, --config-json  [path]',
-        `Specify a \`.js\` file to configure the conversions.${
+
+        `${
+            descriptionPrefixString
+        }Specify a \`.js\` file to configure the conversions.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.configFile)
@@ -130,7 +155,10 @@ program
 
     .option(
         '-2, --concise-toc',
-        `When presents, the max level of the TOC items in an HTML is${
+
+        `${
+            descriptionPrefixString
+        }When presents, the max level of the TOC items in an HTML is${
             placeHolderForALineBreakFollwedByAnIndentation
         }limited to 2. This makes the TOC more concise and clean.${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -141,7 +169,10 @@ program
 
     .option(
         '-e, --expand-toc',
-        `If the browser window is wide enough, expand the TOC panel when${
+
+        `${
+            descriptionPrefixString
+        }If the browser window is wide enough, expand the TOC panel when${
             placeHolderForALineBreakFollwedByAnIndentation
         }an HTML just loads. Note that either way, the TOC panel can${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -152,7 +183,10 @@ program
 
     .option(
         '-E, --toc-item-expanded-level  [level]',
-        `If the browser window is wide enough, TOC items are collapsable${
+
+        `${
+            descriptionPrefixString
+        }If the browser window is wide enough, TOC items are collapsable${
             placeHolderForALineBreakFollwedByAnIndentation
         }and expandable, if it contains a nested TOC list. This option${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -167,7 +201,9 @@ program
 
     .option(
         '-l, --html-language  [language]',
-        `Specified the value of the "lang" attribute of the <html>${
+        `${
+            descriptionPrefixString
+        }Specified the value of the "lang" attribute of the <html>${
             placeHolderForALineBreakFollwedByAnIndentation
         }tag inside a generated HTML file.${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -178,16 +214,23 @@ program
 
     .option(
         '-D, --debug',
-        'To enable debugging mode.\n'
+        `${
+            descriptionPrefixString
+        }To enable debugging mode.\n`
     )
 
 
 formatDescriptionsOfAllArgumentOptions(program)
 
 function formatDescriptionsOfAllArgumentOptions(program) {
-    const newLineIndentationWidth = program.options.reduce((maxFlagsStringLength, option) => {
-        return Math.max(maxFlagsStringLength, option.flags.length + 2)
-    }, 19)
+    let newLineIndentationWidth = CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH
+
+    if (CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE) {
+        newLineIndentationWidth = program.options.reduce((maxFlagsStringLength, option) => {
+            return Math.max(maxFlagsStringLength, option.flags.length + 2)
+        }, 19)
+    }
+
     program.options.forEach(option => {
         option.description = option.description.replace(
             new RegExp(placeHolderForALineBreakFollwedByAnIndentation, 'g'),
