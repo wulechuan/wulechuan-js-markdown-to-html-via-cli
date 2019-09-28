@@ -28,7 +28,7 @@ const PROCESS_EXIT_CODE = {
     userCancelledBecauseOfTooManySourceFiles: 19,
 }
 const CLI_ARGUMENTS_DEFAULT_VALUE = {
-    from: './*.md,./*.MD',
+    from: [ './*.md', './*.MD' ],
     to: './',
     inputFileCountToWarn: 51,
     configFile: './wlc-mk-to-html.config.js',
@@ -111,7 +111,9 @@ program
         }Note that multiple presents of this argument is also allowed.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.from)
+            getStringOfADefaultValueForPrintingInCLIHelp(
+                `[ '${CLI_ARGUMENTS_DEFAULT_VALUE.from.join('\', \'')}' ]`
+            )
         }\n`,
 
         collectSourceGlobsInCLIArguments
@@ -433,7 +435,7 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
     if (programRawArguments.from) {
         filledArguments.from = programArguments.from
     } else {
-        filledArguments.from = [ CLI_ARGUMENTS_DEFAULT_VALUE.from ]
+        filledArguments.from = CLI_ARGUMENTS_DEFAULT_VALUE.from
     }
 
     if (programRawArguments.to) {
