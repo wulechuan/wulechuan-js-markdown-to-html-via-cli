@@ -24,7 +24,7 @@ module.exports = {
         'no-param-reassign': 0,
         quotes: [ 'error', 'single' ],
         semi: [ 'error', 'never' ],
-        'max-statements': [ 0, 32 ],
+        'max-statements': [ 0, 64 ],
         'multiline-ternary': [ 'error', 'always-multiline' ],
         'no-console': [ 0 ],
         'new-parens': [ 0 ],
