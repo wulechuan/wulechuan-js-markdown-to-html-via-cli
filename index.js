@@ -10,7 +10,7 @@ console.log('.    converting markdown files into HTML ones.    .')
 console.log('.                                                 .')
 console.log(`.    ${version}${' '.repeat(45 - version.length)}.`)
 console.log('.                                                 .')
-console.log('.                           wulechuan@live.com    .')
+console.log('.               wulechuan <wulechuan@live.com>    .')
 console.log('.                                   2019-09-28    .')
 console.log('.                                                 .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
@@ -91,7 +91,7 @@ program
 
         `${
             descriptionPrefixString
-        }Print the version of this program.\n`
+        }Print the version of this program, that is "${version}"\n`
     )
 
 program
@@ -113,11 +113,11 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }  - is a comma-separated values of above.${
             placeHolderForALineBreakFollwedByAnIndentation
-        }Note that multiple presents of this argument is also allowed.${
+        }${chalk.green('Note that multiple presents of this argument are also allowed.')}${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(
-                `[ '${CLI_ARGUMENTS_DEFAULT_VALUE.from.join('\', \'')}' ]`
+            ofAnArrayValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
+                CLI_ARGUMENTS_DEFAULT_VALUE.from
             )
         }\n`,
 
@@ -129,7 +129,7 @@ program
 
         `${
             descriptionPrefixString
-        }Path of folder for output .html files. A single asterisk(*)${
+        }Path of folder for output \`.html\` files. A single ${chalk.red('asterisk')}(${chalk.red('*')})${
             placeHolderForALineBreakFollwedByAnIndentation
         }is allowed at the beginning of the path, meaning the rest${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -141,15 +141,18 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }No asterisks are allowed in any other places of this string.${
             placeHolderForALineBreakFollwedByAnIndentation
-        }Note that you MUST quote the path string if it starts with${
+        }${chalk.red('Note that you MUST quote the path string if it starts with')}${
             placeHolderForALineBreakFollwedByAnIndentation
-        }an asterisk sign. Otherwise the operating system might first${
+        }${chalk.red('an asterisk sign. Otherwise the operating system might first')}${
             placeHolderForALineBreakFollwedByAnIndentation
-        }expand it as a glob, then pass resolved items to this program.${
+        }${chalk.red('expand it as a glob, then pass resolved items to this program.')}${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.to)
+            ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
+                CLI_ARGUMENTS_DEFAULT_VALUE.to
+            )
         }\n`,
+
         processArgumentOfOutputPath
     )
 
@@ -158,11 +161,16 @@ program
 
         `${
             descriptionPrefixString
-        }Specify a \`.js\` file to configure the conversions.${
+        }Specify a \`.js\` file for fully controlling the converter${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }utilized by this program internally.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.configFile)
+            ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
+                CLI_ARGUMENTS_DEFAULT_VALUE.configFile
+            )
         }\n`,
+
         processArgumentOfConfigFilePath
     )
 
@@ -171,21 +179,24 @@ program
 
         `${
             descriptionPrefixString
-        }Specify a number as a so-called "safe" limitation of${
+        }Specify a number as a so-called "safe" limitation of the${
             placeHolderForALineBreakFollwedByAnIndentation
         }the count of resovled source files. If too many source${
             placeHolderForALineBreakFollwedByAnIndentation
         }files are found. The the program pauses and prompt user${
             placeHolderForALineBreakFollwedByAnIndentation
-        }to decide where it should go on or quit.${
+        }to decide whether it should go on or quit. Setting this to${
             placeHolderForALineBreakFollwedByAnIndentation
-        }If set to zero, then it means never prompt no matter${
+        }zero means never prompt user and always process all discovered${
             placeHolderForALineBreakFollwedByAnIndentation
-        }how many source files are discovered.${
+        }source files, no matter how many there are.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.inputFileCountToWarn)
+            ofANonStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
+                CLI_ARGUMENTS_DEFAULT_VALUE.inputFileCountToWarn
+            )
         }\n`,
+
         processArgumentOfConfigFilePath
     )
 
@@ -198,9 +209,9 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }limited to 2. This makes the TOC more concise and clean.${
             placeHolderForALineBreakFollwedByAnIndentation
-        }Be aware that this way all deeper levels of TOC items are${
+        }${chalk.red('Be aware that this way all deeper levels of TOC items are')}${
             placeHolderForALineBreakFollwedByAnIndentation
-        }NEVER visible. They are hidden via CSS rules.\n`,
+        }${chalk.red('NEVER visible. They are hidden via CSS rules.')}\n`,
     )
 
     .option(
@@ -231,7 +242,9 @@ program
         }Note the all expandable items can ALWASY toggle manually.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExpandedLevel)
+            ofANonStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
+                CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExpandedLevel
+            )
         }\n`,
     )
 
@@ -244,7 +257,7 @@ program
         }tag inside a generated HTML file.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage)
+            ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage)
         }\n`,
     )
 
@@ -306,8 +319,29 @@ function processArgumentOfConfigFilePath(value, previousValue) {
     return value
 }
 
-function getStringOfADefaultValueForPrintingInCLIHelp(defaultValue) {
-    return chalk.blue(`(default: "${chalk.green(defaultValue)}")`)
+function ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(defaultStringValue) {
+    return (`(${
+        chalk.rgb(255, 255, 255)('default')
+    }: ${
+        chalk.green(`'${defaultStringValue}'`)
+    })`)
+}
+
+function ofAnArrayValueGetTheCLIHelpPrintingStringOfItsDefaultValue(defaultArrayValue) {
+    const valuesString = defaultArrayValue.map(v => chalk.green(`'${v}'`)).join(', ')
+    return (`(${
+        chalk.rgb(255, 255, 255)('default')
+    }: ${
+        chalk.blue(`[ ${valuesString} ]`)
+    })`)
+}
+
+function ofANonStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(defaultNonStringValue) {
+    return (`(${
+        chalk.rgb(255, 255, 255)('default')
+    }: ${
+        chalk.yellow(defaultNonStringValue)
+    })`)
 }
 
 

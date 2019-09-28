@@ -59,20 +59,22 @@ npm    i    -g    @wulechuan/markdown-to-html-via-cli
 
 
 ```bash
+Usage: wlc-md-to-html [options]
+
 Options:
   -v, --version
-        Print the version of this program.
+        Print the version of this program, that is "v2.0.0"
 
   -i, --from  [globs]
         Any glob that:
           - matches `.md` or `.MD` files;
           - matches folders containing `.md` or `.MD` files;
           - is a comma-separated values of above.
-        Note that multiple presents of this argument is also allowed.
-        (default: "[ './*.md', './*.MD' ]")
+        Note that multiple presents of this argument are also allowed.
+        (default: [ './*.md', './*.MD' ])
 
   -o, --to  [path]
-        Path of folder for output .html files. A single asterisk(*)
+        Path of folder for output `.html` files. A single asterisk(*)
         is allowed at the beginning of the path, meaning the rest
         part of this path string will treat as a sub path to each
         and very source path. This is the ONLY special sign allowed
@@ -81,20 +83,21 @@ Options:
         Note that you MUST quote the path string if it starts with
         an asterisk sign. Otherwise the operating system might first
         expand it as a glob, then pass resolved items to this program.
-        (default: "./")
+        (default: './')
 
   -C, --config-file  [path]
-        Specify a `.js` file to configure the conversions.
-        (default: "./wlc-mk-to-html.config.js")
+        Specify a `.js` file for fully controlling the converter
+        utilized by this program internally.
+        (default: './wlc-mk-to-html.config.js')
 
   -n, --input-file-count-to-warn  [path]
-        Specify a number as a so-called "safe" limitation of
+        Specify a number as a so-called "safe" limitation of the
         the count of resovled source files. If too many source
         files are found. The the program pauses and prompt user
-        to decide where it should go on or quit.
-        If set to zero, then it means never prompt no matter
-        how many source files are discovered.
-        (default: "51")
+        to decide whether it should go on or quit. Setting this to
+        zero means never prompt user and always process all discovered
+        source files, no matter how many there are.
+        (default: 51)
 
   -2, --concise-toc
         When presents, the max level of the TOC items in an HTML is
@@ -113,12 +116,12 @@ Options:
         and expandable, if it contains a nested TOC list. This option
         decides how many levels of TOC items are expanded by default.
         Note the all expandable items can ALWASY toggle manually.
-        (default: "1")
+        (default: 1)
 
   -l, --html-language  [language]
         Specified the value of the "lang" attribute of the <html>
         tag inside a generated HTML file.
-        (default: "zh-hans-CN")
+        (default: 'zh-hans-CN')
 
   -D, --debug
         To enable debugging mode.
@@ -153,7 +156,7 @@ Options:
     wlc-md-to-html
     ```
 
--   下面的命令将所有 HTML 文件统统输出至同一个文件夹中。
+-   下面的命令将所有 HTML 文件统统输出至同一个文件夹中。还注意到，下面故意并列使用了多次 `-i` 参数。
 
     ```bash
     wlc-md-to-html    -i "./**/*.md" -i "./**/*.MD" -i README.MD -i README.md   -o "/home/wulechuan/articles/html/"
