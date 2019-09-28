@@ -18,9 +18,17 @@ console.log()
 
 const MAX_ALLOWED_SOURCE_FILES_COUNT_WITHOUT_USER_CONFIRM = 51
 const PROCESS_EXIT_CODE = {
+    unkown: 1,
     invalidOutputPath: 2,
-    multipleSourceFilesButSingleOutputFile: 3,
+    multipleOutputPaths: 3,
+    multipleSourceFilesButSingleOutputFile: 4,
     userCancelledBecauseOfTooManySourceFiles: 19,
+}
+const CLI_ARGUMENTS_DEFAULT_VALUE = {
+    from: './*.md',
+    to: './',
+    configJson: './wlc-mk-to-html.config.json',
+    tocItemExapndedLevels: 1,
 }
 
 const readline = require('readline')
@@ -56,27 +64,87 @@ const program = new commander.Command()
 
 
 program
-    .version(version, '-v, --version', 'print the version of this program')
+    .version(version, '-v, --version', 'Print the version of this program.\n')
 
+
+const newLineIndentationOfDescriptionsInCLIHelp = `\n${' '.repeat(32)}`
 program
     .option(
         '-i, --from <globs>',
-        'Globs for either .md files, or for folders that containing .md files, or even mixed of the two.',
-        collectSourceGlobsInCLIArguments,
-        []
+        `Globs of any of:${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }  - \`.md\` files;${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }  - folders containing \`.md\` files;${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }  - mixed values of above.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }Note that multiple presents of this argument is also allowed.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }${
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.from)
+        }\n`,
+
+        collectSourceGlobsInCLIArguments
     )
     .option(
         '-o, --to   <path>',
-        'Path of folder for output .html files.',
-        '.'
+        `Path of folder for output .html files.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }${
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.to)
+        }\n`,
+        processArgumentOfOutputPath
+    )
+    .option(
+        '-C, --config-json   <path>',
+        `Specify a JSON file to configure the conversions.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }${
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.configJson)
+        }\n`
+    )
+    .option(
+        '-2, --concise-toc',
+        `When presents, the max level of the TOC items in an HTML is${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }limited to 2. This makes the TOC more concise and clean. But${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }be aware that all deeper levels of TOC items are NEVER visible.\n`,
+    )
+    .option(
+        '-E, --expand-toc',
+        `If the browser window is wide enough, expand the TOC panel when${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }an HTML just loads.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }Note that either way, the TOC panel can ALWAYS toggle manually.\n`,
+    )
+    .option(
+        '-L, --toc-item-expanded-levels',
+        `If the broser window is wide enough, TOC items with nested levels${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }are collapsable and expandable. This option decides how many levels${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }of TOC items are expanded by default.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }Note the all expandable items can ALWASY toggle manually.${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }${
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevels)
+        }\n`,
     )
     .option(
         '-D, --debug',
-        'To enable debugging mode.'
+        'Enable debugging mode.\n'
     )
 
 
 function collectSourceGlobsInCLIArguments(value, previousValue) {
+    if (!previousValue) {
+        previousValue = []
+    }
+
     const newValue = [
         ...previousValue,
         ...value.split(','),
@@ -84,6 +152,42 @@ function collectSourceGlobsInCLIArguments(value, previousValue) {
     return newValue
 }
 
+function processArgumentOfOutputPath(value, previousValue) {
+    if (previousValue) {
+        console.log(chalk.red('Multiple \'-o, --to\' options are NOT allowed.'))
+        process.exit(PROCESS_EXIT_CODE.multipleOutputPaths)
+    }
+
+    return value
+}
+
+function fillDefaultValuesForAbsentArguments(programArguments) {
+    /*
+        I purposely avoid to use the d"efault value" option of
+        the `program.option()` method, is because I'd like to
+        control the way the default values are printed in the CLI
+        help. Thats it.
+    */
+    if (!programArguments.from) {
+        programArguments.from = [ CLI_ARGUMENTS_DEFAULT_VALUE.from ]
+    }
+
+    if (!programArguments.to) {
+        programArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
+    }
+
+    if (!programArguments.configJson) {
+        programArguments.configJson = CLI_ARGUMENTS_DEFAULT_VALUE.configJson
+    }
+
+    if (!programArguments.tocItemExapndedLevels) {
+        programArguments.tocItemExapndedLevels = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevels
+    }
+}
+
+function getStringOfADefaultValueForPrintingInCLIHelp(defaultValue) {
+    return chalk.blue(`(default: "${chalk.green(defaultValue)}")`)
+}
 
 
 
@@ -93,13 +197,14 @@ program.parse(process.argv)
 
 // They are the same object, but I prefer different var names of different concepts.
 const programArguments = program
+fillDefaultValuesForAbsentArguments(programArguments)
 
 
 try {
     main(programArguments)
 } catch (err) {
     console.log(err.message)
-    return
+    process.exit(PROCESS_EXIT_CODE.unkown)
 }
 
 
