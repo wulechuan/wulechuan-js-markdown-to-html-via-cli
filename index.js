@@ -70,6 +70,9 @@ const getDirNameOf     = path.dirname
 const program = new commander.Command()
 
 
+program.name('wlc-md-to-html')
+
+
 const placeHolderForALineBreakFollwedByAnIndentation = '<-line-break-and-indent-here->'
 
 program

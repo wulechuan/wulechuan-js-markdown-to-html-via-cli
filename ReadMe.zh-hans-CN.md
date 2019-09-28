@@ -57,7 +57,58 @@ npm    i    -g    @wulechuan/markdown-to-html-via-cli
 
 ### 命令行参数说明
 
-待详。
+
+```bash
+Usage: wlc-md-to-html [options]
+
+Options:
+  -v, --version                           Print the version of this program.
+
+  -i, --from  [globs]                     Globs of any of:
+                                            - one that matches `.md` files;
+                                            - one that matches folders containing `.md` files;
+                                            - a comma-separated values of above.
+                                          Note that multiple presents of this argument is also allowed.
+                                          (default: "./*.md")
+
+  -o, --to  [path]                        Path of folder for output .html files. A single asterisk(*)
+                                          is allowed at the beginning of the path, meaning the rest
+                                          part of this path string will treat as a sub path to each
+                                          and very source path. This is the ONLY special sign allowed
+                                          in this path string. No question marks("?") are allowed.
+                                          No asterisks are allowed in any other places of this string.
+                                          (default: "./")
+
+  -C, --config-json  [path]               Specify a `.js` file to configure the conversions.
+                                          (default: "./wlc-mk-to-html.config.js")
+
+  -2, --concise-toc                       When presents, the max level of the TOC items in an HTML is
+                                          limited to 2. This makes the TOC more concise and clean.
+                                          Be aware that this way all deeper levels of TOC items are
+                                          NEVER visible. They are hidden via CSS rules.
+
+  -e, --expand-toc                        If the browser window is wide enough, expand the TOC panel when
+                                          an HTML just loads. Note that either way, the TOC panel can
+                                          ALWAYS toggle manually. Also Note that to expand the TOC panel
+                                          is NOT the same thing as to expand an item of the TOC panel.
+
+  -E, --toc-item-expanded-level  [level]  If the browser window is wide enough, TOC items are collapsable
+                                          and expandable, if it contains a nested TOC list. This option
+                                          decides how many levels of TOC items are expanded by default.
+                                          Note the all expandable items can ALWASY toggle manually.
+                                          (default: "1")
+
+  -l, --html-language  [language]         Specified the value of the "lang" attribute of the <html>
+                                          tag inside a generated HTML file.
+                                          (default: "zh-hans-CN")
+
+  -D, --debug                             To enable debugging mode.
+
+  -h, --help                              output usage information
+
+```
+
+
 
 
 ### 示例集
@@ -74,7 +125,7 @@ npm    i    -g    @wulechuan/markdown-to-html-via-cli
     wlc-md-to-html
     ```
 
--   要在每个源 markdown 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 markdown 文件对应的 HTML 文件生成在该子文件夹中，可以这样做：
+-   要在每个源 markdown 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 markdown 文件对应的 HTML 文件生成在该子文件夹中，可以这样做。注意输出路径的起始有一个星号（`*`）。
 
     ```bash
     wlc-md-to-html    -i markdowns/*.md    -o "*/html/"
