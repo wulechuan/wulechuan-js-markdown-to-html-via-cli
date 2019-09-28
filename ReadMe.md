@@ -190,6 +190,11 @@ The details of what a configuration file should look like, please refer to [@wul
     wlc-md-to-html    -l "en-US"
     ```
 
+-   To load converter configurations from a .js file.
+
+    ```bash
+    wlc-md-to-html    -C "/home/wulechuan/articles/my-markdown-to-my-html.config.js"
+    ```
 
 
 ## TODOS

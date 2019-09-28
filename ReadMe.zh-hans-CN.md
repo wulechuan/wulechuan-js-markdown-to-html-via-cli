@@ -182,8 +182,13 @@ Options:
 -   下面的命令将所有输出的 HTML 文件的语言标记为 "en-US"。
 
     ```bash
-    cd    ./tests/fake-project
     wlc-md-to-html    -l "en-US"
+    ```
+
+-   下面的命令将采用一个配置文件来控制文件格式转换的细则。
+
+    ```bash
+    wlc-md-to-html    -C "/home/wulechuan/articles/my-markdown-to-my-html.config.js"
     ```
 
 
