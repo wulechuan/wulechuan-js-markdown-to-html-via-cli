@@ -22,18 +22,19 @@ const PROCESS_EXIT_CODE = {
     invalidOutputPath: 2,
     multipleOutputPaths: 3,
     multipleSourceFilesButSingleOutputFile: 4,
-    multipleConfigJSONPaths: 5,
-    specifiedConfigJSONFileNotFound: 6,
-    configJSONFileReadError: 7,
+    multipleConfigFilePaths: 5,
+    specifiedConfigFileNotFound: 6,
+    configFileReadError: 7,
     userCancelledBecauseOfTooManySourceFiles: 19,
 }
 const CLI_ARGUMENTS_DEFAULT_VALUE = {
     from: './*.md',
     to: './',
-    configJson: './wlc-mk-to-html.config.json',
+    configFile: './wlc-mk-to-html.config.js',
     conciseToc: false,
     expandToc: false,
-    tocItemExapndedLevel: 1,
+    tocItemExpandedLevel: 1,
+    htmlLanguage: 'zh-hans-CN',
 }
 
 const readline = require('readline')
@@ -69,23 +70,24 @@ const getDirNameOf     = path.dirname
 const program = new commander.Command()
 
 
+const placeHolderForALineBreakFollwedByAnIndentation = '<-line-break-and-indent-here->'
+
 program
     .version(version, '-v, --version', 'Print the version of this program.\n')
 
-const newLineIndentationOfDescriptionsInCLIHelp = `\n${' '.repeat(31)}`
 program
     .option(
-        '-i, --from  <globs>',
+        '-i, --from  [globs]',
         `Globs of any of:${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }  - one that matches \`.md\` files;${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }  - one that matches folders containing \`.md\` files;${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }  - a comma-separated values of above.${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }Note that multiple presents of this argument is also allowed.${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }${
             getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.from)
         }\n`,
@@ -94,19 +96,19 @@ program
     )
 
     .option(
-        '-o, --to  <path>',
+        '-o, --to  [path]',
         `Path of folder for output .html files. A single asterisk(*)${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }is allowed at the beginning of the path, meaning the rest${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }part of this path string will treat as a sub path to each${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }and very source path. This is the ONLY special sign allowed${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }in this path string. No question marks("?") are allowed.${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }No asterisks are allowed in any other places of this string.${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }${
             getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.to)
         }\n`,
@@ -114,57 +116,82 @@ program
     )
 
     .option(
-        '-C, --config-json  <path>',
-        `Specify a JSON file to configure the conversions.${
-            newLineIndentationOfDescriptionsInCLIHelp
+        '-C, --config-json  [path]',
+        `Specify a \`.js\` file to configure the conversions.${
+            placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.configJson)
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.configFile)
         }\n`,
-        processArgumentOfConfigJSONPath
+        processArgumentOfConfigFilePath
     )
 
     .option(
         '-2, --concise-toc',
         `When presents, the max level of the TOC items in an HTML is${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }limited to 2. This makes the TOC more concise and clean.${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }Be aware that this way all deeper levels of TOC items are${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }NEVER visible. They are hidden via CSS rules.\n`,
     )
 
     .option(
-        '-E, --expand-toc',
+        '-e, --expand-toc',
         `If the browser window is wide enough, expand the TOC panel when${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }an HTML just loads. Note that either way, the TOC panel can${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }ALWAYS toggle manually. Also Note that to expand the TOC panel${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }is NOT the same thing as to expand an item of the TOC panel.\n`,
     )
 
     .option(
-        '-L, --toc-item-expanded-level',
+        '-E, --toc-item-expanded-level  [level]',
         `If the browser window is wide enough, TOC items are collapsable${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }and expandable, if it contains a nested TOC list. This option${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }decides how many levels of TOC items are expanded by default.${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }Note the all expandable items can ALWASY toggle manually.${
-            newLineIndentationOfDescriptionsInCLIHelp
+            placeHolderForALineBreakFollwedByAnIndentation
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevel)
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExpandedLevel)
+        }\n`,
+    )
+
+    .option(
+        '-l, --html-language  [language]',
+        `Specified the value of the "lang" attribute of the <html>${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }tag inside a generated HTML file.${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }${
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage)
         }\n`,
     )
 
     .option(
         '-D, --debug',
-        'Enable debugging mode.\n'
+        'To enable debugging mode.\n'
     )
 
+
+formatDescriptionsOfAllArgumentOptions(program)
+
+function formatDescriptionsOfAllArgumentOptions(program) {
+    const newLineIndentationWidth = program.options.reduce((maxFlagsStringLength, option) => {
+        return Math.max(maxFlagsStringLength, option.flags.length + 2)
+    }, 19)
+    program.options.forEach(option => {
+        option.description = option.description.replace(
+            new RegExp(placeHolderForALineBreakFollwedByAnIndentation, 'g'),
+            `\n${' '.repeat(newLineIndentationWidth)}`
+        )
+    })
+}
 
 function collectSourceGlobsInCLIArguments(value, previousValue) {
     if (!previousValue) {
@@ -187,10 +214,10 @@ function processArgumentOfOutputPath(value, previousValue) {
     return value
 }
 
-function processArgumentOfConfigJSONPath(value, previousValue) {
+function processArgumentOfConfigFilePath(value, previousValue) {
     if (previousValue) {
         console.log(chalk.red('Multiple \'-C, --config-json\' options are NOT allowed.'))
-        process.exit(PROCESS_EXIT_CODE.multipleConfigJSONPaths)
+        process.exit(PROCESS_EXIT_CODE.multipleConfigFilePaths)
     }
 
     return value
@@ -231,7 +258,7 @@ function main(programArguments) {
     const filledArguments = fillDefaultValuesForAbsentArguments(programArguments)
     printCLIArguments(programArguments, filledArguments)
 
-    const options = combinArgumentsWithConfigJSON(filledArguments)
+    const options = combinArgumentsWithConfigFile(filledArguments)
 
 
     const { shouldDebug } = options
@@ -243,7 +270,7 @@ function main(programArguments) {
         console.log('-------------------- debugging --------------------')
     }
 
-    const outputPathRawValue = options['to']
+    const outputPathRawValue = options.outputPath
 
     let outputPathShouldBeRelativeToInputFileLocations = false
     let outputPathRawValue2 = outputPathRawValue
@@ -291,9 +318,10 @@ function main(programArguments) {
                         outputPathShouldBeRelativeToInputFileLocations,
                         outputPathLooksLikeSingleHTMLFilePath,
                         thereIsOnlyOneSourceFile,
-                        i + 1,
-                        sourceFilePaths.length
+                        options
                     )
+
+                    console.log(chalk.green(`Done (${i + 1}/${sourceFilePaths.length})`))
                 })
 
                 console.log(chalk.green(
@@ -338,11 +366,11 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
     }
 
-    if ('configJson' in programRawArguments) {
-        filledArguments.configJsonIsSpecifiedInCLI = true
-        filledArguments.configJson = programArguments.configJson
+    if ('configFile' in programRawArguments) {
+        filledArguments.configFileIsSpecifiedInCLI = true
+        filledArguments.configFile = programArguments.configFile
     } else {
-        filledArguments.configJson = CLI_ARGUMENTS_DEFAULT_VALUE.configJson
+        filledArguments.configFile = CLI_ARGUMENTS_DEFAULT_VALUE.configFile
     }
 
     if ('conciseToc' in programRawArguments) {
@@ -357,11 +385,18 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.expandToc = CLI_ARGUMENTS_DEFAULT_VALUE.expandToc
     }
 
-    if ('tocItemExapndedLevel' in programRawArguments) {
-        filledArguments.tocItemExapndedLevel = programRawArguments.tocItemExapndedLevel
+    if ('tocItemExpandedLevel' in programRawArguments) {
+        filledArguments.tocItemExpandedLevel = parseInt(programRawArguments.tocItemExpandedLevel)
     } else {
-        filledArguments.tocItemExapndedLevel = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevel
+        filledArguments.tocItemExpandedLevel = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExpandedLevel
     }
+
+    if ('htmlLanguage' in programRawArguments) {
+        filledArguments.htmlLanguage = programRawArguments.htmlLanguage
+    } else {
+        filledArguments.htmlLanguage = CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage
+    }
+
 
     filledArguments.ignoredArguments = programRawArguments.args
 
@@ -375,10 +410,11 @@ function printCLIArguments(rawArguments, filledArguments) {
         'debug',
         'from',
         'to',
-        'configJson',
+        'configFile',
         'conciseToc',
         'expandToc',
-        'tocItemExapndedLevel',
+        'tocItemExpandedLevel',
+        'htmlLanguage',
     ]
 
     argumentKeysInPrintingOrder.forEach(key => {
@@ -424,28 +460,43 @@ function printCLIArguments(rawArguments, filledArguments) {
     console.log()
 }
 
-function combinArgumentsWithConfigJSON(filledArguments) {
+function combinArgumentsWithConfigFile(filledArguments) {
+    const manipulationsOverHTML = {
+        htmlTagLanguage: filledArguments.htmlLanguage,
+    }
+
+    const behaviousOfBuiltInTOC = {
+        shouldShowOnlyTwoLevelsOfTOCItemsAtMost:                filledArguments.conciseToc,
+        atBeginingShouldCollapseAllTOCItemsOfLevelsGreaterThan: filledArguments.tocItemExpandedLevel,
+        atBeginingShouldExpandTOCWhenWindowsIsWideEnough:       filledArguments.expandToc,
+    }
+
     const options = {
         shouldDebug: filledArguments.debug,
         sourceGlobs: filledArguments.from,
         outputPath:  filledArguments.to,
+        'options for @wulechuan/generate-html-via-markdown': {
+            manipulationsOverHTML,
+            behaviousOfBuiltInTOC,
+        },
     }
 
-    const configJSONFilePath = filledArguments.configJson
+
+    const configFilePath = filledArguments.configFile
     let configurationsFromJSON
 
-    if (!existsSync(configJSONFilePath)) {
-        if (filledArguments.configJsonIsSpecifiedInCLI) {
-            process.exit(PROCESS_EXIT_CODE.specifiedConfigJSONFileNotFound)
+    if (!existsSync(configFilePath)) {
+        if (filledArguments.configFileIsSpecifiedInCLI) {
+            process.exit(PROCESS_EXIT_CODE.specifiedConfigFileNotFound)
         }
     } else {
         try {
-            configurationsFromJSON = readJsonSync(configJSONFilePath)
+            configurationsFromJSON = readJsonSync(configFilePath)
         } catch (readFileErro) {
             console.log(chalk.red(`Error reading configuration JSON file "${
-                chalk.yellow(configJSONFilePath)
+                chalk.yellow(configFilePath)
             }"`))
-            process.exit(PROCESS_EXIT_CODE.configJSONFileReadError)
+            process.exit(PROCESS_EXIT_CODE.configFileReadError)
         }
     }
 
@@ -596,8 +647,7 @@ function processOneSourceFile(
     outputPathShouldBeRelativeToInputFileLocations,
     outputPathLooksLikeSingleHTMLFilePath,
     thereIsOnlyOneSourceFile,
-    fileIndex,
-    totalFilesCount
+    options
 ) {
     if (thereIsOnlyOneSourceFile && outputPathLooksLikeSingleHTMLFilePath) {
         convertOneFile(sourceFilePath, validOutputPath, 1, 1)
@@ -636,17 +686,26 @@ function processOneSourceFile(
         duplicatedOutputHTMLFileNamesCount++
     } while (existsSync(outputHTMLFilePath))
 
-    convertOneFile(sourceFilePath, outputHTMLFilePath, fileIndex, totalFilesCount)
+    convertOneFile(sourceFilePath, outputHTMLFilePath, options)
 }
 
-function convertOneFile(sourceFilePath, outputHTMLFilePath, fileIndex, totalFilesCount) {
+function convertOneFile(sourceFilePath, outputHTMLFilePath, options) {
     console.log()
     console.log('-'.repeat(51))
     console.log('from: "' + chalk.bgMagenta.black(sourceFilePath)   + '"')
     console.log('  to: "' + chalk.bgGreen.black(outputHTMLFilePath) + '"')
 
+    const optionsForConverter = options['options for @wulechuan/generate-html-via-markdown']
+
+    if (options.shouldDebug) {
+        console.log(optionsForConverter)
+    }
+
     const sourceFileContentString = readFileSync(sourceFilePath).toString()
-    const htmlContentString = markdownToHTMLConverter(sourceFileContentString)
+    const htmlContentString = markdownToHTMLConverter(
+        sourceFileContentString,
+        optionsForConverter
+    )
 
     mkdirpSync(getDirNameOf(outputHTMLFilePath))
 
@@ -654,6 +713,4 @@ function convertOneFile(sourceFilePath, outputHTMLFilePath, fileIndex, totalFile
         outputHTMLFilePath,
         htmlContentString
     )
-
-    console.log(chalk.green(`Done (${fileIndex}/${totalFilesCount})`))
 }
