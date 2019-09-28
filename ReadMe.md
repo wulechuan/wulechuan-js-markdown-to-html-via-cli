@@ -60,7 +60,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.0.1".
+        Print the version of this program, that is "v2.0.4".
 
   -i, --from  [globs]
         Any glob that:

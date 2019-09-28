@@ -11,7 +11,7 @@ console.log('.                                                 .')
 console.log(`.    ${version}${' '.repeat(45 - version.length)}.`)
 console.log('.                                                 .')
 console.log('.               wulechuan <wulechuan@live.com>    .')
-console.log('.                                   2019-09-28    .')
+console.log('.                                   2019-09-29    .')
 console.log('.                                                 .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
@@ -429,9 +429,21 @@ function main(programArguments) {
 
     let outputPathShouldBeRelativeToInputFileLocations = false
     let outputPathRawValue2 = outputPathRawValue
-    if (outputPathRawValue.match(/^\*/)) {
+
+    if (
+        outputPathRawValue2.match(/^"/) && outputPathRawValue2.match(/"$/) ||
+        outputPathRawValue2.match(/^'/) && outputPathRawValue2.match(/'$/)
+    ) {
+        /*
+            In some situations, for example the npm "scripts" running inside Nodejs,
+            quoting marks are NOT unwrapped automatically.
+         */
+        outputPathRawValue2 = outputPathRawValue2.slice(1, outputPathRawValue2.length - 1)
+    }
+
+    if (outputPathRawValue2.match(/^\*/)) {
         outputPathShouldBeRelativeToInputFileLocations = true
-        outputPathRawValue2 = outputPathRawValue.replace(/^\*[\\/]*/, '')
+        outputPathRawValue2 = outputPathRawValue2.replace(/^\*[\\/]*/, '')
     }
 
     if (outputPathRawValue2.match(/[*?]/)) {
