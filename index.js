@@ -22,13 +22,14 @@ const PROCESS_EXIT_CODE = {
     invalidOutputPath: 2,
     multipleOutputPaths: 3,
     multipleSourceFilesButSingleOutputFile: 4,
+    multipleConfigJSONPaths: 5,
     userCancelledBecauseOfTooManySourceFiles: 19,
 }
 const CLI_ARGUMENTS_DEFAULT_VALUE = {
     from: './*.md',
     to: './',
     configJson: './wlc-mk-to-html.config.json',
-    tocItemExapndedLevels: 1,
+    tocItemExapndedLevel: 1,
 }
 
 const readline = require('readline')
@@ -66,18 +67,17 @@ const program = new commander.Command()
 program
     .version(version, '-v, --version', 'Print the version of this program.\n')
 
-
-const newLineIndentationOfDescriptionsInCLIHelp = `\n${' '.repeat(32)}`
+const newLineIndentationOfDescriptionsInCLIHelp = `\n${' '.repeat(31)}`
 program
     .option(
         '-i, --from <globs>',
         `Globs of any of:${
             newLineIndentationOfDescriptionsInCLIHelp
-        }  - \`.md\` files;${
+        }  - one that matches \`.md\` files;${
             newLineIndentationOfDescriptionsInCLIHelp
-        }  - folders containing \`.md\` files;${
+        }  - one that matches folders containing \`.md\` files;${
             newLineIndentationOfDescriptionsInCLIHelp
-        }  - mixed values of above.${
+        }  - a comma-separated values of above.${
             newLineIndentationOfDescriptionsInCLIHelp
         }Note that multiple presents of this argument is also allowed.${
             newLineIndentationOfDescriptionsInCLIHelp
@@ -87,6 +87,7 @@ program
 
         collectSourceGlobsInCLIArguments
     )
+
     .option(
         '-o, --to   <path>',
         `Path of folder for output .html files.${
@@ -96,44 +97,54 @@ program
         }\n`,
         processArgumentOfOutputPath
     )
+
     .option(
         '-C, --config-json   <path>',
         `Specify a JSON file to configure the conversions.${
             newLineIndentationOfDescriptionsInCLIHelp
         }${
             getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.configJson)
-        }\n`
+        }\n`,
+        processArgumentOfConfigJSONPath
     )
+
     .option(
         '-2, --concise-toc',
         `When presents, the max level of the TOC items in an HTML is${
             newLineIndentationOfDescriptionsInCLIHelp
-        }limited to 2. This makes the TOC more concise and clean. But${
+        }limited to 2. This makes the TOC more concise and clean.${
             newLineIndentationOfDescriptionsInCLIHelp
-        }be aware that all deeper levels of TOC items are NEVER visible.\n`,
+        }Be aware that this way all deeper levels of TOC items are${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }NEVER visible. They are hidden via CSS rules.\n`,
     )
+
     .option(
         '-E, --expand-toc',
         `If the browser window is wide enough, expand the TOC panel when${
             newLineIndentationOfDescriptionsInCLIHelp
-        }an HTML just loads.${
+        }an HTML just loads. Note that either way, the TOC panel can${
             newLineIndentationOfDescriptionsInCLIHelp
-        }Note that either way, the TOC panel can ALWAYS toggle manually.\n`,
+        }ALWAYS toggle manually. Also Note that to expand the TOC panel${
+            newLineIndentationOfDescriptionsInCLIHelp
+        }is NOT the same thing as to expand an item of the TOC panel.\n`,
     )
+
     .option(
-        '-L, --toc-item-expanded-levels',
-        `If the broser window is wide enough, TOC items with nested levels${
+        '-L, --toc-item-expanded-level',
+        `If the browser window is wide enough, TOC items are collapsable${
             newLineIndentationOfDescriptionsInCLIHelp
-        }are collapsable and expandable. This option decides how many levels${
+        }and expandable, if it contains a nested TOC list. This option${
             newLineIndentationOfDescriptionsInCLIHelp
-        }of TOC items are expanded by default.${
+        }decides how many levels of TOC items are expanded by default.${
             newLineIndentationOfDescriptionsInCLIHelp
         }Note the all expandable items can ALWASY toggle manually.${
             newLineIndentationOfDescriptionsInCLIHelp
         }${
-            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevels)
+            getStringOfADefaultValueForPrintingInCLIHelp(CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevel)
         }\n`,
     )
+
     .option(
         '-D, --debug',
         'Enable debugging mode.\n'
@@ -161,6 +172,15 @@ function processArgumentOfOutputPath(value, previousValue) {
     return value
 }
 
+function processArgumentOfConfigJSONPath(value, previousValue) {
+    if (previousValue) {
+        console.log(chalk.red('Multiple \'-C, --config-json\' options are NOT allowed.'))
+        process.exit(PROCESS_EXIT_CODE.multipleConfigJSONPaths)
+    }
+
+    return value
+}
+
 function fillDefaultValuesForAbsentArguments(programArguments) {
     /*
         I purposely avoid to use the d"efault value" option of
@@ -176,12 +196,12 @@ function fillDefaultValuesForAbsentArguments(programArguments) {
         programArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
     }
 
-    if (!programArguments.configJson) {
-        programArguments.configJson = CLI_ARGUMENTS_DEFAULT_VALUE.configJson
-    }
+    // if (!programArguments.configJson) {
+    //     programArguments.configJson = CLI_ARGUMENTS_DEFAULT_VALUE.configJson
+    // }
 
-    if (!programArguments.tocItemExapndedLevels) {
-        programArguments.tocItemExapndedLevels = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevels
+    if (!programArguments.tocItemExapndedLevel) {
+        programArguments.tocItemExapndedLevel = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExapndedLevel
     }
 }
 
@@ -217,15 +237,30 @@ function main(programArguments) {
 
     if (shouldDebug) {
         console.log()
-        console.log('-------------------- debugging --------------------')
+        console.log('-------------------- arguments --------------------')
     }
+
+    const objectToPrint = {
+        debug: programArguments.debug,
+        from: programArguments.from,
+        to: programArguments.to,
+    }
+
+    if (programArguments.configJson) {
+        objectToPrint.configJson = programArguments.configJson
+    }
+
+    objectToPrint.tocItemExapndedLevel = programArguments.tocItemExapndedLevel
+
+    objectToPrint.untitledArguments = programArguments.args
+
+    console.log(objectToPrint)
+
 
     if (shouldDebug) {
-        console.log(Object.keys(programArguments).filter(k => {
-            return !k.startsWith('_') && k !== 'rawArgs' && k !== 'commands' && k !== 'options'
-        }).reduce((o, k) => { o[k] = programArguments[k]; return o }, {}))
+        console.log()
+        console.log('-------------------- debugging --------------------')
     }
-
 
     const outputPathRawValue = programArguments['to']
 
@@ -289,9 +324,9 @@ function main(programArguments) {
                         '* * * * * * * * *',
                     ].join('\n')
                 ))
-
-                process.exit(0)
             }
+
+            process.exit(0)
         })
 }
 

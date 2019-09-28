@@ -27,7 +27,7 @@
   "scripts": {
     "prepublishOnly": "npm test",
     "eslint": "eslint    ./.eslintrc.js    ./index.js",
-    "test": "npm  run  eslint    &&    rm  -rf  ./tests/out/html     &&     node  ./index  -i ./*.md  -o ./tests/out/html/"
+    "test": "npm  run  eslint    &&    node  ./index  -h    &&    echo. && echo ===================== && echo.    &&    rm  -rf  ./tests/out/html     &&     node  ./index  -i ./*.md  -o ./tests/out/html/"
   },
   "repository": {
     "type": "git",
