@@ -8,10 +8,10 @@ console.log('.                                                 .')
 console.log('.    Welcome to wulechuan\'s CLI tool for          .')
 console.log('.    converting markdown files into HTML ones.    .')
 console.log('.                                                 .')
-console.log(`.    ${version}${' '.repeat(45 - version.length)}.`)
+console.log(`.    ${version}${' '.repeat(45 -  version.length)}.`)
 console.log('.                                                 .')
 console.log('.               wulechuan <wulechuan@live.com>    .')
-console.log('.                                   2019-09-29    .')
+console.log('.                                   2019-09-30    .')
 console.log('.                                                 .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
@@ -42,6 +42,21 @@ const CLI_ARGUMENTS_DEFAULT_VALUE = {
 
 const CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH = 6
 const CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE = false
+const SHOULD_PRINT_PATHS_OF_HELP_HTML_FILES_ON_DASH_DASH_HELP = true
+
+
+/**
+ * This option below is set to false,
+ * because I've NOT figured out how to launch a browser inside this js.
+ * The "https://www.npmjs.com/package/open" doesn't work for me.
+ * Neither does the "https://www.npmjs.com/package/chrome-launcher".
+ * Not even the 'child_process'.
+ *
+ * Another question is: should I launch a browser?
+ */
+const SHOULD_OPEN_HELP_HTML_FILES_ON_DASH_DASH_HELP = true
+
+
 
 const readline = require('readline')
 
@@ -67,10 +82,12 @@ const markdownToHTMLConverter = require('@wulechuan/generate-html-via-markdown')
 
 
 const syncResolveGlobs = globby.sync
+const joinPath         = path.join
 const joinPathPOSIX    = path.posix.join
 const parsePath        = path.parse
 const getDirNameOf     = path.dirname
 
+const thisPackageRootFolderPath = path.dirname(require.resolve('.'))
 
 const program = new commander.Command()
 
@@ -278,6 +295,59 @@ program
         }To enable debugging mode.\n`
     )
 
+program.on('--help', () => {
+    // console.log('thisPackageRootFolderPath:', thisPackageRootFolderPath)
+
+    const existingHelpHTMLs = [
+        'ReadMe.html',
+        'ReadMe.zh-hans-CN.html',
+    ].reduce((allExistingHelps, subPath) => {
+        const fullPath = joinPath(thisPackageRootFolderPath, subPath)
+        if (existsSync(fullPath)) {
+            allExistingHelps.push({
+                subPath,
+                fullPath,
+            })
+        }
+
+        return allExistingHelps
+    }, [])
+
+    if (existingHelpHTMLs.length > 0) {
+        if (SHOULD_PRINT_PATHS_OF_HELP_HTML_FILES_ON_DASH_DASH_HELP) {
+            console.log()
+            console.log('-'.repeat(51))
+            console.log()
+            console.log('Please also refer to either of:')
+            existingHelpHTMLs.forEach(help => console.log(`    ${help.fullPath}`))
+        }
+
+        if (SHOULD_OPEN_HELP_HTML_FILES_ON_DASH_DASH_HELP) {
+            // if (true) {
+            //     const childProcess = require('child_process')
+            //     existingHelpHTMLs.forEach(help => {
+            //         childProcess.exec(`start  chrome  "${help.fullPath}"`)
+            //     })
+            // } else if (true) {
+            //     const open = require('open')
+            //     const openingOptions = null // { app: 'chrome' }
+            //     existingHelpHTMLs.forEach(async help => {
+            //         await open(help.fullPath, openingOptions)
+            //     })
+            // } else {
+            //     const chromeLauncher = require('chrome-launcher')
+
+            //     existingHelpHTMLs.forEach(help => {
+            //         chromeLauncher.launch({
+            //             startingUrl: help.fullPath,
+            //         }).then(chrome => {
+            //             console.log(`Chrome debugging port running on ${chrome.port}`)
+            //         })
+            //     })
+            // }
+        }
+    }
+})
 
 formatDescriptionsOfAllArgumentOptions(program)
 
@@ -550,6 +620,7 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.configFileIsSpecifiedInCLI = true
         filledArguments.configFile = programArguments.configFile
     } else {
+        filledArguments.configFileIsSpecifiedInCLI = false
         filledArguments.configFile = CLI_ARGUMENTS_DEFAULT_VALUE.configFile
     }
 
