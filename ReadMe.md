@@ -169,7 +169,7 @@ The details of what a configuration file should look like, please refer to [@wul
 
 -   To build HTML files, each in the same sub-folder named "html" under the folder of its corresponding source markdown file.
 
-    Notice the leading asterisk sign(`*`) in the output path. Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
+    Notice the leading asterisk sign(`*`) in the output path.
 
     Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
 
