@@ -103,10 +103,11 @@ Options:
         (default: 51)
 
   -d, --dark-theme
-        When presents, the default dark-colored theme is applied to all
+        If presents, the default dark-colored theme is applied to all
         HTML files, instead of the light-colored theme. But the effect
-        of this argument will be overrided by the settings in the configuration
-        file loaded by the "-C" or "--config-file" arguments.
+        of this argument will be overrided by the configurations, if
+        any, in the configuration file, which is loaded via the "-C"
+        or "--config-file" arguments.
 
   -U, --toc-ul
         When presents, the lists in TOC are <ul>s instead of <ol>s.

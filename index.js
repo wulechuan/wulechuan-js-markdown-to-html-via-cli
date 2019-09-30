@@ -225,13 +225,15 @@ program
 
         `${
             descriptionPrefixString
-        }When presents, the default dark-colored theme is applied to all${
+        }If presents, the default dark-colored theme is applied to all${
             placeHolderForALineBreakFollwedByAnIndentation
-        }HTML files, instead of the light-colored theme. But the effect${
+        }HTML files, instead of the light-colored theme. ${chalk.red('But the effect')}${
             placeHolderForALineBreakFollwedByAnIndentation
-        }of this argument will be overrided by the settings in the configuration${
+        }${chalk.red('of this argument will be overrided by the configurations, if')}${
             placeHolderForALineBreakFollwedByAnIndentation
-        }file loaded by the "-C" or "--config-file" arguments.\n`,
+        }${chalk.red(`any, in the configuration file, which is loaded via the "${chalk.green('-C')}"`)}${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }${chalk.red(`or "${chalk.green('--config-file')}" arguments.`)}\n`,
     )
 
     .option(
@@ -249,7 +251,7 @@ program
             descriptionPrefixString
         }When presents, the max level of the TOC items in an HTML is${
             placeHolderForALineBreakFollwedByAnIndentation
-        }limited to 2. This makes the TOC more concise and clean.${
+        }limited to ${chalk.green(2)}. This makes the TOC more concise and clean.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${chalk.red('Be aware that this way all deeper levels of TOC items are')}${
             placeHolderForALineBreakFollwedByAnIndentation
@@ -330,10 +332,17 @@ program.on('--help', () => {
 
     if (existingHelpHTMLs.length > 0) {
         if (SHOULD_PRINT_PATHS_OF_HELP_HTML_FILES_ON_DASH_DASH_HELP) {
+            let englishPhrase = 'any of'
+            if (existingHelpHTMLs.length === 1) {
+                englishPhrase = 'this doc'
+            } else if (existingHelpHTMLs.length === 2) {
+                englishPhrase = 'either of'
+            }
+
             console.log()
             console.log('-'.repeat(51))
             console.log()
-            console.log('Please also refer to either of:')
+            console.log(`Please also refer to ${englishPhrase}:`)
             existingHelpHTMLs.forEach(help => console.log(`    ${help.fullPath}`))
         }
 
