@@ -43,6 +43,10 @@ No need to provide literally anything, you get a full featured HTML. Including g
 
 The CSS file for the built-in theming is from another NPM package of mine, named "[@wulechuan/css-stylus-markdown-themes](https://www.npmjs.com/package/@wulechuan/css-stylus-markdown-themes)". See some pictures of an example article with the default theme applied [there](https://github.com/wulechuan/wulechuan-themes-for-htmls-via-markdowns/blob/master/docs/refs/en-US/application-examples.md).
 
+#### Changes
+
+**The dark theme is now supported via CLI arguments "`-d`" or "`--dark-theme`".**
+
 
 ## Installation
 
@@ -60,7 +64,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.0.4".
+        Print the version of this program, that is "v2.0.6".
 
   -i, --from  [globs]
         Any glob that:
@@ -95,6 +99,12 @@ Options:
         zero means never prompt user and always process all discovered
         source files, no matter how many there are.
         (default: 51)
+
+  -d, --dark-theme
+        When presents, the default dark-colored theme is applied to all
+        HTML files, instead of the light-colored theme. But the effect
+        of this argument will be overrided by the settings in the configuration
+        file loaded by the "-C" or "--config-file" arguments.
 
   -U, --toc-ul
         When presents, the lists in TOC are <ul>s instead of <ol>s.

@@ -42,6 +42,9 @@
 
 内嵌样式来源于本人创建和维护的另一项目，即《[@wulechuan/css-stylus-markdown-themes](https://www.npmjs.com/package/@wulechuan/css-stylus-markdown-themes)》。其文档中亦有若干截图，直观展示一篇文档在应用默认样式后之样貌。见 [该文档](https://github.com/wulechuan/wulechuan-themes-for-htmls-via-markdowns/blob/master/docs/refs/zh-hans-CN/application-examples.md)。
 
+#### 变更
+
+**本工具现已支持将深色主题应用于输出之 HTML 文件中。对应的命令行参数为 “`-d`” 或 “`--dark-theme`”。**
 
 
 
@@ -63,7 +66,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.0.4".
+        Print the version of this program, that is "v2.0.6".
 
   -i, --from  [globs]
         Any glob that:
@@ -98,6 +101,12 @@ Options:
         zero means never prompt user and always process all discovered
         source files, no matter how many there are.
         (default: 51)
+
+  -d, --dark-theme
+        When presents, the default dark-colored theme is applied to all
+        HTML files, instead of the light-colored theme. But the effect
+        of this argument will be overrided by the settings in the configuration
+        file loaded by the "-C" or "--config-file" arguments.
 
   -U, --toc-ul
         When presents, the lists in TOC are <ul>s instead of <ol>s.

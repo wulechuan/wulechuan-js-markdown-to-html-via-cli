@@ -33,6 +33,7 @@ const CLI_ARGUMENTS_DEFAULT_VALUE = {
     to: './',
     inputFileCountToWarn: 51,
     configFile: './wlc-md-to-html.config.js',
+    darkTheme: false,
     tocUl: false,
     conciseToc: false,
     expandToc: false,
@@ -217,6 +218,20 @@ program
         }\n`,
 
         processArgumentOfConfigFilePath
+    )
+
+    .option(
+        '-d, --dark-theme',
+
+        `${
+            descriptionPrefixString
+        }When presents, the default dark-colored theme is applied to all${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }HTML files, instead of the light-colored theme. But the effect${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }of this argument will be overrided by the settings in the configuration${
+            placeHolderForALineBreakFollwedByAnIndentation
+        }file loaded by the "-C" or "--config-file" arguments.\n`,
     )
 
     .option(
@@ -617,11 +632,19 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
     }
 
     if ('configFile' in programRawArguments) {
-        filledArguments.configFileIsSpecifiedInCLI = true
         filledArguments.configFile = programArguments.configFile
+        filledArguments.configFileIsSpecifiedInCLI = true
     } else {
-        filledArguments.configFileIsSpecifiedInCLI = false
         filledArguments.configFile = CLI_ARGUMENTS_DEFAULT_VALUE.configFile
+        filledArguments.configFileIsSpecifiedInCLI = false
+    }
+
+    if ('darkTheme' in programRawArguments) {
+        filledArguments.darkTheme = !!programRawArguments.darkTheme
+        filledArguments.darkThemeIsDemandedViaCLI = filledArguments.darkTheme
+    } else {
+        filledArguments.darkTheme = CLI_ARGUMENTS_DEFAULT_VALUE.darkTheme
+        filledArguments.darkThemeIsDemandedViaCLI = false
     }
 
     if ('tocUl' in programRawArguments) {
@@ -670,6 +693,8 @@ function printCLIArguments(rawArguments, filledArguments) {
         'inputFileCountToWarn',
         'configFile',
         'configFileIsSpecifiedInCLI',
+        'darkTheme',
+        'darkThemeIsDemandedViaCLI',
         'tocUl',
         'conciseToc',
         'expandToc',
@@ -720,7 +745,17 @@ function printCLIArguments(rawArguments, filledArguments) {
     console.log()
 }
 
-function combinArgumentsWithConfigFile(filledArguments) {
+function combinArgumentsWithConfigFile(filledArguments, cwd) {
+    const options = {
+        shouldDebug:                                       filledArguments.debug,
+        sourceGlobs:                                       filledArguments.from,
+        outputPath:                                        filledArguments.to,
+        configFileIsSpecifiedInCLI:                        filledArguments.configFileIsSpecifiedInCLI,
+        shouldUseCSSOfDefaultDarkThemeAccordingToArgument: filledArguments.darkTheme,
+        cssOfDefaultDarkThemeIsDemandedViaCLI:             filledArguments.darkThemeIsDemandedViaCLI,
+        promptUserIfSourceFileCountExceedsThisNumber:      filledArguments.inputFileCountToWarn,
+    }
+
     const conversionOptions = {
         articleTOCListTagNameIsUL: filledArguments.tocUl,
     }
@@ -729,21 +764,24 @@ function combinArgumentsWithConfigFile(filledArguments) {
         htmlTagLanguage: filledArguments.htmlLanguage,
     }
 
+    const manipulationsOverHTML0 = {}
+
+    if (options.shouldUseCSSOfDefaultDarkThemeAccordingToArgument) {
+        manipulationsOverHTML0.internalCSSFileNameOfTheme        = 'wulechuan-styles-for-html-via-markdown.default-dark--no-toc.min.css'
+        manipulationsOverHTML0.internalCSSFileNameOfThemeWithTOC = 'wulechuan-styles-for-html-via-markdown.default-dark--with-toc.min.css'
+    }
+
     const behaviousOfBuiltInTOC = {
         shouldShowOnlyTwoLevelsOfTOCItemsAtMost:                filledArguments.conciseToc,
         atBeginingShouldCollapseAllTOCItemsOfLevelsGreaterThan: filledArguments.tocItemExpandedLevel,
         atBeginingShouldExpandTOCWhenWindowsIsWideEnough:       filledArguments.expandToc,
     }
 
-    const options = {
-        shouldDebug: filledArguments.debug,
-        sourceGlobs: filledArguments.from,
-        outputPath:  filledArguments.to,
-        promptUserIfSourceFileCountExceedsThisNumber: filledArguments.inputFileCountToWarn,
+    if (!cwd) {
+        cwd = process.cwd()
     }
 
-
-    const configFilePath = filledArguments.configFile
+    const configFilePath = joinPath(cwd, filledArguments.configFile)
     let configurationsFromFile
 
     if (!existsSync(configFilePath)) {
@@ -792,6 +830,7 @@ function combinArgumentsWithConfigFile(filledArguments) {
     }
 
     optionsForConverter.manipulationsOverHTML = {
+        ...manipulationsOverHTML0,
         ...optionsForConverter.manipulationsOverHTML,
         ...manipulationsOverHTML,
     }
@@ -805,6 +844,20 @@ function combinArgumentsWithConfigFile(filledArguments) {
 
     if (options.shouldDebug) {
         console.log('decided options:', options)
+    }
+
+    if (options.cssOfDefaultDarkThemeIsDemandedViaCLI) {
+        const finallyCSS1IsNotOfCLIDemandedTheme = optionsForConverter.manipulationsOverHTML.internalCSSFileNameOfTheme        !== manipulationsOverHTML0.internalCSSFileNameOfTheme
+        const finallyCSS2IsNotOfCLIDemandedTheme = optionsForConverter.manipulationsOverHTML.internalCSSFileNameOfThemeWithTOC !== manipulationsOverHTML0.internalCSSFileNameOfThemeWithTOC
+        if (finallyCSS1IsNotOfCLIDemandedTheme || finallyCSS2IsNotOfCLIDemandedTheme) {
+            console.log()
+            console.log(chalk.yellow(`WARNING: According to the finalized configuration,\nthe "${
+                chalk.green('-d')
+            }" or "${
+                chalk.green('-dark-theme')
+            }" will ${chalk.red('NOT')} take effect!`))
+            console.log()
+        }
     }
 
     return options
