@@ -780,10 +780,10 @@ function combinArgumentsWithConfigFile(filledArguments, cwd) {
         manipulationsOverHTML0.internalCSSFileNameOfThemeWithTOC = 'wulechuan-styles-for-html-via-markdown.default-dark--with-toc.min.css'
     }
 
-    const behaviousOfBuiltInTOC = {
+    const behavioursOfBuiltInTOC = {
         shouldShowOnlyTwoLevelsOfTOCItemsAtMost:                filledArguments.conciseToc,
         atBeginingShouldCollapseAllTOCItemsOfLevelsGreaterThan: filledArguments.tocItemExpandedLevel,
-        atBeginingShouldExpandTOCWhenWindowsIsWideEnough:       filledArguments.expandToc,
+        atBeginingShouldExpandTOCWhenWindowIsWideEnough:        filledArguments.expandToc,
     }
 
     if (!cwd) {
@@ -829,8 +829,8 @@ function combinArgumentsWithConfigFile(filledArguments, cwd) {
         optionsForConverter.manipulationsOverHTML = {}
     }
 
-    if (!optionsForConverter.behaviousOfBuiltInTOC) {
-        optionsForConverter.behaviousOfBuiltInTOC = {}
+    if (!optionsForConverter.behavioursOfBuiltInTOC) {
+        optionsForConverter.behavioursOfBuiltInTOC = {}
     }
 
     optionsForConverter.conversionOptions = {
@@ -844,9 +844,9 @@ function combinArgumentsWithConfigFile(filledArguments, cwd) {
         ...manipulationsOverHTML,
     }
 
-    optionsForConverter.behaviousOfBuiltInTOC = {
-        ...optionsForConverter.behaviousOfBuiltInTOC,
-        ...behaviousOfBuiltInTOC,
+    optionsForConverter.behavioursOfBuiltInTOC = {
+        ...optionsForConverter.behavioursOfBuiltInTOC,
+        ...behavioursOfBuiltInTOC,
     }
 
     options['options for @wulechuan/generate-html-via-markdown'] = optionsForConverter
