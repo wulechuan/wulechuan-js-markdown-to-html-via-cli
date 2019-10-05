@@ -99,7 +99,7 @@ Options:
   -n, --input-file-count-to-warn  [path]
         Specify a number as a so-called "safe" limitation of the
         the count of resovled source files. If too many source
-        files are found. The the program pauses and prompt user
+        files are found, then this program pauses and prompt user
         to decide whether it should go on or quit. Setting this to
         zero means never prompt user and always process all discovered
         source files, no matter how many there are.

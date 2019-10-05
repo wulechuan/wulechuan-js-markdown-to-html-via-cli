@@ -203,7 +203,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }the count of resovled source files. If too many source${
             placeHolderForALineBreakFollwedByAnIndentation
-        }files are found. The the program pauses and prompt user${
+        }files are found, then this program pauses and prompt user${
             placeHolderForALineBreakFollwedByAnIndentation
         }to decide whether it should go on or quit. Setting this to${
             placeHolderForALineBreakFollwedByAnIndentation
