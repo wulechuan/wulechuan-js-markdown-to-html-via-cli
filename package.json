@@ -34,7 +34,7 @@
     "buildReadMeHTMLs": "npm  run  eslint    &&    npm  run  _buildReadMeHTMLs",
     "test": "npm              run  eslint    &&    npm  run  _testAllWithoutLintingWithoutBrowser",
     "beforeGitPushing": "npm  test",
-    "-prepublishOnly-": "npm  test",
+    "prepublishOnly": "npm    test",
     "postinstall": "npm  run  _buildReadMeHTMLs"
   },
   "repository": {
