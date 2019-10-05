@@ -141,7 +141,7 @@ program
             )
         }\n`,
 
-        collectSourceGlobsInCLIArguments
+        collectValuesOfTheSourceGlobsArgumentsInCLI
     )
 
     .option(
@@ -393,7 +393,7 @@ function formatDescriptionsOfAllArgumentOptions(program) {
     })
 }
 
-function collectSourceGlobsInCLIArguments(value, previousValue) {
+function collectValuesOfTheSourceGlobsArgumentsInCLI(value, previousValue) {
     if (!previousValue) {
         previousValue = []
     }
@@ -567,8 +567,12 @@ function main(programArguments) {
                 const thereIsOnlyOneSourceFile = sourceFilePaths.length === 1
 
                 const outputPathLooksLikeSingleHTMLFilePath = !!validOutputPath.match(/.+\.html$/i)
-                if (outputPathLooksLikeSingleHTMLFilePath && sourceFilePaths.length > 1) {
-                    console.log(chalk.red('Can not conver multiple source files into single output file.'))
+                if (
+                    !outputPathShouldBeRelativeToInputFileLocations &&
+                    outputPathLooksLikeSingleHTMLFilePath &&
+                    sourceFilePaths.length > 1
+                ) {
+                    console.log(chalk.red('Should not convert multiple source files into single output file.'))
                     process.exit(PROCESS_EXIT_CODE.multipleSourceFilesButSingleOutputFile)
                 }
 
@@ -604,11 +608,13 @@ function main(programArguments) {
 function fillDefaultValuesForAbsentArguments(programRawArguments) {
     /*
         I purposely avoid to use the "default value" option of
-        the `program.option()` method, is because I'd like to
+        the `program.option()` method, because I'd like to
         control:
           - the way the default values are printed in the CLI
             help.
-          - printing of the raw arguments
+          - printing of the raw arguments that are provided,
+            without those filled-in default values of those
+            absent arguments.
     */
 
     const filledArguments = {}
@@ -949,68 +955,12 @@ function filterOutSomeIllegalSourceFiles(sourceFilePath) {
     const sourceFilePathComponents = parsePath(sourceFilePath)
     const sourceFileExt = sourceFilePathComponents.ext.replace(/^\./, '')
 
-    let sourceFileExtIsIllegal = [
-        'jpg',
-        'jpeg',
-        'gif',
-        'png',
-        'bmp',
-        'pic',
-        'map',
-        'tif',
-        'tiff',
-        'raw',
-        'ai',
-        'psd',
-        'exr',
-        'tga',
-        'iso',
-        'zip',
-        'rar',
-        '7z',
-        'wav',
-        'ac3',
-        'eac3',
-        'acc',
-        'ape',
-        'flac',
-        'mov',
-        'qt',
-        'avi',
-        'divx',
-        'xvid',
-        'f4v',
-        'ts',
-        'vob',
-        'dat',
-        'mkv',
-        '3gp',
-        'ra',
-        'rm',
-        'rmvb',
-        'vc1',
-        'ask',
-        'wmv',
-        'wma',
-        'dts',
-        'dtshd',
-        'mpe',
-        'mpg',
-        'mpeg',
-        'mp4',
-        'mpa',
-        'mp3',
-        'ogg',
-        'webp',
-        'wenm',
-        'gif',
-        'exe',
-        'bin',
-    ].includes(sourceFileExt)
+    const sourceFileExtIsLegal = [
+        'md',
+        'markdown',
+    ].includes(sourceFileExt.toLowerCase())
 
-    sourceFileExtIsIllegal = sourceFileExtIsIllegal && !!sourceFileExt.match(/^r\d{2,}/)
-
-    if (sourceFileExtIsIllegal) {
+    if (!sourceFileExtIsLegal) {
         console.log(chalk.yellow(`WARNING: Invalid source file type: "${
             chalk.magenta(sourceFileExt)
         }"`))
