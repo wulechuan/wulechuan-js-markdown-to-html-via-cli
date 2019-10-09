@@ -2,7 +2,7 @@
   "name": "@wulechuan/markdown-to-html-via-cli",
   "author": "wulechuan <wulechuan@live.com>",
   "license": "WTFPL",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Convert markdown files in HTML files in your CLI environments.",
   "main": "index.js",
   "bin": {
@@ -26,8 +26,8 @@
   ],
   "scripts": {
     "eslint": "eslint    ./.eslintrc.js    ./index.js",
-    "_updateVersionsInReadMeMarkDowns": "node  ./helpers/update-versions-in-readme.js",
-    "_buildReadMeHTMLs": "npm  run  _updateVersionsInReadMeMarkDowns    &&    rm    -rf  ./ReadMe*.html    &&    node ./index.js",
+    "_updateVersionsInReadMeMarkDownsAndUpdateDateInMainJSFile": "node  ./helpers/update-versions-in-readme.js",
+    "_buildReadMeHTMLs": "npm  run  _updateVersionsInReadMeMarkDownsAndUpdateDateInMainJSFile    &&    rm    -rf  ./ReadMe*.html    &&    node ./index.js",
     "_testTheFakeProject": "rm  -rf  ./tests/fake-project/*.html  ./tests/fake-project/docs/*.html         &&    node ./index.js   -i ./tests/fake-project/**/*.md,./tests/fake-project/**/*.MD    -o '*'  -E3  -e  -D  -d  -C ./tests/converter-options.js",
     "_testTheCLIHelp": "node  ./index.js  -h",
     "_testAllWithoutLintingWithoutBrowser": "npm  run  _buildReadMeHTMLs     &&     npm  run  _testTheFakeProject    &&    npm  run  _testTheCLIHelp",
