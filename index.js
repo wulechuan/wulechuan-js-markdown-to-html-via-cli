@@ -233,7 +233,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${chalk.red(`any, in the configuration file, which is loaded via the "${chalk.green('-C')}"`)}${
             placeHolderForALineBreakFollwedByAnIndentation
-        }${chalk.red(`or "${chalk.green('--config-file')}" arguments.`)}\n`,
+        }${chalk.red(`or "${chalk.green('--config-file')}" arguments.`)}\n`
     )
 
     .option(
@@ -241,7 +241,7 @@ program
 
         `${
             descriptionPrefixString
-        }When presents, the lists in TOC are <ul>s instead of <ol>s.\n`,
+        }When presents, the lists in TOC are <ul>s instead of <ol>s.\n`
     )
 
     .option(
@@ -255,7 +255,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${chalk.red('Be aware that this way all deeper levels of TOC items are')}${
             placeHolderForALineBreakFollwedByAnIndentation
-        }${chalk.red('NEVER visible. They are hidden via CSS rules.')}\n`,
+        }${chalk.red('NEVER visible. They are hidden via CSS rules.')}\n`
     )
 
     .option(
@@ -269,7 +269,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }ALWAYS toggle manually. Also Note that to expand the TOC panel${
             placeHolderForALineBreakFollwedByAnIndentation
-        }is NOT the same thing as to expand an item of the TOC panel.\n`,
+        }is NOT the same thing as to expand an item of the TOC panel.\n`
     )
 
     .option(
@@ -289,7 +289,7 @@ program
             ofANonStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
                 CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExpandedLevel
             )
-        }\n`,
+        }\n`
     )
 
     .option(
@@ -302,7 +302,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage)
-        }\n`,
+        }\n`
     )
 
     .option(
