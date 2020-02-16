@@ -129,7 +129,7 @@ function updateVersionsInReadMeFiles(readMeFileNames, currentVersionOfThisPackag
             }
 
             const [ , , mentionedVersion ] = matchingResult
-            console.log(`\nFile "${chalk.green(filePath)}":\n    mentioned veriosn: ${chalk.cyan(mentionedVersion)}`)
+            console.log(`\nFile "${chalk.green(filePath)}":\n    mentioned version: ${chalk.cyan(mentionedVersion)}`)
 
             if (mentionedVersion === currentVersionOfThisPackage) {
                 console.log('    No need to update the version string.')

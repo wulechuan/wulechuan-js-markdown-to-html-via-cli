@@ -42,7 +42,7 @@
 
 内嵌样式来源于本人创建和维护的另一项目，即《[@wulechuan/css-stylus-markdown-themes](https://www.npmjs.com/package/@wulechuan/css-stylus-markdown-themes)》。
 
-其文档中亦有若干截图，直观展示一篇文档在应用两种默认主题样式（一浅色、一深色）后之样貌。见 [该文档](https://github.com/wulechuan/wulechuan-themes-for-htmls-via-markdowns/blob/master/docs/refs/zh-hans-CN/application-examples.md)。
+其文档中亦有若干截图，直观展示一篇文档在应用两种默认主题样式（一浅色、一深色）后之样貌。见 [该文档](https://github.com/wulechuan/wulechuan-css-stylus-themes-for-htmls-via-markdowns/blob/master/documents/refs/zh-hans-CN/application-examples.md)。
 
 
 #### 变更
@@ -69,7 +69,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.8.14".
+        Print the version of this program, that is "v2.9.0".
 
   -i, --from  [globs]
         Any glob that:
