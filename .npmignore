@@ -4,3 +4,4 @@ tests
 .eslintrc.js
 .markdownlint.json
 *.html
+*.sh
