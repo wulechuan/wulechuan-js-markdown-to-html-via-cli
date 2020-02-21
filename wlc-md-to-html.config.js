@@ -10,12 +10,12 @@ module.exports = {
     manipulationsOverHTML: {
         desiredReplacementsInHTML: [
             {
-                from: /\s+href="(https?:\/\/)/g,
+                from: /\s+href="([^#./].+)/gi,
                 to: ' target="_blank" href="$1',
             },
             {
-                from: /\s+href="([^"]+)\.(md|MD|Md|mD)"/g,
-                to: ' href="$1.html"',
+                from: /\s+href="([^"]+)\.(md|MD|Md|mD)(#.*)?"/g,
+                to: ' href="$1.html$3"',
             },
         ],
     },
