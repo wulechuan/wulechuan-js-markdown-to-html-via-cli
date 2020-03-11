@@ -1,72 +1,78 @@
-# Wulechuan's CLI Tool for Converting Markdown Files into HTML Files
+<link rel="stylesheet" href="./node_modules/@wulechuan/css-stylus-markdown-themes/dist/css/wulechuan-styles-for-html-via-markdown--vscode.default.min.css">
+
+
+# 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
 
 
 ## Multilingual Editions of this Article
 
-- [简体中文版文档](./ReadMe.zh-hans-CN.md)
+- [English version of this ReadMe](./ReadMe.en-US.md)
 
 
 
 
-## NPM Page
+## NPM 页
 
 <dl>
-<dt>Package Name</dt>
+<dt>NPM 包名</dt>
 <dd>
 
 [@wulechuan/markdown-to-html-via-cli](https://www.npmjs.com/package/@wulechuan/markdown-to-html-via-cli)
 
 </dd>
-<dt>Author</dt>
-<dd><p>wulechuan (南昌吴乐川)</p></dd>
+<dt>作者</dt>
+<dd><p>南昌吴乐川</p></dd>
 </dl>
 
 
 
 
-## Introduction
 
-Yet another tool for converting MarkDown files into corresponding HTML files, but with gorgeous themes applied to the output HTML by default. The HTML includes both CSS rules and Javascript codes. **Thus, when deliver your article with the help of this tool, a single HTML file would be enough.**
+## 简介
 
-> The Javascript codes are for the behviours of the table of contents(TOC) part.
+本工具借助 [markdownIt](https://www.npmjs.com/package/markdown-it) 生态的工具集，可将一组 MarkDown 文件转化成对应的 HTML 文件。本工具还在输出的完整 HTML 内容中，内嵌了精美的 CSS 样式集和 Javascript 代码。**故，当你借助本工具来制作你的文章的可分发版本时，单一的完整 HTML 文档即可独立运转。**
 
-> Note that although all CSS and Javascript contents are embeded, images are still external resources to the HTML.
+> 其中的 Javascript 代码用于控制【文章纲要列表】之行为。
 
-This tool utilizes the ecosystem of the famous tool, "[markdownIt](https://www.npmjs.com/package/markdown-it)".
+> 尽管样式和脚本均已完整包含其中，但图片文件仍为改 HTML 文档的外部资源，须正确对应引用路径。
 
-**You provide a set of markdown file paths, you get another set of HTML files.**
+**简而言之，给出一组 MarkDown 文件的路径，得到一组 HTML 文件。**
 
-No need to provide literally anything, you get a full featured HTML. Including gorgeous themes, and responsive layout fitting all sizes of screens, and TOC with smart behaviours, and the pretty "back-to-top" button(an anchor in fact).
-
-
-### Built-in Themes
-
-The CSS file for the built-in theming is from another NPM package of mine, named "[@wulechuan/css-stylus-markdown-themes](https://www.npmjs.com/package/@wulechuan/css-stylus-markdown-themes)".
-
-See some pictures of an example article with 2 default themes (a light-colored one and a dark-colred one) applied [there](https://github.com/wulechuan/wulechuan-css-stylus-themes-for-htmls-via-markdowns/blob/master/documents/refs/en-US/application-examples.md).
-
-#### Changes
-
-**The dark theme is now supported via CLI arguments "`-d`" or "`--dark-theme`".**
+不须带任何参数，即可轻松获得一份华丽的 HTML 文档。其自带精美主题，宽窄屏全自适应排版。包含文章纲要列表，“返回顶部”按钮（实则链接）等等。
 
 
-## Installation
+### 内嵌样式
+
+内嵌样式来源于本人创建和维护的另一项目，即《[@wulechuan/css-stylus-markdown-themes](https://www.npmjs.com/package/@wulechuan/css-stylus-markdown-themes)》。
+
+其文档中亦有若干截图，直观展示一篇文档在应用两种默认主题样式（一浅色、一深色）后之样貌。见 [该文档](https://github.com/wulechuan/wulechuan-css-stylus-themes-for-htmls-via-markdowns/blob/master/documents/refs/zh-hans-CN/application-examples.md)。
+
+
+#### 变更
+
+**本工具现已支持将深色主题应用于输出之 HTML 文件中。对应的命令行参数为 “`-d`” 或 “`--dark-theme`”。**
+
+
+
+## 安装方法
 
 ```bash
 npm    i    -g    @wulechuan/markdown-to-html-via-cli
 ```
 
 
-## Usage
+## 用法
 
-### CLI Arguments
+
+### 命令行参数说明
+
 
 ```bash
 Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.9.0".
+        Print the version of this program, that is "v2.9.1".
 
   -i, --from  [globs]
         Any glob that:
@@ -145,87 +151,82 @@ Options:
 ```
 
 
-### Converter Configuration File
+### 用于复杂选项的配置文件
 
-To use a configuration file to control the converter is optional.
+@wulechuan/generate-html-via-markdown （下称“格式转换器”）的配置项很复杂，为其所有选项设计对应的命令行参数项时不切实际的。我们可以使用一个 .js 配置文件来配置格式转换器的复杂行为。
 
-To use, specify the file path via the CLI argument `-C` or `--config-file`. Either relative or absolute will do.
+要在命令行中指代欲采用的配置文件，须使用命令行参数项 `-C` 或 `--config-file`。二者互为别名，仅可取其一。
 
-The details of what a configuration file should look like, please refer to [@wulechuan/generate-html-via-markdown#arguments](https://www.npmjs.com/package/@wulechuan/generate-html-via-markdown#arguments).
+配置文件的内容细则见 [@wulechuan/generate-html-via-markdown#arguments](https://www.npmjs.com/package/@wulechuan/generate-html-via-markdown#arguments)。
 
 
-### Examples
 
--   To print full help in your CLI.
+### 示例集
+
+-   在命令行环境中打印完整的帮助信息：
 
     ```bash
     wlc-md-to-html    --help
     ```
 
--   By default, this tool scans for all `.md` and `*.MD` files under current folder, but **NOT** recursively searching sub-folders. And it outputs HTML files in the same folder.
+-   默认情况下，本工具会扫描当前文件夹内的所有 `.md` 文件，但不会递归扫描子文件夹中的内容（想想看，`node_modules` 文件夹中可能存在非常多的 `.md` 文件）。同时，输出的 HTML 文件也会位于同一文件夹中。
 
     ```bash
     wlc-md-to-html
     ```
 
--   To build all HTML files into exactly the same output folder. Note that here we use several `-i` arguments together.
+-   下面的命令将所有 HTML 文件统统输出至同一个文件夹中。还注意到，下面故意并列使用了多次 `-i` 参数。
 
     ```bash
     wlc-md-to-html    -i "./**/*.md" -i "./**/*.MD" -i README.MD -i README.md   -o "/home/wulechuan/articles/html/"
     ```
 
--   This command below converts all `.md` and `*.MD` files in the current folder into an HTML file each, and put all HTML files in the `"C:\articles\"` folder.
+-   下面的命令会针对当前文件夹内所有的 `.md` 或 `*.MD` 文件生成对应的 HTML 文件，并将所有生成的 HTML 文件至于 `"C:\articles\"` 文件夹内。
 
     ```bat
     wlc-md-to-html    -o C:\articles\
     ```
 
--   To build HTML files, each in the same sub-folder named "html" under the folder of its corresponding source markdown file.
-
-    Notice the leading asterisk sign(`*`) in the output path.
-
-    Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
+-   下面的命令将在每个源 `.md` 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 `.md` 文件对应的 HTML 文件生成在该 “html” 子文件夹中。注意输出路径的起始有一个星号（`*`），并且输出路径必须被引号（`"`）括起来。
 
     ```bash
     wlc-md-to-html    -i markdowns/*.md   -o "*/html/"
     ```
 
--   To build HTML files, each in the same folder of its corresponding source markdown file.
-
-    Notice a asterisk sign(`*`) is used as the output path.
-
-    Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
+-   要在每个 Markdown 源文件的“原处”生成对应的 HTML 文件，可以这样做。注意到输出路径是一个星号（`*`），且它被引号（`"`）括了起来。
 
     ```bash
     cd    ./tests/fake-project
     wlc-md-to-html    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
     ```
 
--   To build HTML files with language tag set to "en-US".
+-   下面的命令将所有输出的 HTML 文件的语言标记为 "en-US"。
 
     ```bash
-    cd    ./tests/fake-project
     wlc-md-to-html    -l "en-US"
     ```
 
--   To load converter configurations from a .js file.
+-   下面的命令将采用一个配置文件来控制文件格式转换的细则。
 
     ```bash
     wlc-md-to-html    -C "/home/wulechuan/articles/my-markdown-to-my-html.config.js"
     ```
 
 
-## TODOS
-
-Nothing at present.
 
 
 
-## License
+
+## 未来计划
+
+暂无。
+
+
+## 许可证类型
 
 WTFPL
 
-> NOTE:
+> 注意：
 >
-> I'm not an expert about license types. So I temporarily use WTFPL. But I guess this type of license might conflict with the ones used by those npm packages I'm utilizing.
+> 我未研究过许可证的约束。因此姑且声明为 WTFPL 类型。但实际上该许可证类型可能与我采用的开源模块有冲突。
 
