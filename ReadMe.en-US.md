@@ -69,7 +69,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.9.2".
+        Print the version of this program, that is "v2.9.3".
 
   -i, --from  [globs]
         Any glob that:
@@ -185,9 +185,9 @@ The details of what a configuration file should look like, please refer to [@wul
 
 -   To build HTML files, each in the same sub-folder named "html" under the folder of its corresponding source markdown file.
 
-    Notice the leading asterisk sign(`*`) in the output path.
+    **Notice the leading asterisk sign(`*`) in the output path.**
 
-    Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
+    Also note that you **MUST quote the output path**, otherwise the operating system might expand the glob before the value is passed to this program.
 
     ```bash
     wlc-md-to-html    -i markdowns/*.md   -o "*/html/"
@@ -218,7 +218,7 @@ The details of what a configuration file should look like, please refer to [@wul
     ```
 
 
-## TODOS
+## TODOs
 
 Nothing at present.
 

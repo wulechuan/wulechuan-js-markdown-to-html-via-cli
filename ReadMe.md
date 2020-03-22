@@ -72,7 +72,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.9.2".
+        Print the version of this program, that is "v2.9.3".
 
   -i, --from  [globs]
         Any glob that:
@@ -181,19 +181,19 @@ Options:
     wlc-md-to-html    -i "./**/*.md" -i "./**/*.MD" -i README.MD -i README.md   -o "/home/wulechuan/articles/html/"
     ```
 
--   下面的命令会针对当前文件夹内所有的 `.md` 或 `*.MD` 文件生成对应的 HTML 文件，并将所有生成的 HTML 文件至于 `"C:\articles\"` 文件夹内。
+-   下面的命令会针对当前文件夹内所有的 `.md` 或 `*.MD` 文件生成对应的 HTML 文件，并将所有生成的 HTML 文件置于 `"C:\articles\"` 文件夹内。
 
     ```bat
     wlc-md-to-html    -o C:\articles\
     ```
 
--   下面的命令将在每个源 `.md` 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 `.md` 文件对应的 HTML 文件生成在该 “html” 子文件夹中。注意输出路径的起始有一个星号（`*`），并且输出路径必须被引号（`"`）括起来。
+-   下面的命令将在每个源 `.md` 文件所在的文件夹内，创建一个名为 “html” 的子文件夹，并将该 `.md` 文件对应的 HTML 文件生成在该 “html” 子文件夹中。注意**输出路径的起始有一个星号（`*`）**，并且输出路径**必须**被引号（`"`）括起来。
 
     ```bash
     wlc-md-to-html    -i markdowns/*.md   -o "*/html/"
     ```
 
--   要在每个 Markdown 源文件的“原处”生成对应的 HTML 文件，可以这样做。注意到输出路径是一个星号（`*`），且它被引号（`"`）括了起来。
+-   要在每个 Markdown 源文件的“原处”生成对应的 HTML 文件，可以这样做。注意到**输出路径是一个星号（`*`）**，且它被引号（`"`）括了起来。
 
     ```bash
     cd    ./tests/fake-project
