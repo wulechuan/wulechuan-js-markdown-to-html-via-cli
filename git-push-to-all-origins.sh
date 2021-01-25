@@ -7,17 +7,17 @@ echo -e "\e[32m开始\e[0m"
 # echo
 
 wulechuan-git-push-to-single-origin  --should-skip=false \
-    --git-origin-name='gitee-吴乐川' \
+    --git-origin-name='码云：吴乐川' \
     --git-origin-display-name='码云：吴乐川' \
     --git-origin-display-name-color='red'
 
 wulechuan-git-push-to-single-origin  --should-skip=false \
-    --git-origin-name='aliyun-吴乐川' \
-    --git-origin-display-name='阿里云：吴乐川' \
+    --git-origin-name='码云：吴乐川' \
+    --git-origin-display-name='码云：吴乐川' \
     --git-origin-display-name-color='green'
 
 wulechuan-git-push-to-single-origin  --should-skip=false \
-    --git-origin-name='github-吴乐川' \
+    --git-origin-name='GitHub：吴乐川' \
     --git-origin-display-name='GitHub：吴乐川' \
     --git-origin-display-name-color='yellow'
 
