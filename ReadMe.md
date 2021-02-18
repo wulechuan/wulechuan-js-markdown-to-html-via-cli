@@ -3,10 +3,12 @@
 
 # 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
 
+> 中国人，特别是汉族人，理应坚持广泛、规范地使用汉语。凡非必要之情形，不说外国话，不用外国字。此乃天经地义！支持少数民族坚持采用自己民族的传统语言。然，凡中国人，皆应会用汉语、积极使用汉语，此乃中华各民族之大一统之必由。
+
 
 ## Multilingual Editions of this Article
 
-- [English version of this ReadMe](./ReadMe.en-US.md)
+- [English version of this ReadMe](./文档/说明书/en-US/ReadMe.md)
 
 
 
@@ -45,7 +47,7 @@
 
 内嵌样式来源于本人创建和维护的另一项目，即《[@wulechuan/css-stylus-markdown-themes](https://www.npmjs.com/package/@wulechuan/css-stylus-markdown-themes)》。
 
-其文档中亦有若干截图，直观展示一篇文档在应用两种默认主题样式（一浅色、一深色）后之样貌。见 [该文档](https://github.com/wulechuan/wulechuan-css-stylus-themes-for-htmls-via-markdowns/blob/master/documents/refs/zh-hans-CN/application-examples.md)。
+其文档中亦有若干截图，直观展示一篇文档在应用两种默认主题样式（一浅色、一深色）后之样貌。见 [该文档](https://github.com/wulechuan/wulechuan-css-stylus-themes-for-htmls-via-markdowns/blob/master/%E6%96%87%E6%A1%A3/%E8%AF%B4%E6%98%8E%E4%B9%A6/%E6%B1%89%E8%AF%AD/%E5%85%B3%E4%BA%8E%E6%96%87%E7%AB%A0%E6%8E%92%E7%89%88%E4%B8%8E%E9%85%8D%E8%89%B2%E6%95%88%E6%9E%9C%E7%A4%BA%E4%BE%8B%E9%9B%86%E7%9A%84%E8%AF%B4%E6%98%8E.md)。
 
 
 #### 变更
@@ -72,7 +74,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.9.3".
+        Print the version of this program, that is "v2.9.4".
 
   -i, --from  [globs]
         Any glob that:

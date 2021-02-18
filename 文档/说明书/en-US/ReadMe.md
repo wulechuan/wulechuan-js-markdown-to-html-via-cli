@@ -6,7 +6,7 @@
 
 ## Multilingual Editions of this Article
 
-- [简体中文版文档](./ReadMe.md)
+- [简体中文版文档](../../../ReadMe.md)
 
 
 
@@ -46,7 +46,7 @@ No need to provide literally anything, you get a full featured HTML. Including g
 
 The CSS file for the built-in theming is from another NPM package of mine, named "[@wulechuan/css-stylus-markdown-themes](https://www.npmjs.com/package/@wulechuan/css-stylus-markdown-themes)".
 
-See some pictures of an example article with 2 default themes (a light-colored one and a dark-colred one) applied [there](https://github.com/wulechuan/wulechuan-css-stylus-themes-for-htmls-via-markdowns/blob/master/documents/refs/en-US/application-examples.md).
+See some pictures of an example article with 2 default themes (a light-colored one and a dark-colred one) applied [there](https://github.com/wulechuan/wulechuan-css-stylus-themes-for-htmls-via-markdowns/blob/master/%E6%96%87%E6%A1%A3/%E8%AF%B4%E6%98%8E%E4%B9%A6/en-US/application-examples.md).
 
 #### Changes
 
@@ -69,7 +69,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
   -v, --version
-        Print the version of this program, that is "v2.9.3".
+        Print the version of this program, that is "v2.9.4".
 
   -i, --from  [globs]
         Any glob that:

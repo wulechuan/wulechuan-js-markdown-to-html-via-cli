@@ -4,7 +4,7 @@
 # 件夹的起始部分有区别，则日常在 Windows 环境借助 tab 键可自动补齐本文件全称，这就
 # 更为便捷了。
 
-. .\PowerShell-Tools\common\Push-GitRepositoryToSingleOrigin.ps1
+. .\用于研发阶段的命令行工具\PowerShell\通用\Push-GitRepositoryToSingleOrigin.ps1
 
 Write-Host
 Write-Host  -F 'Black'  -B 'DarkGreen'  ' Git 推送至所有源：开始 '

@@ -2,7 +2,7 @@
   "name": "@wulechuan/markdown-to-html-via-cli",
   "author": "wulechuan <wulechuan@live.com>",
   "license": "WTFPL",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "description": "Convert markdown files in HTML files in your CLI environments.",
   "main": "index.js",
   "bin": {
@@ -47,10 +47,10 @@
     "命令行批量格式转换工具"
   ],
   "scripts": {
-    "eslint": "eslint  ./.eslintrc.js  ./index.js",
+    "eslint": "eslint  ./.eslintrc.js  ./index.js  helpers/*.js",
     "_update-versions-in-readme-markdowns-and-update-date-in-main-js-file": "node  ./helpers/update-versions-in-readme.js",
-    "_build-readme-htmls": "npm  run  _update-versions-in-readme-markdowns-and-update-date-in-main-js-file    &&    rimraf  -rf  ./ReadMe*.html    &&    node  ./index.js",
-    "_test-the-fake-project": "rimraf  -rf  ./tests/fake-project/*.html  ./tests/fake-project/docs/*.html                                          &&    node  ./index.js  -i ./tests/fake-project/**/*.md,./tests/fake-project/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./tests/converter-options.js",
+    "_build-readme-htmls": "npm  run  _update-versions-in-readme-markdowns-and-update-date-in-main-js-file    &&    rimraf  -rf  ./ReadMe*.html  ./文档/**/*.html    &&    node  ./index.js  -i 'ReadMe.md,./文档/**/*.md'  -o '*'",
+    "_test-the-fake-project": "rimraf  -rf  ./tests/fake-project/*.html  ./tests/fake-project/docs/*.html                                                           &&    node  ./index.js  -i ./tests/fake-project/**/*.md,./tests/fake-project/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./tests/converter-options.js",
     "_test-the-cli-help": "node  ./index.js  -h",
     "_test-all-without-linting-without-browser": "npm     run  _build-readme-htmls     &&     npm  run  _test-the-fake-project    &&    npm  run  _test-the-cli-help",
     "build-readme-htmls": "npm  run  eslint    &&    npm  run  _build-readme-htmls",
@@ -69,11 +69,14 @@
   "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme",
   "dependencies": {
     "@wulechuan/css-stylus-markdown-themes": "^6.4.12",
-    "@wulechuan/generate-html-via-markdown": "^2.9.6",
-    "chalk": "^3.0.0",
-    "commander": "^4.1.1",
-    "fs-extra": "^8.1.0",
-    "globby": "^11.0.0",
+    "@wulechuan/generate-html-via-markdown": "^2.9.10",
+    "chalk": "^4.1.0",
+    "commander": "^7.1.0",
+    "fs-extra": "^9.1.0",
+    "globby": "^11.0.2",
     "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.20.0"
   }
 }

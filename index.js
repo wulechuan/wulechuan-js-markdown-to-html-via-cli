@@ -11,7 +11,7 @@ console.log('.                                                 .')
 console.log(`.    ${version}${' '.repeat(45 -  version.length)}.`)
 console.log('.                                                 .')
 console.log('.               wulechuan <wulechuan@live.com>    .')
-console.log('.                                   2020-03-23    .')
+console.log('.                                   2021-02-19    .')
 console.log('.                                                 .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
@@ -317,7 +317,7 @@ program.on('--help', () => {
 
     const existingHelpHTMLs = [
         'ReadMe.html',
-        'ReadMe.zh-hans-CN.html',
+        './文档/说明书/en-US/ReadMe.html',
     ].reduce((allExistingHelps, subPath) => {
         const fullPath = joinPath(thisPackageRootFolderPath, subPath)
         if (existsSync(fullPath)) {
@@ -332,11 +332,14 @@ program.on('--help', () => {
 
     if (existingHelpHTMLs.length > 0) {
         if (SHOULD_PRINT_PATHS_OF_HELP_HTML_FILES_ON_DASH_DASH_HELP) {
-            let englishPhrase = 'any of'
+            let englishPhrase
+
             if (existingHelpHTMLs.length === 1) {
                 englishPhrase = 'this doc'
             } else if (existingHelpHTMLs.length === 2) {
                 englishPhrase = 'either of'
+            } else {
+                englishPhrase = 'any of'
             }
 
             console.log()
@@ -454,17 +457,8 @@ function ofANonStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(defaultNo
 
 program.parse(process.argv)
 
-/*
-    The program and the arguments carrier of the progarm,
-    are the same object. But I prefer different var names
-    for different concepts.
-*/
-const programArguments = program
-
-
-
 try {
-    main(programArguments)
+    start(program)
 } catch (err) {
     console.log(err.message)
     process.exit(PROCESS_EXIT_CODE.unkown)
@@ -475,11 +469,17 @@ try {
 
 
 
-function main(programArguments) {
+function start(program) {
+    const programArguments = program.opts()
+    const unknownArguments = program.args
     const filledArguments = fillDefaultValuesForAbsentArguments(programArguments)
 
-    printCLIArguments(programArguments, filledArguments)
-    if (filledArguments.unknownArguments.length > 0) {
+    // console.log('\nprogramArguments', programArguments)
+    // console.log('\nunknownArguments', unknownArguments)
+    // console.log('\nfilledArguments', filledArguments)
+
+    printCLIArguments(programArguments, unknownArguments, filledArguments)
+    if (unknownArguments.length > 0) {
         console.log(chalk.red('Unknown arguments are NOT allowed.'))
 
         console.log(chalk.yellow('You might:'))
@@ -622,13 +622,13 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
     filledArguments.debug = !!programRawArguments.debug
 
     if (programRawArguments.from) {
-        filledArguments.from = programArguments.from
+        filledArguments.from = programRawArguments.from
     } else {
         filledArguments.from = CLI_ARGUMENTS_DEFAULT_VALUE.from
     }
 
     if (programRawArguments.to) {
-        filledArguments.to = programArguments.to
+        filledArguments.to = programRawArguments.to
     } else {
         filledArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
     }
@@ -647,7 +647,7 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
     }
 
     if ('configFile' in programRawArguments) {
-        filledArguments.configFile = programArguments.configFile
+        filledArguments.configFile = programRawArguments.configFile
         filledArguments.configFileIsSpecifiedInCLI = true
     } else {
         filledArguments.configFile = CLI_ARGUMENTS_DEFAULT_VALUE.configFile
@@ -692,13 +692,10 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.htmlLanguage = CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage
     }
 
-
-    filledArguments.unknownArguments = programRawArguments.args
-
     return filledArguments
 }
 
-function printCLIArguments(rawArguments, filledArguments) {
+function printCLIArguments(rawArguments, unknownArguments, filledArguments) {
     const rawArgumentsToPrint = {}
 
     const argumentKeysInPrintingOrder = [
@@ -723,15 +720,15 @@ function printCLIArguments(rawArguments, filledArguments) {
         }
     })
 
-    const unknownArgumentsCount = rawArguments.args.length
+    const unknownArgumentsCount = unknownArguments.length
 
     if (unknownArgumentsCount > 0) {
         const unknownArgumentsPrintingName = `args (${unknownArgumentsCount})`
 
         if (unknownArgumentsCount <= 100) {
-            rawArgumentsToPrint[unknownArgumentsPrintingName] = rawArguments.args
+            rawArgumentsToPrint[unknownArgumentsPrintingName] = unknownArguments
         } else {
-            rawArgumentsToPrint[unknownArgumentsPrintingName] = rawArguments.args.slice(0, 99)
+            rawArgumentsToPrint[unknownArgumentsPrintingName] = unknownArguments.slice(0, 99)
             rawArgumentsToPrint[unknownArgumentsPrintingName].push[`< and ${unknownArgumentsCount - 99} more >`]
         }
     }
@@ -941,7 +938,7 @@ function filterOutSomeIllegalSourceFiles(sourceFilePath) {
     const sourceFileStat = getFileStatSync(sourceFilePath)
     const sourceFileSizeInBytes = sourceFileStat.size
 
-    if (sourceFileSizeInBytes > 1e6) {
+    if (sourceFileSizeInBytes > 1e7) {
         console.log(chalk.yellow(`ERROR: Source file way too large (${
             chalk.magenta(sourceFileSizeInBytes)
         } ${

@@ -9,7 +9,7 @@ const {
 
 const readMeFileNames = [
     'ReadMe.md',
-    'ReadMe.en-US.md',
+    './文档/说明书/en-US/ReadMe.md',
 ]
 
 const nameOfFileThatContainsCLISplashScreen = 'index.js'
