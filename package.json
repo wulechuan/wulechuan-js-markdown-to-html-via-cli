@@ -2,7 +2,7 @@
   "name": "@wulechuan/markdown-to-html-via-cli",
   "author": "wulechuan <wulechuan@live.com>",
   "license": "WTFPL",
-  "version": "2.9.4",
+  "version": "2.9.5",
   "description": "Convert markdown files in HTML files in your CLI environments.",
   "main": "index.js",
   "bin": {
@@ -56,7 +56,7 @@
     "build-readme-htmls": "npm  run  eslint    &&    npm  run  _build-readme-htmls",
     "test": "npm                run  eslint    &&    npm  run  _test-all-without-linting-without-browser",
     "before-git-commit": "npm  test",
-    "prepublishOnly": "npm     test",
+    "prepublishOnly": "npm     test    &&    rimraf  -f  ./ReadMe.html",
     "postinstall": "npm  run  _build-readme-htmls"
   },
   "repository": {
