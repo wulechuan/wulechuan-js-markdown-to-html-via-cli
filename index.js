@@ -3,36 +3,39 @@
 const thisPackageJSON = require('./package.json')
 const version = `v${thisPackageJSON.version.replace(/^v/, '')}`
 
-console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
-console.log('.                                                 .')
-console.log('.    Welcome to wulechuan\'s CLI tool for          .')
-console.log('.    converting markdown files into HTML ones.    .')
-console.log('.                                                 .')
-console.log(`.    ${version}${' '.repeat(45 -  version.length)}.`)
-console.log('.                                                 .')
-console.log('.               wulechuan <wulechuan@live.com>    .')
-console.log('.                                   2021-07-16    .')
-console.log('.                                                 .')
-console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
+console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
+console.log('.                                                       .')
+console.log('.  此乃吴乐川设计的命令行工具，                         .')
+console.log('.  用以批量将 MarkDown 格式逐一转化为 HTML 格式之文件。 .')
+console.log('.                                                       .')
+console.log(`.  ${version}${' '.repeat(45 -  version.length)}        .`)
+console.log('.                                                       .')
+console.log('.                         吴乐川 <wulechuan@live.com>   .')
+console.log('.                                          2021-07-16   .')
+console.log('.                                                       .')
+console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
 
-const PROCESS_EXIT_CODE = {
-    unkown: 1,
-    invalidOutputPath: 2,
-    multipleOutputPaths: 3,
-    multipleSourceFilesButSingleOutputFile: 4,
-    multipleConfigFilePaths: 5,
-    specifiedConfigFileNotFound: 6,
-    configFileReadError: 7,
-    invalidValueOfInputFileCountToWarn: 8,
-    unkownArgumentsPresent: 9,
-    userCancelledBecauseOfTooManySourceFiles: 19,
+const 进程异常退出之代码集 = {
+    未知错误: 1,
+    命令行中给出的输出路径无效: 2,
+    命令行中给出的输出路径配置项不止一个: 3,
+    匹配的MarkDown文件不止一个但输出的HTML却是唯一: 4,
+    命令行中给出的配置文件不止一个: 5,
+    命令行中给出的配置文件不存在: 6,
+    配置项文件读取失败: 7,
+    配置项中给出的关于源文件过多之警告的限额值无效: 8,
+    命令行中出现了未知参数项: 9,
+    因匹配的MarkDown文件数量过多用户决定退出本程序: 19,
 }
-const CLI_ARGUMENTS_DEFAULT_VALUE = {
+const 命令行参数各项之默认值 = {
     from: [ './*.md', './*.MD' ],
     to: './',
     inputFileCountToWarn: 51,
-    configFile: './wlc-md-to-html.config.js',
+    configFiles: [
+        './吴乐川MarkDown转HTML之配置.js',
+        './wlc-md-to-html.config.js',
+    ],
     darkTheme: false,
     tocUl: false,
     conciseToc: false,
@@ -41,9 +44,9 @@ const CLI_ARGUMENTS_DEFAULT_VALUE = {
     htmlLanguage: 'zh-hans-CN',
 }
 
-const CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH = 6
-const CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE = false
-const SHOULD_PRINT_PATHS_OF_HELP_HTML_FILES_ON_DASH_DASH_HELP = true
+const 命令行中打印的帮助信息之缩进空格默认数 = 6
+// const CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE = false
+const 当命令行给出杠杠HELP时应打印HTML版本之帮助文件之文件路径 = true
 
 
 /**
@@ -98,10 +101,10 @@ program.name('wlc-md-to-html')
 
 const placeHolderForALineBreakFollwedByAnIndentation = '<-line-break-and-indent-here->'
 
-let descriptionPrefixString = `\n${' '.repeat(CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH)}`
-if (CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE) {
-    descriptionPrefixString = ''
-}
+const descriptionPrefixString = `\n${' '.repeat(命令行中打印的帮助信息之缩进空格默认数)}`
+// if (CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE) {
+//     descriptionPrefixString = ''
+// }
 
 program
     .version(
@@ -137,7 +140,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             ofAnArrayValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
-                CLI_ARGUMENTS_DEFAULT_VALUE.from
+                命令行参数各项之默认值.from
             )
         }\n`,
 
@@ -169,7 +172,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
-                CLI_ARGUMENTS_DEFAULT_VALUE.to
+                命令行参数各项之默认值.to
             )
         }\n`,
 
@@ -187,7 +190,11 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
-                CLI_ARGUMENTS_DEFAULT_VALUE.configFile
+                命令行参数各项之默认值.configFiles[0]
+            )
+        }${
+            ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
+                命令行参数各项之默认值.configFiles[1]
             )
         }\n`,
 
@@ -213,7 +220,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             ofANonStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
-                CLI_ARGUMENTS_DEFAULT_VALUE.inputFileCountToWarn
+                命令行参数各项之默认值.inputFileCountToWarn
             )
         }\n`,
 
@@ -287,7 +294,7 @@ program
             placeHolderForALineBreakFollwedByAnIndentation
         }${
             ofANonStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(
-                CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExpandedLevel
+                命令行参数各项之默认值.tocItemExpandedLevel
             )
         }\n`
     )
@@ -301,7 +308,7 @@ program
         }tag inside a generated HTML file.${
             placeHolderForALineBreakFollwedByAnIndentation
         }${
-            ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage)
+            ofAStringValueGetTheCLIHelpPrintingStringOfItsDefaultValue(命令行参数各项之默认值.htmlLanguage)
         }\n`
     )
 
@@ -331,7 +338,7 @@ program.on('--help', () => {
     }, [])
 
     if (existingHelpHTMLs.length > 0) {
-        if (SHOULD_PRINT_PATHS_OF_HELP_HTML_FILES_ON_DASH_DASH_HELP) {
+        if (当命令行给出杠杠HELP时应打印HTML版本之帮助文件之文件路径) {
             let englishPhrase
 
             if (existingHelpHTMLs.length === 1) {
@@ -380,13 +387,13 @@ formatDescriptionsOfAllArgumentOptions(program)
 
 
 function formatDescriptionsOfAllArgumentOptions(program) {
-    let newLineIndentationWidth = CLI_HELP_DECSCRIPTIONS_INDENTATION_DEFAULT_WIDTH
+    const newLineIndentationWidth = 命令行中打印的帮助信息之缩进空格默认数
 
-    if (CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE) {
-        newLineIndentationWidth = program.options.reduce((maxFlagsStringLength, option) => {
-            return Math.max(maxFlagsStringLength, option.flags.length + 2)
-        }, 19)
-    }
+    // if (CLI_HELP_DECSCRIPTIONS_SHOULD_LAY_RIGHTSIDE) {
+    //     newLineIndentationWidth = program.options.reduce((maxFlagsStringLength, option) => {
+    //         return Math.max(maxFlagsStringLength, option.flags.length + 2)
+    //     }, 19)
+    // }
 
     program.options.forEach(option => {
         option.description = option.description.replace(
@@ -411,7 +418,7 @@ function collectValuesOfTheSourceGlobsArgumentsInCLI(value, previousValue) {
 function processArgumentOfOutputPath(value, previousValue) {
     if (previousValue) {
         console.log(chalk.red('Multiple \'-o, --to\' options are NOT allowed.'))
-        process.exit(PROCESS_EXIT_CODE.multipleOutputPaths)
+        process.exit(进程异常退出之代码集.命令行中给出的输出路径配置项不止一个)
     }
 
     return value
@@ -420,7 +427,7 @@ function processArgumentOfOutputPath(value, previousValue) {
 function processArgumentOfConfigFilePath(value, previousValue) {
     if (previousValue) {
         console.log(chalk.red('Multiple \'-C, --config-json\' options are NOT allowed.'))
-        process.exit(PROCESS_EXIT_CODE.multipleConfigFilePaths)
+        process.exit(进程异常退出之代码集.命令行中给出的配置文件不止一个)
     }
 
     return value
@@ -461,7 +468,7 @@ try {
     start(program)
 } catch (err) {
     console.log(err.message)
-    process.exit(PROCESS_EXIT_CODE.unkown)
+    process.exit(进程异常退出之代码集.未知错误)
 }
 
 
@@ -504,7 +511,7 @@ function start(program) {
             }" argument.`)
         }`)
 
-        process.exit(PROCESS_EXIT_CODE.unkownArgumentsPresent)
+        process.exit(进程异常退出之代码集.命令行中出现了未知参数项)
     }
 
     const options = combinArgumentsWithConfigFile(filledArguments)
@@ -542,7 +549,7 @@ function start(program) {
 
     if (outputPathRawValue2.match(/[*?]/)) {
         console.log(chalk.red(`Invalid output folder path:\n    "${chalk.yellow(outputPathRawValue2)}"`))
-        process.exit(PROCESS_EXIT_CODE.invalidOutputPath)
+        process.exit(进程异常退出之代码集.命令行中给出的输出路径无效)
     }
 
 
@@ -551,7 +558,7 @@ function start(program) {
         .catch(reason => {
             console.log()
             console.log(chalk.red(reason))
-            process.exit(PROCESS_EXIT_CODE.userCancelledBecauseOfTooManySourceFiles)
+            process.exit(进程异常退出之代码集.因匹配的MarkDown文件数量过多用户决定退出本程序)
         })
         .then(sourceFilePaths => {
             if (shouldDebug) {
@@ -573,7 +580,7 @@ function start(program) {
                     sourceFilePaths.length > 1
                 ) {
                     console.log(chalk.red('Should not convert multiple source files into single output file.'))
-                    process.exit(PROCESS_EXIT_CODE.multipleSourceFilesButSingleOutputFile)
+                    process.exit(进程异常退出之代码集.匹配的MarkDown文件不止一个但输出的HTML却是唯一)
                 }
 
                 sourceFilePaths.forEach((sourceFilePath, i) => {
@@ -624,13 +631,13 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
     if (programRawArguments.from) {
         filledArguments.from = programRawArguments.from
     } else {
-        filledArguments.from = CLI_ARGUMENTS_DEFAULT_VALUE.from
+        filledArguments.from = 命令行参数各项之默认值.from
     }
 
     if (programRawArguments.to) {
         filledArguments.to = programRawArguments.to
     } else {
-        filledArguments.to = CLI_ARGUMENTS_DEFAULT_VALUE.to
+        filledArguments.to = 命令行参数各项之默认值.to
     }
 
     if ('inputFileCountToWarn' in programRawArguments) {
@@ -640,17 +647,17 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
                 chalk.red('Invalid value of "-n, --input-file-count-to-warn"'),
                 chalk.yellow(filledArguments.inputFileCountToWarn)
             )
-            process.exit(PROCESS_EXIT_CODE.invalidValueOfInputFileCountToWarn)
+            process.exit(进程异常退出之代码集.配置项中给出的关于源文件过多之警告的限额值无效)
         }
     } else {
-        filledArguments.inputFileCountToWarn = CLI_ARGUMENTS_DEFAULT_VALUE.inputFileCountToWarn
+        filledArguments.inputFileCountToWarn = 命令行参数各项之默认值.inputFileCountToWarn
     }
 
     if ('configFile' in programRawArguments) {
         filledArguments.configFile = programRawArguments.configFile
         filledArguments.configFileIsSpecifiedInCLI = true
     } else {
-        filledArguments.configFile = CLI_ARGUMENTS_DEFAULT_VALUE.configFile
+        filledArguments.configFile = 命令行参数各项之默认值.configFiles[0]
         filledArguments.configFileIsSpecifiedInCLI = false
     }
 
@@ -658,38 +665,38 @@ function fillDefaultValuesForAbsentArguments(programRawArguments) {
         filledArguments.darkTheme = !!programRawArguments.darkTheme
         filledArguments.darkThemeIsDemandedViaCLI = filledArguments.darkTheme
     } else {
-        filledArguments.darkTheme = CLI_ARGUMENTS_DEFAULT_VALUE.darkTheme
+        filledArguments.darkTheme = 命令行参数各项之默认值.darkTheme
         filledArguments.darkThemeIsDemandedViaCLI = false
     }
 
     if ('tocUl' in programRawArguments) {
         filledArguments.tocUl = !!programRawArguments.tocUl
     } else {
-        filledArguments.tocUl = CLI_ARGUMENTS_DEFAULT_VALUE.tocUl
+        filledArguments.tocUl = 命令行参数各项之默认值.tocUl
     }
 
     if ('conciseToc' in programRawArguments) {
         filledArguments.conciseToc = !!programRawArguments.conciseToc
     } else {
-        filledArguments.conciseToc = CLI_ARGUMENTS_DEFAULT_VALUE.conciseToc
+        filledArguments.conciseToc = 命令行参数各项之默认值.conciseToc
     }
 
     if ('expandToc' in programRawArguments) {
         filledArguments.expandToc = !!programRawArguments.expandToc
     } else {
-        filledArguments.expandToc = CLI_ARGUMENTS_DEFAULT_VALUE.expandToc
+        filledArguments.expandToc = 命令行参数各项之默认值.expandToc
     }
 
     if ('tocItemExpandedLevel' in programRawArguments) {
         filledArguments.tocItemExpandedLevel = parseInt(programRawArguments.tocItemExpandedLevel)
     } else {
-        filledArguments.tocItemExpandedLevel = CLI_ARGUMENTS_DEFAULT_VALUE.tocItemExpandedLevel
+        filledArguments.tocItemExpandedLevel = 命令行参数各项之默认值.tocItemExpandedLevel
     }
 
     if ('htmlLanguage' in programRawArguments) {
         filledArguments.htmlLanguage = programRawArguments.htmlLanguage
     } else {
-        filledArguments.htmlLanguage = CLI_ARGUMENTS_DEFAULT_VALUE.htmlLanguage
+        filledArguments.htmlLanguage = 命令行参数各项之默认值.htmlLanguage
     }
 
     return filledArguments
@@ -749,10 +756,10 @@ function printCLIArguments(rawArguments, unknownArguments, filledArguments) {
     }
 
     console.log()
-    console.log('Provided arguments:')
+    console.log('由命令行给出的参数：')
     console.log(rawArgumentsToPrint)
     console.log()
-    console.log('Resolved arguments:')
+    console.log('最终决定采用的完整配置：')
     console.log(filledArgumentsToPrint)
     console.log()
 }
@@ -798,7 +805,7 @@ function combinArgumentsWithConfigFile(filledArguments, cwd) {
 
     if (!existsSync(configFilePath)) {
         if (filledArguments.configFileIsSpecifiedInCLI) {
-            process.exit(PROCESS_EXIT_CODE.specifiedConfigFileNotFound)
+            process.exit(进程异常退出之代码集.命令行中给出的配置文件不存在)
         }
     } else {
         try {
@@ -807,7 +814,7 @@ function combinArgumentsWithConfigFile(filledArguments, cwd) {
             console.log(chalk.red(`Error reading configuration JSON file "${
                 chalk.yellow(configFilePath)
             }"`))
-            process.exit(PROCESS_EXIT_CODE.configFileReadError)
+            process.exit(进程异常退出之代码集.配置项文件读取失败)
         }
     }
 
