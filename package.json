@@ -69,7 +69,7 @@
   "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme",
   "dependencies": {
     "@wulechuan/css-stylus-markdown-themes": "^7.2.6",
-    "@wulechuan/generate-html-via-markdown": "^3.0.8",
+    "@wulechuan/generate-html-via-markdown": "^3.0.9",
     "chalk": "^4.1.1",
     "commander": "^8.0.0",
     "fs-extra": "^10.0.0",
