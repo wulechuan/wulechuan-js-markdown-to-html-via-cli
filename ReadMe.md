@@ -3,7 +3,10 @@
 
 # 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
 
-> 中国人，特别是汉族人，理应坚持广泛、规范地使用汉语。凡非必要之情形，不说外国话，不用外国字。此乃天经地义！支持少数民族坚持采用自己民族的传统语言。然，凡中国人，皆应会用汉语、积极使用汉语，此乃中华各民族之大一统之必由。
+
+> 中国人——特别是汉族人，理应坚持广泛、规范地使用汉语。凡非必要之情形不说外国话、不用外国字。此乃天经地义！然则每当必要，亦不排斥采用外国之语言。不妨 **博世界之学问，养中国之精神** 。
+>
+> 本人亦支持少数民族坚持采用自己民族的传统语言。仍须强调，凡中国人，皆应会用汉语、积极使用汉语，此乃中华各民族之大一统之必由。
 
 
 ## Multilingual Editions of this Article
@@ -27,7 +30,9 @@
 </dl>
 
 
+## 版本断代警告
 
+**重要提醒：本工具自 v`3.0.0` 版始，编程接口全面汉化，接口树之层级结构亦有调整。英语接口暂未跟进。时 2021 年 7 月 16 日。然第 3 版较之第 2 版，鲜少有实质性功能变动，徒接口语种之变更、接口结构之优化尔。**
 
 
 ## 简介
@@ -73,82 +78,82 @@ npm    i    -g    @wulechuan/markdown-to-html-via-cli
 Usage: wlc-md-to-html [options]
 
 Options:
-  -v, --version
-        Print the version of this program, that is "v2.9.6".
+      -v, --version
+            Print the version of this program, that is "v2.9.6".
 
-  -i, --from  [globs]
-        Any glob that:
-          - matches `.md` or `.MD` files;
-          - matches folders containing `.md` or `.MD` files;
-          - is a comma-separated values of above.
-        Note that multiple presents of this argument are also allowed.
-        (default: [ './*.md', './*.MD' ])
+      -i, --from  [globs]
+            Any glob that:
+            - matches `.md` or `.MD` files;
+            - matches folders containing `.md` or `.MD` files;
+            - is a comma-separated values of above.
+            Note that multiple presents of this argument are also allowed.
+            (default: [ './*.md', './*.MD' ])
 
-  -o, --to  [path]
-        Path of folder for output `.html` files. A single asterisk(*)
-        is allowed at the beginning of the path, meaning the rest
-        part of this path string will treat as a sub path to each
-        and very source path. This is the ONLY special sign allowed
-        in this path string. No question marks("?") are allowed.
-        No asterisks are allowed in any other places of this string.
-        Note that you MUST quote the path string if it starts with
-        an asterisk sign. Otherwise the operating system might first
-        expand it as a glob, then pass resolved items to this program.
-        (default: './')
+      -o, --to  [path]
+            Path of folder for output `.html` files. A single asterisk(*)
+            is allowed at the beginning of the path, meaning the rest
+            part of this path string will treat as a sub path to each
+            and very source path. This is the ONLY special sign allowed
+            in this path string. No question marks("?") are allowed.
+            No asterisks are allowed in any other places of this string.
+            Note that you MUST quote the path string if it starts with
+            an asterisk sign. Otherwise the operating system might first
+            expand it as a glob, then pass resolved items to this program.
+            (default: './')
 
-  -C, --config-file  [path]
-        Specify a `.js` file for fully controlling the converter
-        utilized by this program internally.
-        (default: './wlc-md-to-html.config.js')
+      -C, --config-file  [path]
+            Specify a `.js` file for fully controlling the converter
+            utilized by this program internally.
+            (default: './wlc-md-to-html.config.js')
 
-  -n, --input-file-count-to-warn  [path]
-        Specify a number as a so-called "safe" limitation of the
-        the count of resovled source files. If too many source
-        files are found, then this program pauses and prompt user
-        to decide whether it should go on or quit. Setting this to
-        zero means never prompt user and always process all discovered
-        source files, no matter how many there are.
-        (default: 51)
+      -n, --input-file-count-to-warn  [path]
+            Specify a number as a so-called "safe" limitation of the
+            the count of resovled source files. If too many source
+            files are found, then this program pauses and prompt user
+            to decide whether it should go on or quit. Setting this to
+            zero means never prompt user and always process all discovered
+            source files, no matter how many there are.
+            (default: 51)
 
-  -d, --dark-theme
-        If presents, the default dark-colored theme is applied to all
-        HTML files, instead of the light-colored theme. But the effect
-        of this argument will be overrided by the configurations, if
-        any, in the configuration file, which is loaded via the "-C"
-        or "--config-file" arguments.
+      -d, --dark-theme
+            If presents, the default dark-colored theme is applied to all
+            HTML files, instead of the light-colored theme. But the effect
+            of this argument will be overrided by the configurations, if
+            any, in the configuration file, which is loaded via the "-C"
+            or "--config-file" arguments.
 
-  -U, --toc-ul
-        When presents, the lists in TOC are <ul>s instead of <ol>s.
+      -U, --toc-ul
+            When presents, the lists in TOC are <ul>s instead of <ol>s.
 
-  -2, --concise-toc
-        When presents, the max level of the TOC items in an HTML is
-        limited to 2. This makes the TOC more concise and clean.
-        Be aware that this way all deeper levels of TOC items are
-        NEVER visible. They are hidden via CSS rules.
+      -2, --concise-toc
+            When presents, the max level of the TOC items in an HTML is
+            limited to 2. This makes the TOC more concise and clean.
+            Be aware that this way all deeper levels of TOC items are
+            NEVER visible. They are hidden via CSS rules.
 
-  -e, --expand-toc
-        If the browser window is wide enough, expand the TOC panel when
-        an HTML just loads. Note that either way, the TOC panel can
-        ALWAYS toggle manually. Also Note that to expand the TOC panel
-        is NOT the same thing as to expand an item of the TOC panel.
+      -e, --expand-toc
+            If the browser window is wide enough, expand the TOC panel when
+            an HTML just loads. Note that either way, the TOC panel can
+            ALWAYS toggle manually. Also Note that to expand the TOC panel
+            is NOT the same thing as to expand an item of the TOC panel.
 
-  -E, --toc-item-expanded-level  [level]
-        If the browser window is wide enough, TOC items are collapsable
-        and expandable, if it contains a nested TOC list. This option
-        decides how many levels of TOC items are expanded by default.
-        Note the all expandable items can ALWASY toggle manually.
-        (default: 1)
+      -E, --toc-item-expanded-level  [level]
+            If the browser window is wide enough, TOC items are collapsable
+            and expandable, if it contains a nested TOC list. This option
+            decides how many levels of TOC items are expanded by default.
+            Note the all expandable items can ALWASY toggle manually.
+            (default: 1)
 
-  -l, --html-language  [language]
-        Specified the value of the "lang" attribute of the <html>
-        tag inside a generated HTML file.
-        (default: 'zh-hans-CN')
+      -l, --html-language  [language]
+            Specified the value of the "lang" attribute of the <html>
+            tag inside a generated HTML file.
+            (default: 'zh-hans-CN')
 
-  -D, --debug
-        To enable debugging mode.
+      -D, --debug
+            To enable debugging mode.
 
-  -h, --help
-        Display this help.
+      -h, --help
+            Display this help.
 
 ```
 

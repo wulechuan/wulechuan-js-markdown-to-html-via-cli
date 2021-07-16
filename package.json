@@ -2,29 +2,13 @@
   "name": "@wulechuan/markdown-to-html-via-cli",
   "author": "wulechuan <wulechuan@live.com>",
   "license": "WTFPL",
-  "version": "2.9.6",
-  "description": "Convert markdown files in HTML files in your CLI environments.",
+  "version": "3.0.0",
+  "description": "该工具系依托于 Nodejs 平台的一款命令行工具。该工具之用途是在命令行环境批量将 MarkDown 文件逐一转换为 HTML 文件。每个 HTML 文件之样貌均可事先配置，默认配置可令 HTML 排版精美、易于阅读。",
   "main": "index.js",
   "bin": {
     "wlc-md-to-html": "./index.js"
   },
   "keywords": [
-    "markdown",
-    "html",
-    "cli",
-    "markdown",
-    "convert",
-    "conversion",
-    "batch-convert",
-    "batch-conversion",
-    "html",
-    "article",
-    "typography",
-    "pretty",
-    "beautify",
-    "responsive",
-    "responsive-layout",
-    "gorgeous",
     "可读性改善",
     "层叠样式表",
     "样式",
@@ -44,7 +28,23 @@
     "文章格式转换",
     "自带用于美化文章的样式",
     "命令行工具",
-    "命令行批量格式转换工具"
+    "命令行批量格式转换工具",
+    "markdown",
+    "html",
+    "cli",
+    "markdown",
+    "convert",
+    "conversion",
+    "batch-convert",
+    "batch-conversion",
+    "html",
+    "article",
+    "typography",
+    "pretty",
+    "beautify",
+    "responsive",
+    "responsive-layout",
+    "gorgeous"
   ],
   "scripts": {
     "eslint": "eslint  ./.eslintrc.js  ./index.js  helpers/*.js",
@@ -68,15 +68,15 @@
   },
   "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme",
   "dependencies": {
-    "@wulechuan/css-stylus-markdown-themes": "^6.4.12",
-    "@wulechuan/generate-html-via-markdown": "^2.9.10",
-    "chalk": "^4.1.0",
-    "commander": "^7.1.0",
-    "fs-extra": "^9.1.0",
-    "globby": "^11.0.2",
+    "@wulechuan/css-stylus-markdown-themes": "^7.2.6",
+    "@wulechuan/generate-html-via-markdown": "^3.0.8",
+    "chalk": "^4.1.1",
+    "commander": "^8.0.0",
+    "fs-extra": "^10.0.0",
+    "globby": "^11.0.4",
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "eslint": "^7.20.0"
+    "eslint": "^7.30.0"
   }
 }

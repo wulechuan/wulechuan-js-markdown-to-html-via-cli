@@ -1,4 +1,4 @@
-# npm i '@wulechuan/css-stylus-markdown-themes@latest'
+npm i '@wulechuan/css-stylus-markdown-themes@latest'
 
 npm i `
     '@wulechuan/generate-html-via-markdown@latest' `
