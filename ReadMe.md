@@ -212,7 +212,7 @@ Options:
 -   要在每个 Markdown 源文件的“原处”生成对应的 HTML 文件，可以这样做。注意到**输出路径是一个星号（`*`）**，且它被引号（`"`）括了起来。
 
     ```bash
-    cd    ./tests/fake-project
+    cd    ./测试集/fake-project
     wlc-md-to-html    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
     ```
 

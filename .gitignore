@@ -1,4 +1,4 @@
 node_modules
-tests/out
-tests/fake-project/**/*.html
+测试集/out
+测试集/fake-project/**/*.html
 ReadMe*.html

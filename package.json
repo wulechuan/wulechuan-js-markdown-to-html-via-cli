@@ -50,7 +50,7 @@
     "eslint": "eslint  ./.eslintrc.js  ./index.js  helpers/*.js",
     "_update-versions-in-readme-markdowns-and-update-date-in-main-js-file": "node  ./helpers/update-versions-in-readme.js",
     "_build-readme-htmls": "npm  run  _update-versions-in-readme-markdowns-and-update-date-in-main-js-file    &&    rimraf  -rf  ./ReadMe*.html  ./文档/**/*.html    &&    node  ./index.js  -i 'ReadMe.md,./文档/**/*.md'  -o '*'",
-    "_test-the-fake-project": "rimraf  -rf  ./tests/fake-project/*.html  ./tests/fake-project/docs/*.html                                                           &&    node  ./index.js  -i ./tests/fake-project/**/*.md,./tests/fake-project/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./tests/converter-options.js",
+    "_test-the-fake-project": "rimraf  -rf  ./测试集/fake-project/*.html  ./测试集/fake-project/docs/*.html                                                           &&    node  ./index.js  -i ./测试集/fake-project/**/*.md,./测试集/fake-project/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./测试集/converter-options.js",
     "_test-the-cli-help": "node  ./index.js  -h",
     "_test-all-without-linting-without-browser": "npm     run  _build-readme-htmls     &&     npm  run  _test-the-fake-project    &&    npm  run  _test-the-cli-help",
     "build-readme-htmls": "npm  run  eslint    &&    npm  run  _build-readme-htmls",

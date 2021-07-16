@@ -200,14 +200,14 @@ The details of what a configuration file should look like, please refer to [@wul
     Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
 
     ```bash
-    cd    ./tests/fake-project
+    cd    ./测试集/fake-project
     wlc-md-to-html    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
     ```
 
 -   To build HTML files with language tag set to "en-US".
 
     ```bash
-    cd    ./tests/fake-project
+    cd    ./测试集/fake-project
     wlc-md-to-html    -l "en-US"
     ```
 
