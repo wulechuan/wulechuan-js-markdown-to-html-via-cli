@@ -35,6 +35,15 @@
 **重要提醒：本工具自 v`3.0.0` 版始，编程接口全面汉化，接口树之层级结构亦有调整。英语接口暂未跟进。时 2021 年 7 月 16 日。然第 3 版较之第 2 版，鲜少有实质性功能变动，徒接口语种之变更、接口结构之优化尔。**
 
 
+## 源代码仓库
+
+| <span style="display:inline-block;width:10em;">提供仓库服务之组织</span> | <span style="display:inline-block;width:9em;">仓库组织之国别</span> | 仓库地址 |
+| ------------- | :----------: | ------- |
+| 码云           | 中华人民共和国 | [https://gitee.com/nanchang-wulechuan/wulechuan-js-markdown-to-html-via-cli.git](https://gitee.com/nanchang-wulechuan/wulechuan-js-markdown-to-html-via-cli.git) |
+| 阿里云之代码仓库 | 中华人民共和国 | [https://code.aliyun.com/wulechuan/wulechuan-js-markdown-to-html-via-cli.git](https://code.aliyun.com/wulechuan/wulechuan-js-markdown-to-html-via-cli.git) |
+| GitHub         | 美           | [https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli.git](https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli.git) |
+
+
 ## 简介
 
 本工具借助 [markdownIt](https://www.npmjs.com/package/markdown-it) 生态的工具集，可将一组 MarkDown 文件转化成对应的 HTML 文件。本工具还在输出的完整 HTML 内容中，内嵌了精美的 CSS 样式集和 Javascript 代码。**故，当你借助本工具来制作你的文章的可分发版本时，单一的完整 HTML 文档即可独立运转。**
@@ -79,7 +88,7 @@ Usage: wlc-md-to-html [options]
 
 Options:
       -v, --version
-            Print the version of this program, that is "v2.9.6".
+            Print the version of this program, that is "v3.0.0".
 
       -i, --from  [globs]
             Any glob that:
