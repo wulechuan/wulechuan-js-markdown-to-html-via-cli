@@ -4,9 +4,10 @@
   "license": "WTFPL",
   "version": "3.0.0",
   "description": "该工具系依托于 Nodejs 平台的一款命令行工具。该工具之用途是在命令行环境批量将 MarkDown 文件逐一转换为 HTML 文件。每个 HTML 文件之样貌均可事先配置，默认配置可令 HTML 排版精美、易于阅读。",
-  "main": "index.js",
+  "main": "./源代码/index.js",
   "bin": {
-    "wlc-md-to-html": "./index.js"
+    "wlc-md-to-html": "./源代码/index.js",
+    "wlc-md-to-html--en": "./源代码/index.en-us.js"
   },
   "keywords": [
     "可读性改善",
@@ -47,12 +48,12 @@
     "gorgeous"
   ],
   "scripts": {
-    "eslint": "eslint  ./.eslintrc.js  ./index.js  helpers/*.js",
-    "_update-versions-in-readme-markdowns-and-update-date-in-main-js-file": "node  ./helpers/update-versions-in-readme.js",
-    "_build-readme-htmls": "npm  run  _update-versions-in-readme-markdowns-and-update-date-in-main-js-file    &&    rimraf  -rf  ./ReadMe*.html  ./文档/**/*.html    &&    node  ./index.js  -i 'ReadMe.md,./文档/**/*.md'  -o '*'",
-    "_test-the-fake-project": "rimraf  -rf  ./测试集/fake-project/*.html  ./测试集/fake-project/docs/*.html                                                           &&    node  ./index.js  -i ./测试集/fake-project/**/*.md,./测试集/fake-project/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./测试集/converter-options.js",
-    "_test-the-cli-help": "node  ./index.js  -h",
-    "_test-all-without-linting-without-browser": "npm     run  _build-readme-htmls     &&     npm  run  _test-the-fake-project    &&    npm  run  _test-the-cli-help",
+    "eslint": "eslint  ./.eslintrc.js  ./源代码/index.js  ./源代码/辅助工具/*.js",
+    "_update-versions-in-readme-markdowns-and-update-date-in-main-js-file": "node  ./源代码/辅助工具/更新版本号字符串并将记载日期更新为今日.js",
+    "_build-readme-htmls": "npm  run  _update-versions-in-readme-markdowns-and-update-date-in-main-js-file    &&    rimraf  -rf  ./ReadMe*.html  ./文档/**/*.html    &&    node  ./源代码/index.js  -i 'ReadMe.md,./文档/**/*.md'  -o '*'",
+    "_test-the-假想项目之文件夹": "rimraf  -rf  ./测试集/假想项目之文件夹/*.html  ./测试集/假想项目之文件夹/docs/*.html                                                           &&    node  ./源代码/index.js  -i ./测试集/假想项目之文件夹/**/*.md,./测试集/假想项目之文件夹/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./测试集/converter-options.js",
+    "_test-the-cli-help": "node  ./源代码/index.js  -h",
+    "_test-all-without-linting-without-browser": "npm     run  _build-readme-htmls     &&     npm  run  _test-the-假想项目之文件夹    &&    npm  run  _test-the-cli-help",
     "build-readme-htmls": "npm  run  eslint    &&    npm  run  _build-readme-htmls",
     "test": "npm                run  eslint    &&    npm  run  _test-all-without-linting-without-browser",
     "before-git-commit": "npm  test",

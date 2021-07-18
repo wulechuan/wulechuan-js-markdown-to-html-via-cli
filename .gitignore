@@ -1,4 +1,4 @@
 node_modules
 测试集/out
-测试集/fake-project/**/*.html
+测试集/假想项目之文件夹/**/*.html
 ReadMe*.html

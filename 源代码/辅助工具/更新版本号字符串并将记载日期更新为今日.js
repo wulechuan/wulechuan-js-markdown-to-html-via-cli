@@ -12,7 +12,7 @@ const readMeFileNames = [
     './文档/说明书/en-US/ReadMe.md',
 ]
 
-const nameOfFileThatContainsCLISplashScreen = 'index.js'
+const nameOfFileThatContainsCLISplashScreen = '源代码/index.js'
 
 const regExpForMatchingSplashScreenDate = /(\.\s{35})(\d{4}-\d{2}-\d{2})/
 const regExpForMatchingVersionSentence = /(Print the version of this program, that is "v?)([^"]+)(")/
@@ -30,8 +30,8 @@ const regExpForMatchingVersionSentence = /(Print the version of this program, th
 const joinPath = path.join
 // const joinPathPOSIX = path.posix.join
 
-const currentVersionOfThisPackage = require('../package.json').version
-const thisPackageRootFolderPath = path.dirname(require.resolve('../package.json'))
+const currentVersionOfThisPackage = require('../../package.json').version
+const thisPackageRootFolderPath = path.dirname(require.resolve('../../package.json'))
 // console.log('thisPackageRootFolderPath:', thisPackageRootFolderPath)
 
 

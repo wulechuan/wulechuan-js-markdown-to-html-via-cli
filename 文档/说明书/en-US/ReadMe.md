@@ -65,7 +65,7 @@ npm    i    -g    @wulechuan/markdown-to-html-via-cli
 ### CLI Arguments
 
 ```bash
-Usage: wlc-md-to-html [options]
+Usage: wlc-md-to-html--en [options]
 
 Options:
       -v, --version
@@ -94,6 +94,7 @@ Options:
       -C, --config-file  [path]
             Specify a `.js` file for fully controlling the converter
             utilized by this program internally.
+            (default: './吴乐川MarkDown转HTML之配置.js')
             (default: './wlc-md-to-html.config.js')
 
       -n, --input-file-count-to-warn  [path]
@@ -162,25 +163,25 @@ The details of what a configuration file should look like, please refer to [@wul
 -   To print full help in your CLI.
 
     ```bash
-    wlc-md-to-html    --help
+    wlc-md-to-html--en    --help
     ```
 
 -   By default, this tool scans for all `.md` and `*.MD` files under current folder, but **NOT** recursively searching sub-folders. And it outputs HTML files in the same folder.
 
     ```bash
-    wlc-md-to-html
+    wlc-md-to-html--en
     ```
 
 -   To build all HTML files into exactly the same output folder. Note that here we use several `-i` arguments together.
 
     ```bash
-    wlc-md-to-html    -i "./**/*.md" -i "./**/*.MD" -i README.MD -i README.md   -o "/home/wulechuan/articles/html/"
+    wlc-md-to-html--en    -i "./**/*.md" -i "./**/*.MD" -i README.MD -i README.md   -o "/home/wulechuan/articles/html/"
     ```
 
 -   This command below converts all `.md` and `*.MD` files in the current folder into an HTML file each, and put all HTML files in the `"C:\articles\"` folder.
 
     ```bat
-    wlc-md-to-html    -o C:\articles\
+    wlc-md-to-html--en    -o C:\articles\
     ```
 
 -   To build HTML files, each in the same sub-folder named "html" under the folder of its corresponding source markdown file.
@@ -190,7 +191,7 @@ The details of what a configuration file should look like, please refer to [@wul
     Also note that you **MUST quote the output path**, otherwise the operating system might expand the glob before the value is passed to this program.
 
     ```bash
-    wlc-md-to-html    -i markdowns/*.md   -o "*/html/"
+    wlc-md-to-html--en    -i markdowns/*.md   -o "*/html/"
     ```
 
 -   To build HTML files, each in the same folder of its corresponding source markdown file.
@@ -200,21 +201,21 @@ The details of what a configuration file should look like, please refer to [@wul
     Also note that you MUST quote the output path, otherwise the operating system might expand the glob before the value is passed to this program.
 
     ```bash
-    cd    ./测试集/fake-project
-    wlc-md-to-html    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
+    cd    ./测试集/假想项目之文件夹
+    wlc-md-to-html--en    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
     ```
 
 -   To build HTML files with language tag set to "en-US".
 
     ```bash
-    cd    ./测试集/fake-project
-    wlc-md-to-html    -l "en-US"
+    cd    ./测试集/假想项目之文件夹
+    wlc-md-to-html--en    -l "en-US"
     ```
 
 -   To load converter configurations from a .js file.
 
     ```bash
-    wlc-md-to-html    -C "/home/wulechuan/articles/my-markdown-to-my-html.config.js"
+    wlc-md-to-html--en    -C "/home/wulechuan/articles/my-markdown-to-my-html.config.js"
     ```
 
 

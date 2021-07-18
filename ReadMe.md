@@ -113,6 +113,7 @@ Options:
       -C, --config-file  [path]
             Specify a `.js` file for fully controlling the converter
             utilized by this program internally.
+            (default: './吴乐川MarkDown转HTML之配置.js')
             (default: './wlc-md-to-html.config.js')
 
       -n, --input-file-count-to-warn  [path]
@@ -212,7 +213,7 @@ Options:
 -   要在每个 Markdown 源文件的“原处”生成对应的 HTML 文件，可以这样做。注意到**输出路径是一个星号（`*`）**，且它被引号（`"`）括了起来。
 
     ```bash
-    cd    ./测试集/fake-project
+    cd    ./测试集/假想项目之文件夹
     wlc-md-to-html    -i README.MD,docs/**/*.md,docs/**/*.MD    -o "*"
     ```
 
