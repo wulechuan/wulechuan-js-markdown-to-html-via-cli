@@ -3,17 +3,17 @@
 const 本工具之PackageJSON = require('../package.json')
 const 本工具之版本字符串 = `v${本工具之PackageJSON.version.replace(/^v/, '')}`
 
-console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
-console.log('.                                                       .')
-console.log('.  此乃吴乐川设计的命令行工具，                         .')
-console.log('.  用以批量将 MarkDown 格式逐一转化为 HTML 格式之文件。 .')
-console.log('.                                                       .')
-console.log(`.  ${本工具之版本字符串}${' '.repeat(45 -  本工具之版本字符串.length)}        .`)
-console.log('.                                                       .')
-console.log('.                         吴乐川 <wulechuan@live.com>   .')
-console.log('.                                          2021-07-18   .')
-console.log('.                                                       .')
-console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
+console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
+console.log('.                                                             .')
+console.log('.  此乃吴乐川设计的命令行工具，                               .')
+console.log('.  用以批量将 MarkDown 格式的文件逐一转化为 HTML 格式之文件。 .')
+console.log('.                                                             .')
+console.log(`.  ${本工具之版本字符串}${' '.repeat(45 -  本工具之版本字符串.length)}              .`)
+console.log('.                                                             .')
+console.log('.                                吴乐川 <wulechuan@live.com>  .')
+console.log('.                                                 2021-07-18  .')
+console.log('.                                                             .')
+console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
 
 const 进程异常退出之代码集 = {
@@ -585,7 +585,7 @@ function 启动程序(程序) {
                         '',
                         '',
                         '* * * * * * *',
-                        '*   完毕！   *',
+                        '*   完毕！  *',
                         '* * * * * * *',
                     ].join('\n')
                 ))

@@ -58,7 +58,7 @@
     "test": "npm                run  eslint    &&    npm  run  _test-all-without-linting-without-browser",
     "before-git-commit": "npm  test",
     "prepublishOnly": "npm     test    &&    rimraf  -f  ./ReadMe.html  ./文档/**/*.html",
-    "postinstall": "npm  run  _build-readme-htmls"
+    "postinstall": "npm  run   _build-readme-htmls"
   },
   "repository": {
     "type": "git",
