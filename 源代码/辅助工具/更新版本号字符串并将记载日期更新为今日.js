@@ -14,7 +14,7 @@ const readMeFileNames = [
 
 const nameOfFileThatContainsCLISplashScreen = '源代码/index.js'
 
-const regExpForMatchingSplashScreenDate = /(\.\s{35})(\d{4}-\d{2}-\d{2})/
+const regExpForMatchingSplashScreenDate = /(\.\s{20})(\d{4}-\d{2}-\d{2})/
 const regExpForMatchingVersionSentence = /(Print the version of this program, that is "v?)([^"]+)(")/
 
 

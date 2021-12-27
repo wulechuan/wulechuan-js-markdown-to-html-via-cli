@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="./node_modules/@wulechuan/css-stylus-markdown-themes/dist/css/wulechuan-styles-for-html-via-markdown--vscode.default.min.css">
+<link rel="stylesheet" href="./node_modules/@wulechuan/css-stylus-markdown-themes/源代码/发布的源代码/文章排版与配色方案集/层叠样式表/wulechuan-styles-for-html-via-markdown--vscode.default.min.css">
 
 
 # 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
@@ -32,7 +32,7 @@
 
 ## 版本断代警告
 
-**重要提醒：本工具自 v`3.0.0` 版始，编程接口全面汉化，接口树之层级结构亦有调整。英语接口暂未跟进。时 2021 年 7 月 16 日。然第 3 版较之第 2 版，鲜少有实质性功能变动，徒接口语种之变更、接口结构之优化尔。**
+**重要提醒：本工具自 v`3.0.0` 版始，编程接口全面汉化，【接口对象】内容之层级结构亦有调整。英语接口暂未跟进。时 2021 年 7 月 16 日。然第 3 版较之第 2 版，鲜少有实质性功能变动，徒接口语种之变更、接口结构之优化尔。**
 
 
 ## 源代码仓库
