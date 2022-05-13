@@ -11,7 +11,7 @@ console.log('.                                                             .')
 console.log(`.  ${本工具之版本字符串}${' '.repeat(45 -  本工具之版本字符串.length)}              .`)
 console.log('.                                                             .')
 console.log('.                                吴乐川 <wulechuan@live.com>  .')
-console.log('.                                                 2021-07-18  .')
+console.log('.                                                 2022-05-13  .')
 console.log('.                                                             .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
@@ -63,6 +63,7 @@ const 命令行环境中人类输入之读取机 = 命令行环境中人类输�
 const 彩色粉笔工具 = require('chalk')
 const path = require('path')
 const globby = require('globby')
+const fsExtra = require('fs-extra')
 
 const {
     readFileSync,
@@ -70,7 +71,7 @@ const {
     statSync: getFileStatSync,
     mkdirpSync,
     existsSync,
-} = require('fs-extra')
+} = fsExtra
 
 const 命令行程序制造机 = require('commander')
 const 吴乐川GenerateHtmlViaMarkdown工具现成提供的一枚转换器 = require('@wulechuan/generate-html-via-markdown')
@@ -325,7 +326,7 @@ const 本工具任何命令行参数之解释文本之统一前缀 = `\n${' '.re
 
     const existingHelpHTMLs = [
         'ReadMe.html',
-        './文档/说明书/en-US/ReadMe.html',
+        './文档集/说明书/en-US/ReadMe.html',
     ].reduce((allExistingHelps, subPath) => {
         const fullPath = joinPath(thisPackageRootFolderPath, subPath)
         if (existsSync(fullPath)) {

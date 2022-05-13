@@ -1,7 +1,9 @@
 {
+    "eslint.enable": true,
     "files.exclude": {
         "**/.DS_Store": true,
-        "**/node_modules": true
+        "**/node_modules": true,
+        ".markdownlint*": true,
     },
     "search.exclude": {
         "**/node_modules": true,

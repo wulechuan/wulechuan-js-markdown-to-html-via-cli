@@ -1,83 +1,85 @@
 {
-  "name": "@wulechuan/markdown-to-html-via-cli",
-  "author": "wulechuan <wulechuan@live.com>",
-  "license": "WTFPL",
-  "version": "3.0.0",
-  "description": "该工具系依托于 Nodejs 平台的一款命令行工具。该工具之用途是在命令行环境批量将 MarkDown 文件逐一转换为 HTML 文件。每个 HTML 文件之样貌均可事先配置，默认配置可令 HTML 排版精美、易于阅读。",
-  "main": "./源代码/index.js",
-  "bin": {
-    "wlc-md-to-html": "./源代码/index.js",
-    "wlc-md-to-html--en": "./源代码/index.en-us.js"
-  },
-  "keywords": [
-    "可读性改善",
-    "层叠样式表",
-    "样式",
-    "文章样式",
-    "文章外观",
-    "文章美化",
-    "文字排版",
-    "文字排版美学",
-    "文章“皮肤”",
-    "文章中的代码着色",
-    "用于美化文章的样式",
-    "尺寸自适应式排版",
-    "自适应式排版",
-    "移动设备上的文字排版",
-    "小尺寸屏幕上的文字排版",
-    "文档格式转换",
-    "文章格式转换",
-    "自带用于美化文章的样式",
-    "命令行工具",
-    "命令行批量格式转换工具",
-    "markdown",
-    "html",
-    "cli",
-    "markdown",
-    "convert",
-    "conversion",
-    "batch-convert",
-    "batch-conversion",
-    "html",
-    "article",
-    "typography",
-    "pretty",
-    "beautify",
-    "responsive",
-    "responsive-layout",
-    "gorgeous"
-  ],
-  "scripts": {
-    "eslint": "eslint  ./.eslintrc.js  ./源代码/index.js  ./源代码/辅助工具/*.js",
-    "_update-versions-in-readme-markdowns-and-update-date-in-main-js-file": "node  ./源代码/辅助工具/更新版本号字符串并将记载日期更新为今日.js",
-    "_build-readme-htmls": "npm  run  _update-versions-in-readme-markdowns-and-update-date-in-main-js-file    &&    rimraf  -rf  ./ReadMe*.html  ./文档/**/*.html    &&    node  ./源代码/index.js  -i 'ReadMe.md,./文档/**/*.md'  -o '*'",
-    "_test-the-假想项目之文件夹": "rimraf  -rf  ./测试集/假想项目之文件夹/*.html  ./测试集/假想项目之文件夹/docs/*.html                                                           &&    node  ./源代码/index.js  -i ./测试集/假想项目之文件夹/**/*.md,./测试集/假想项目之文件夹/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./测试集/converter-options.js",
-    "_test-the-cli-help": "node  ./源代码/index.js  -h",
-    "_test-all-without-linting-without-browser": "npm     run  _build-readme-htmls     &&     npm  run  _test-the-假想项目之文件夹    &&    npm  run  _test-the-cli-help",
-    "build-readme-htmls": "npm  run  eslint    &&    npm  run  _build-readme-htmls",
-    "test": "npm                run  eslint    &&    npm  run  _test-all-without-linting-without-browser",
-    "before-git-commit": "npm  test",
-    "prepublishOnly": "npm     test    &&    rimraf  -f  ./ReadMe.html  ./文档/**/*.html",
-    "postinstall": "npm  run   _build-readme-htmls"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli.git"
-  },
-  "bugs": {
-    "url": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli/issues"
-  },
-  "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme",
-  "dependencies": {
-    "@wulechuan/css-stylus-markdown-themes": "^7.2.6",
-    "@wulechuan/generate-html-via-markdown": "^3.0.9",
-    "chalk": "^4.1.1",
-    "commander": "^8.0.0",
-    "fs-extra": "^10.0.0",
-    "globby": "^11.0.4",
-    "rimraf": "^3.0.2"
-  },
-  "devDependencies": {
-    "eslint": "^7.30.0"
-  }
+    "name": "@wulechuan/markdown-to-html-via-cli",
+    "version": "3.0.0",
+    "author": "wulechuan <wulechuan@live.com>",
+    "license": "WTFPL",
+    "description": "该工具系依托于 Nodejs 平台的一款命令行工具。该工具之用途是在命令行环境批量将 MarkDown 文件逐一转换为 HTML 文件。每个 HTML 文件之样貌均可事先配置，默认配置可令 HTML 排版精美、易于阅读。",
+    "main": "./源代码/index.js",
+    "bin": {
+        "wlc-md-to-html": "./源代码/index.js",
+        "wlc-md-to-html--en": "./源代码/index.en-us.js"
+    },
+    "scripts": {
+        "eslint": "eslint  ./.eslintrc.js  ./源代码/index.*.js  ./源代码/辅助工具集/*.js",
+        "_update-versions-in-readme-markdowns-and-update-date-in-main-js-file": "node  ./源代码/辅助工具集/更新版本号字符串并将记载日期更新为今日.js",
+        "_build-readme-htmls": "npm  run  _update-versions-in-readme-markdowns-and-update-date-in-main-js-file    &&    rimraf  -rf  ./ReadMe*.html  ./文档集/**/*.html    &&    node  ./源代码/index.js  -i 'ReadMe.md,./文档集/**/*.md'  -o '*'",
+        "_test-the-假想项目之文件夹": "rimraf  -rf  ./测试集/假想项目之文件夹/*.html  ./测试集/假想项目之文件夹/docs/*.html                                                           &&    node  ./源代码/index.js  -i ./测试集/假想项目之文件夹/**/*.md,./测试集/假想项目之文件夹/**/*.MD  -o '*'  -E3  -e  -D  -d  -C ./测试集/converter-options.js",
+        "_test-the-cli-help": "node  ./源代码/index.js  -h",
+        "_test-all-without-linting-without-browser": "npm     run  _build-readme-htmls     &&     npm  run  _test-the-假想项目之文件夹    &&    npm  run  _test-the-cli-help",
+        "build-readme-htmls": "npm  run  eslint    &&    npm  run  _build-readme-htmls",
+        "test": "npm                run  eslint    &&    npm  run  _test-all-without-linting-without-browser",
+        "start": "npm  test",
+        "每当制作集得之版本之前": "npm  test",
+        "prepublishOnly": "npm     test    &&    rimraf  ./ReadMe*.html  ./文档集/**/*.html",
+        "postinstall": "npm  run   _build-readme-htmls"
+    },
+    "dependencies": {
+        "@wulechuan/css-stylus-markdown-themes": "^7.8.1",
+        "@wulechuan/generate-html-via-markdown": "^3.2.5",
+        "chalk": "^4.1.2",
+        "commander": "^9.2.0",
+        "fs-extra": "^10.1.0",
+        "globby": "^11.1.0",
+        "rimraf": "^3.0.2"
+    },
+    "devDependencies": {
+        "@wulechuan/cli-scripts--git-push": "^3.0.4",
+        "eslint": "^8.15.0"
+    },
+    "homepage": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli.git"
+    },
+    "bugs": {
+        "url": "https://github.com/wulechuan/wulechuan-js-markdown-to-html-via-cli/issues"
+    },
+    "keywords": [
+        "可读性改善",
+        "层叠样式表",
+        "样式",
+        "文章样式",
+        "文章外观",
+        "文章美化",
+        "文字排版",
+        "文字排版美学",
+        "文章“皮肤”",
+        "文章中的代码着色",
+        "用于美化文章的样式",
+        "尺寸自适应式排版",
+        "自适应式排版",
+        "移动设备上的文字排版",
+        "小尺寸屏幕上的文字排版",
+        "文档格式转换",
+        "文章格式转换",
+        "自带用于美化文章的样式",
+        "命令行工具",
+        "命令行批量格式转换工具",
+        "markdown",
+        "html",
+        "cli",
+        "markdown",
+        "convert",
+        "conversion",
+        "batch-convert",
+        "batch-conversion",
+        "html",
+        "article",
+        "typography",
+        "pretty",
+        "beautify",
+        "responsive",
+        "responsive-layout",
+        "gorgeous"
+    ]
 }

@@ -1,7 +1,9 @@
+# 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
+
+
 <link rel="stylesheet" href="./node_modules/@wulechuan/css-stylus-markdown-themes/源代码/发布的源代码/文章排版与配色方案集/层叠样式表/wulechuan-styles-for-html-via-markdown--vscode.default.min.css">
 
 
-# 吴乐川的将 MarkDown 文件转换为 HTML 文件的命令行工具
 
 
 > 中国人——特别是汉族人，理应坚持广泛、规范地使用汉语。凡非必要之情形不说外国话、不用外国字。此乃天经地义！然则每当必要，亦不排斥采用外国之语言。不妨 **博世界之学问，养中国之精神** 。
@@ -11,7 +13,7 @@
 
 ## Multilingual Editions of this Article
 
-- [English version of this ReadMe](./文档/说明书/en-US/ReadMe.md)
+- [English version of this ReadMe](./文档集/说明书/en-US/ReadMe.md)
 
 
 

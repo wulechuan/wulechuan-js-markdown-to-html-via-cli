@@ -1,5 +1,5 @@
-const path = require('path')
 const chalk = require('chalk')
+const path = require('path')
 
 const {
     existsSync,
@@ -8,13 +8,14 @@ const {
 } = require('fs-extra')
 
 const readMeFileNames = [
-    'ReadMe.md',
-    './文档/说明书/en-US/ReadMe.md',
+    '../../ReadMe.md',
+    '../../文档集/说明书/en-US/ReadMe.md',
 ]
 
-const nameOfFileThatContainsCLISplashScreen = '源代码/index.js'
+const nameOfFile1ThatContainsCLISplashScreen = '../../源代码/index.js'
+const nameOfFile2ThatContainsCLISplashScreen = '../../源代码/index.en-us.js'
 
-const regExpForMatchingSplashScreenDate = /(\.\s{20})(\d{4}-\d{2}-\d{2})/
+const regExpForMatchingSplashScreenDate = /(\.\s{19,})(\d{4}-\d{2}-\d{2})/
 const regExpForMatchingVersionSentence = /(Print the version of this program, that is "v?)([^"]+)(")/
 
 
@@ -31,12 +32,17 @@ const joinPath = path.join
 // const joinPathPOSIX = path.posix.join
 
 const currentVersionOfThisPackage = require('../../package.json').version
-const thisPackageRootFolderPath = path.dirname(require.resolve('../../package.json'))
-// console.log('thisPackageRootFolderPath:', thisPackageRootFolderPath)
+const thisPackageRootFolderPath = __dirname // path.dirname(require.resolve('../../package.json'))
+console.log('thisPackageRootFolderPath:', thisPackageRootFolderPath)
 
 
 updateDateInSplashScreen(
-    nameOfFileThatContainsCLISplashScreen,
+    nameOfFile1ThatContainsCLISplashScreen,
+    regExpForMatchingSplashScreenDate
+)
+
+updateDateInSplashScreen(
+    nameOfFile2ThatContainsCLISplashScreen,
     regExpForMatchingSplashScreenDate
 )
 

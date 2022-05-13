@@ -11,7 +11,7 @@ console.log('.                                                 .')
 console.log(`.    ${version}${' '.repeat(45 -  version.length)}.`)
 console.log('.                                                 .')
 console.log('.               wulechuan <wulechuan@live.com>    .')
-console.log('.                                   2021-07-18    .')
+console.log('.                                   2022-05-13    .')
 console.log('.                                                 .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
@@ -63,6 +63,7 @@ const stdIOReader = readline.createInterface({
 const chalk = require('chalk')
 const path = require('path')
 const globby = require('globby')
+const fsExtra = require('fs-extra')
 
 const {
     readFileSync,
@@ -70,7 +71,7 @@ const {
     statSync: getFileStatSync,
     mkdirpSync,
     existsSync,
-} = require('fs-extra')
+} = fsExtra
 
 const commander = require('commander')
 const markdownToHTMLConverter = require('@wulechuan/generate-html-via-markdown')
@@ -323,7 +324,7 @@ program.on('--help', () => {
 
     const existingHelpHTMLs = [
         'ReadMe.html',
-        './文档/说明书/en-US/ReadMe.html',
+        './文档集/说明书/en-US/ReadMe.html',
     ].reduce((allExistingHelps, subPath) => {
         const fullPath = joinPath(thisPackageRootFolderPath, subPath)
         if (existsSync(fullPath)) {
