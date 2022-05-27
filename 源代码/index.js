@@ -11,7 +11,7 @@ console.log('.                                                             .')
 console.log(`.  ${本工具之版本字符串}${' '.repeat(45 -  本工具之版本字符串.length)}              .`)
 console.log('.                                                             .')
 console.log('.                                吴乐川 <wulechuan@live.com>  .')
-console.log('.                                                 2022-05-13  .')
+console.log('.                                                 2022-05-27  .')
 console.log('.                                                             .')
 console.log('. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .')
 console.log()
@@ -1016,8 +1016,8 @@ function 处理单个源Markdown文件(
 function 将单个Markdown文件转换成单个HTML文件并写入磁盘(源Markdown文件之路径, 输出HTML文件之路径, options) {
     console.log()
     console.log('-'.repeat(51))
-    console.log('用以搜寻待处理MarkDown文件之匹配规则列表: "' + 彩色粉笔工具.bgMagenta.black(源Markdown文件之路径)   + '"')
-    console.log('  to: "' + 彩色粉笔工具.bgGreen.black(输出HTML文件之路径) + '"')
+    console.log(`从 MarkDown 文件：\n    "${彩色粉笔工具.bgMagenta.black(源Markdown文件之路径)}"`)
+    console.log(`到 HTML 文件：\n    "${彩色粉笔工具.bgGreen.black(输出HTML文件之路径)}"`)
 
     const 转换器专用的配置项集 = options['专用于 @wulechuan/generate-html-via-markdown 的配置项集']
 
