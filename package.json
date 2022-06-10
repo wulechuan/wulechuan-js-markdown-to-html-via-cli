@@ -72,7 +72,7 @@
     "@wulechuan/generate-html-via-markdown": "^2.9.10",
     "chalk": "^4.1.0",
     "commander": "^7.1.0",
-    "fs-extra": "^9.1.0",
+    "fs-extra": "^10.0.0",
     "globby": "^11.0.2",
     "rimraf": "^3.0.2"
   },
